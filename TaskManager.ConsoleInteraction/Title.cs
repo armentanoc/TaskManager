@@ -1,5 +1,5 @@
 ﻿
-namespace ConsoleInteraction.ClassLib
+namespace TaskManager.ConsoleInteraction
 {
     public class Title
     {
