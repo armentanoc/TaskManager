@@ -2,7 +2,7 @@
 
 namespace TaskManager.Core
 {
-    internal class Program
+    internal class Program : IConsole
     {
         static void Main(string[] args)
         {
@@ -15,21 +15,21 @@ namespace TaskManager.Core
                 AnalyzeUserChoice(userSelection);
             }
         }
-        private static void AnalyzeUserChoice(int userSelection)
+        static void AnalyzeUserChoice(int userSelection)
         {
             switch (userSelection)
             {
                 case 0:
                     Console.WriteLine("Um");
-                    WaitThreeSeconds();
+                    IConsole.WaitThreeSeconds();
                     break;
                 case 1:
                     Console.WriteLine("Dois");
-                    WaitThreeSeconds();
+                    IConsole.WaitThreeSeconds();
                     break;
                 case 2:
                     Console.WriteLine("Três");
-                    WaitThreeSeconds();
+                    IConsole.WaitThreeSeconds();
                     break;
                 case 3:
                     Console.WriteLine("Programa encerrado");
@@ -37,15 +37,9 @@ namespace TaskManager.Core
                     break;
                 default:
                     Console.WriteLine("Opção inválida");
-                    WaitThreeSeconds();
+                    IConsole.WaitThreeSeconds();
                     break;
             }
-        }
-
-        private static void WaitThreeSeconds()
-        {
-            Console.CursorVisible = false;
-            Thread.Sleep(3000);
         }
     }
 }

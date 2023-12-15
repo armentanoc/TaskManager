@@ -3,12 +3,12 @@ namespace TaskManager.ConsoleInteraction
 {
     public class Menu
     {
-        private readonly string[] items;
+        public string[] Items { get; private set; }
         private int selectedIndex;
 
         public Menu(string[] menuItems)
         {
-            items = menuItems;
+            Items = menuItems;
             selectedIndex = 0;
         }
 
@@ -35,11 +35,11 @@ namespace TaskManager.ConsoleInteraction
                 Console.CursorVisible = true;
             }
 
-            Console.WriteLine($"\nOpção selecionada: {items[selectedIndex]}\n");
+            Console.WriteLine($"\nOpção selecionada: {Items[selectedIndex]}\n");
             return selectedIndex;
         }
-
-        private void RenderMenu(string? title = null)
+    
+    private void RenderMenu(string? title = null)
         {
             if (title != null)
             {
@@ -48,12 +48,12 @@ namespace TaskManager.ConsoleInteraction
 
             Console.WriteLine("\nSelecione uma opção: \n");
 
-            for (int i = 0; i < items.Length; i++)
+            for (int i = 0; i < Items.Length; i++)
             {
                 Console.ForegroundColor = (i == selectedIndex) ? ConsoleColor.Black : ConsoleColor.Gray;
                 Console.BackgroundColor = (i == selectedIndex) ? ConsoleColor.Gray : ConsoleColor.Black;
 
-                Console.WriteLine($"{items[i]}");
+                Console.WriteLine($"{Items[i]}");
 
                 Console.ResetColor();
             }
@@ -70,7 +70,7 @@ namespace TaskManager.ConsoleInteraction
                     break;
 
                 case ConsoleKey.DownArrow:
-                    selectedIndex = Math.Min(items.Length - 1, selectedIndex + 1);
+                    selectedIndex = Math.Min(Items.Length - 1, selectedIndex + 1);
                     break;
             }
         }
