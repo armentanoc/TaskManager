@@ -13,30 +13,8 @@ namespace TaskManager.Core
             {
                 string title = Title.MainMenu();
                 int userSelection = options.DisplayMenu(title);
-                AnalyzeUserChoice(userSelection);
+                MenuAnalyzer.MainMenu(userSelection);
                 Menu.PressAnyKeyToReturn();
-            }
-        }
-        static void AnalyzeUserChoice(int userSelection)
-        {
-            switch (userSelection)
-            {
-                case 0:
-                    Console.WriteLine("Um");
-                    break;
-                case 1:
-                    Console.WriteLine("Dois");
-                    break;
-                case 2:
-                    Console.WriteLine("Três");
-                    break;
-                case 3:
-                    Console.WriteLine("Programa encerrado");
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Opção inválida");
-                    break;
             }
         }
     }
