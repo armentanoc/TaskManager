@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.ConsoleInteraction;
+using TaskManager.Core.People;
+using TaskManager.Core.Repository;
 
 namespace TaskManager.Core
 {
@@ -16,10 +19,12 @@ namespace TaskManager.Core
                     Console.WriteLine("Um");
                     break;
                 case 1:
-                    Console.WriteLine("Dois");
+                    Title.AllUsers();
+                    UserRepository.DisplayAll();
                     break;
                 case 2:
-                    Console.WriteLine("Três");
+                    Developer dev = new Developer("Ana Carolina", "ana", "123");
+                    Console.WriteLine(dev.ToString());
                     break;
                 case 3:
                     Console.WriteLine("Programa encerrado");
