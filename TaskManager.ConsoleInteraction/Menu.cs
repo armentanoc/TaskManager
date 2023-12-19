@@ -12,7 +12,7 @@ namespace TaskManager.ConsoleInteraction
             selectedIndex = 0;
         }
 
-        public int ShowMenu(string? title = null)
+        public int DisplayMenu(string? title = null)
         {
             ConsoleKeyInfo key;
             Console.CursorVisible = false;
@@ -52,9 +52,7 @@ namespace TaskManager.ConsoleInteraction
             {
                 Console.ForegroundColor = (i == selectedIndex) ? ConsoleColor.Black : ConsoleColor.Gray;
                 Console.BackgroundColor = (i == selectedIndex) ? ConsoleColor.Gray : ConsoleColor.Black;
-
                 Console.WriteLine($"{Items[i]}");
-
                 Console.ResetColor();
             }
 
@@ -73,6 +71,13 @@ namespace TaskManager.ConsoleInteraction
                     selectedIndex = Math.Min(Items.Length - 1, selectedIndex + 1);
                     break;
             }
+        }
+
+        public static void PressAnyKeyToReturn()
+        {
+            Console.WriteLine("\nPressione qualquer tecla para retornar.");
+            Console.CursorVisible = false;
+            Console.ReadKey();
         }
     }
 }
