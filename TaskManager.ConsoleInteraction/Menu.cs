@@ -32,7 +32,7 @@ namespace TaskManager.ConsoleInteraction
             }
             finally
             {
-                Console.CursorVisible = true;
+                Console.Clear();
             }
 
             Console.WriteLine($"\nOpção selecionada: {Items[selectedIndex]}\n");
