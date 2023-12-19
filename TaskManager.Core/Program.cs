@@ -1,4 +1,5 @@
 ﻿using TaskManager.ConsoleInteraction;
+using TaskManager.Core.People;
 
 namespace TaskManager.Core
 {
@@ -6,15 +7,22 @@ namespace TaskManager.Core
     {
         static void Main(string[] args)
         {
-            string[] mainMenu = { "Um", "Dois", "Três", "Sair" };
+            string[] mainMenu = { "Um", "Usuários", "Teste", "Sair" };
             Menu options = new Menu(mainMenu);
 
-            while (true)
+            try
             {
-                string title = Title.MainMenu();
-                int userSelection = options.DisplayMenu(title);
-                MenuAnalyzer.MainMenu(userSelection);
-                Menu.PressAnyKeyToReturn();
+                while (true)
+                {
+                    string title = Title.MainMenu();
+                    int userSelection = options.DisplayMenu(title);
+                    MenuAnalyzer.MainMenu(userSelection);
+                    Menu.PressAnyKeyToReturn();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
