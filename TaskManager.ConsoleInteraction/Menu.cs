@@ -35,7 +35,6 @@ namespace TaskManager.ConsoleInteraction
                 Console.Clear();
             }
 
-            Console.WriteLine($"\nOpção selecionada: {Items[selectedIndex]}\n");
             return selectedIndex;
         }
     
