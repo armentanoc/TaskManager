@@ -1,6 +1,8 @@
 ﻿
 using System.Security.Cryptography;
 using System.Text;
+using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Service;
 
 namespace TaskManager.DomainLayer.Model
 {
@@ -53,31 +55,22 @@ namespace TaskManager.DomainLayer.Model
         {
             Job = job;
         }
-        public abstract void Greeting();
-
         public void ChangePassword(string currentPassword, string newPassword)
         {
             if (PasswordMatches(currentPassword))
             {
                 SetPassword(newPassword);
-                Console.WriteLine("Password changed successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Current password is incorrect. Password not changed.");
+                Console.WriteLine("\nSenha alterada com sucesso.");
             }
         }
-
         private bool PasswordMatches(string password)
         {
             return Password == HashPassword(password);
         }
-
         private void SetPassword(string newPassword)
         {
             Password = HashPassword(newPassword);
         }
-
         private static string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
@@ -86,13 +79,37 @@ namespace TaskManager.DomainLayer.Model
                 return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
             }
         }
+        public void TryChangingPassword()
+        {
+            Title.ChangePassword();
+            Console.WriteLine($"\nMudando a senha para o usuário {Name} ({Login})");
+
+            string oldPassword = Authentication.ReadPassword("\nSenha antiga: ");
+
+            if (oldPassword != null && Authentication.PasswordMatches(Password, oldPassword))
+            {
+                string newPassword = Authentication.ReadPassword("Senha nova: ");
+
+                if (newPassword != null)
+                {
+                    ChangePassword(oldPassword, newPassword);
+                }
+            }
+            else
+            {
+                Message.IncorrectPassword();
+            }
+
+            Console.ReadKey();
+        }
+        public abstract void Greeting();
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append($"\nId: {Id} \nName: {Name} \nJob: {Job}");
             if (Email != null)
             {
-                sb.AppendLine($"Email: {Email}");
+                sb.AppendLine($"\nEmail: {Email}");
             }
             return sb.ToString();
         }
