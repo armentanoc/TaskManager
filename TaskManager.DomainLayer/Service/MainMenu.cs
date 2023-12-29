@@ -1,15 +1,34 @@
-﻿using System.Net.Security;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model;
 using TaskManager.DomainLayer.Repositories;
 
-namespace TaskManager.DomainLayer.Service.MenuAnalyzer
+namespace TaskManager.DomainLayer.Service
 {
-    public class MainMenu
+    internal class MainMenu
     {
-        public static void Analyze(int userSelection)
+        private readonly Menu _mainMenu;
+
+        public MainMenu()
         {
-            switch (userSelection)
+            string[] mainMenuOptions = { "Realizar Login", "Usuários", "Teste", "Sair" };
+            _mainMenu = new Menu(mainMenuOptions);
+        }
+
+        public int DisplayMainMenu()
+        {
+            string title = Title.MainMenu();
+            return _mainMenu.DisplayMenu(title);
+        }
+
+        public void AnalyzeMainMenu(int selectedOption)
+        {
+            switch (selectedOption)
             {
                 case 0:
                     User user = Authentication.Authenticate(UserRepository.All());
