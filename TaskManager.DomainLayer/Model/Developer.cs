@@ -12,8 +12,7 @@ namespace TaskManager.DomainLayer.Model
         public override void Greeting()
         {
             Title.GreetingDev();
-
-            MenuOpcoesGarcom();
+            //MenuOpcoesDev();
         }
     }
 }
