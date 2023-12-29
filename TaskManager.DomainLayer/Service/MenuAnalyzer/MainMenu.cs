@@ -12,14 +12,14 @@ namespace TaskManager.DomainLayer.Service.MenuAnalyzer
             switch (userSelection)
             {
                 case 0:
-                    User user = Login.Authenticate(UserRepository.All());
+                    User user = Authentication.Authenticate(UserRepository.All());
                     break;
                 case 1:
                     Title.AllUsers();
                     UserRepository.DisplayAll();
                     break;
                 case 2:
-                    Developer dev = new Developer("Ana Carolina", "ana", "123");
+                    Developer dev = new Developer("Ana Carolina", "ana", "armentanocarolina@gmail.com");
                     Console.WriteLine(dev.ToString());
                     break;
                 case 3:

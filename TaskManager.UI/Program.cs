@@ -23,6 +23,7 @@ namespace TaskManager.UI
             }
             catch (Exception ex)
             {
+                Title.Error();
                 Console.WriteLine(ex.Message);
             }
         }

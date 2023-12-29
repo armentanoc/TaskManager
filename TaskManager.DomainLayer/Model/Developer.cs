@@ -1,4 +1,5 @@
-﻿using TaskManager.ConsoleInteraction.Components;
+﻿using TaskManager.ConsoleInteraction;
+using TaskManager.ConsoleInteraction.Components;
 
 namespace TaskManager.DomainLayer.Model
 {
@@ -11,8 +12,39 @@ namespace TaskManager.DomainLayer.Model
 
         public override void Greeting()
         {
-            Title.GreetingDev();
-            //MenuOpcoesDev();
+            MainMenu();
+        }
+
+        public void MainMenu()
+        {
+            string[] menuDev = { "Alterar senha", "Sair" };
+            Menu options = new Menu(menuDev);
+
+            while (true)
+            {
+                Console.Clear();
+                int selectedOption = options.DisplayMenu(Title.GreetingDev());
+                if (!AnalyzeMainMenu(selectedOption))
+                {
+                    break;
+                }
+            }
+        }
+
+        private bool AnalyzeMainMenu(int selectedOption)
+        {
+            switch (selectedOption)
+            {
+                case 0:
+                    base.TryChangingPassword();
+                    return true;
+                case 1:
+                    Message.Returning();
+                    return false;
+                default:
+                    Console.WriteLine("Opção inválida");
+                    return true;
+            }
         }
     }
 }

@@ -6,14 +6,14 @@ using TaskManager.DomainLayer.Model;
 
 namespace TaskManager.DomainLayer.Service
 {
-    internal class Login
+    internal class Authentication
     {
         public static User? Authenticate(List<User> users)
         {
             Title.Login();
 
             string login = ReadLogin();
-            string password = ReadPassword();
+            string password = ReadPassword("Senha: ");
 
             if (password == null)
             {
@@ -28,15 +28,15 @@ namespace TaskManager.DomainLayer.Service
 
         private static string ReadLogin()
         {
-            Console.Write("\nLogin: ");
+            Console.Write("\nUsuário: ");
             return Console.ReadLine();
         }
 
-        private static string ReadPassword()
+        internal static string ReadPassword(string prompt)
         {
             const int MinPasswordLength = 3;
 
-            Console.Write("Senha: ");
+            Console.Write(prompt);
             var passwordBuilder = new StringBuilder();
 
             try
@@ -75,7 +75,7 @@ namespace TaskManager.DomainLayer.Service
 
                 if (password.Length < MinPasswordLength)
                 {
-                    Console.WriteLine("Password should have at least 3 characters.");
+                    Message.SmallPassword();
                     return null;
                 }
 
@@ -92,28 +92,31 @@ namespace TaskManager.DomainLayer.Service
         {
             if (login == null || password == null)
             {
-                // Handle the case where login or password is null
                 Message.AuthenticationFailed();
                 return null;
             }
 
-            var user = users.Find(u => u.Login == login);
+            var user = users.FirstOrDefault(u => u.Login == login);
 
-            if (user != null && user.Password != null && PasswordMatches(user.Password, password))
+            if (user == null)
+            {
+                Message.IncorrectUser();
+            }
+            else if (user.Password != null && PasswordMatches(user.Password, password))
             {
                 user.Greeting();
                 return user;
             }
             else
             {
-                Message.IncorrectPassword();
-                return null;
+                Message.AuthenticationFailed();
             }
+
+            return null;
         }
 
-        private static bool PasswordMatches(string storedHashedPassword, string enteredPassword)
+        internal static bool PasswordMatches(string storedHashedPassword, string enteredPassword)
         {
-            // Compare the hashed password with the entered password
             using (var sha256 = SHA256.Create())
             {
                 byte[] enteredHashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));

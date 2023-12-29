@@ -11,8 +11,4 @@
     <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\NewFolder\" />
-  </ItemGroup>
-
 </Project>
