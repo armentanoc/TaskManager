@@ -34,7 +34,6 @@ namespace TaskManager.DomainLayer.Service
                     User user = Authentication.Authenticate(UserRepository.All());
                     break;
                 case 1:
-                    Title.AllUsers();
                     UserRepository.DisplayAll();
                     break;
                 case 2:
@@ -42,7 +41,7 @@ namespace TaskManager.DomainLayer.Service
                     Console.WriteLine(dev.ToString());
                     break;
                 case 3:
-                    Console.WriteLine("Programa encerrado");
+                    Title.EnvironmentExit();
                     Environment.Exit(0);
                     break;
                 default:

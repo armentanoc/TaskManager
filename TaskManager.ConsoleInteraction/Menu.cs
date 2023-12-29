@@ -42,7 +42,9 @@ namespace TaskManager.ConsoleInteraction
         {
             if (title != null)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(title);
+                Console.ResetColor();
             }
 
             Console.WriteLine("\nSelecione uma opção: \n");

@@ -1,0 +1,32 @@
+[
+  {
+    "job": "Developer",
+    "name": "Ronily",
+    "login": "roni",
+    "email": null
+  },
+  {
+    "job": "Developer",
+    "name": "Vanessa",
+    "login": "van",
+    "email": null
+  },
+  {
+    "job": "TechLeader",
+    "name": "Augusto",
+    "login": "augusto",
+    "email": null
+  },
+  {
+    "job": "Developer",
+    "name": "Vanessa A",
+    "login": "van",
+    "email": null
+  },
+  {
+    "job": "Developer",
+    "name": "Kaio",
+    "login": "kpedreira",
+    "email": null
+  }
+]
