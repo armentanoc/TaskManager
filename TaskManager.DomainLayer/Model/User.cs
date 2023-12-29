@@ -1,4 +1,5 @@
 ﻿
+using System.Security.Cryptography;
 using System.Text;
 
 namespace TaskManager.DomainLayer.Model
@@ -23,13 +24,13 @@ namespace TaskManager.DomainLayer.Model
             }
         }
 
-        public User(string newName, string newLogin, string newPassword, string? newEmail = null)
+        public User(string newName, string newLogin, string? newEmail = null)
         {
             Id = Math.Abs(Guid.NewGuid().GetHashCode());
             Name = newName;
             Email = newEmail;
             Login = newLogin;
-            Password = newPassword;
+            Password = HashPassword("123");
         }
 
         public bool IsValidEmail(string? email)
@@ -52,6 +53,39 @@ namespace TaskManager.DomainLayer.Model
         {
             Job = job;
         }
+        public abstract void Greeting();
+
+        public void ChangePassword(string currentPassword, string newPassword)
+        {
+            if (PasswordMatches(currentPassword))
+            {
+                SetPassword(newPassword);
+                Console.WriteLine("Password changed successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Current password is incorrect. Password not changed.");
+            }
+        }
+
+        private bool PasswordMatches(string password)
+        {
+            return Password == HashPassword(password);
+        }
+
+        private void SetPassword(string newPassword)
+        {
+            Password = HashPassword(newPassword);
+        }
+
+        private static string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+            }
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -62,7 +96,5 @@ namespace TaskManager.DomainLayer.Model
             }
             return sb.ToString();
         }
-
-        public abstract void Greeting();
     }
 }

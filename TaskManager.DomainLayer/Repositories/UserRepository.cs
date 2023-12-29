@@ -6,10 +6,10 @@ namespace TaskManager.DomainLayer.Repositories
     {
         public static List<User> userList = new List<User>
         {
-            new Developer("Ana Carolina", "carolina", "123"),
-            new Developer("Ronily", "roni", "123"),
-            new Developer("Vanessa", "van", "123"),
-            new TechLeader("Kaio", "kaio", "123"),
+            new Developer("Ana Carolina", "carolina"),
+            new Developer("Ronily", "roni"),
+            new Developer("Vanessa", "van"),
+            new TechLeader("Kaio", "kaio"),
         };
 
         public static List<User> All()

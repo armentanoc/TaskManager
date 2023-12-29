@@ -5,14 +5,14 @@ namespace TaskManager.DomainLayer.Model
 {
     internal class TechLeader : User
     {
-        public TechLeader(string newName, string newLogin, string newPassword, string? newEmail = null) : base(newName, newLogin, newPassword, newEmail)
+        public TechLeader(string newName, string newLogin, string? newEmail = null) : base(newName, newLogin, newEmail)
         {
             SetJob(JobEnum.TechLeader);
         }
 
         public override void Greeting()
         {
-            Console.WriteLine(Title.GreetingTechLead());
+            Title.GreetingTechLead();
         }
     }
 }
