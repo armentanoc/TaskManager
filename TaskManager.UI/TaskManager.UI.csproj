@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
+    <ProjectReference Include="..\TaskManager.DomainLayer\TaskManager.DomainLayer.csproj" />
   </ItemGroup>
 
 </Project>

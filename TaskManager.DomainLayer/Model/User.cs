@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace TaskManager.Core.People
+namespace TaskManager.DomainLayer.Model
 {
-    internal class User : IUser
+    internal abstract class User : IUser
     {
         private string? _email;
         public int Id { get; private set; }
@@ -26,13 +24,13 @@ namespace TaskManager.Core.People
             }
         }
 
-        public User(string newName, string newLogin, string newPassword, string? newEmail = null)
+        public User(string newName, string newLogin, string? newEmail = null)
         {
             Id = Math.Abs(Guid.NewGuid().GetHashCode());
             Name = newName;
             Email = newEmail;
             Login = newLogin;
-            Password = newPassword;
+            Password = HashPassword("123");
         }
 
         public bool IsValidEmail(string? email)
@@ -51,8 +49,42 @@ namespace TaskManager.Core.People
                 return false;
             }
         }
-        public void SetJob(JobEnum job) {
+        public void SetJob(JobEnum job)
+        {
             Job = job;
+        }
+        public abstract void Greeting();
+
+        public void ChangePassword(string currentPassword, string newPassword)
+        {
+            if (PasswordMatches(currentPassword))
+            {
+                SetPassword(newPassword);
+                Console.WriteLine("Password changed successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Current password is incorrect. Password not changed.");
+            }
+        }
+
+        private bool PasswordMatches(string password)
+        {
+            return Password == HashPassword(password);
+        }
+
+        private void SetPassword(string newPassword)
+        {
+            Password = HashPassword(newPassword);
+        }
+
+        private static string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+            }
         }
         public override string ToString()
         {

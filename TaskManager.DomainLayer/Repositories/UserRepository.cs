@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Core.People;
+﻿using TaskManager.DomainLayer.Model;
 
-namespace TaskManager.Core.Repository
+namespace TaskManager.DomainLayer.Repositories
 {
     internal static class UserRepository
     {
         public static List<User> userList = new List<User>
         {
-            new Developer("Ana Carolina", "carolina", "123"),
-            new Developer("Ronily", "roni", "123"),
-            new Developer("Vanessa", "van", "123"),
-            new TechLeader("Kaio", "kaio", "123"),
+            new Developer("Ana Carolina", "carolina"),
+            new Developer("Ronily", "roni"),
+            new Developer("Vanessa", "van"),
+            new TechLeader("Kaio", "kaio"),
         };
 
-        public static List<User> All() {
+        public static List<User> All()
+        {
             return userList;
         }
 

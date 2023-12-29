@@ -1,13 +1,14 @@
 ﻿using TaskManager.ConsoleInteraction;
-using TaskManager.Core.People;
+using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Service.MenuAnalyzer;
 
-namespace TaskManager.Core
+namespace TaskManager.UI
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string[] mainMenu = { "Um", "Usuários", "Teste", "Sair" };
+            string[] mainMenu = { "Realizar Login", "Usuários", "Teste", "Sair" };
             Menu options = new Menu(mainMenu);
 
             try
@@ -16,7 +17,7 @@ namespace TaskManager.Core
                 {
                     string title = Title.MainMenu();
                     int userSelection = options.DisplayMenu(title);
-                    MenuAnalyzer.MainMenu(userSelection);
+                    MainMenu.Analyze(userSelection);
                     Menu.PressAnyKeyToReturn();
                 }
             }
