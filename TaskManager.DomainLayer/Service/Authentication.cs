@@ -75,7 +75,7 @@ namespace TaskManager.DomainLayer.Service
 
                 if (password.Length < MinPasswordLength)
                 {
-                    Console.WriteLine("Password should have at least 3 characters.");
+                    Message.SmallPassword();
                     return null;
                 }
 
@@ -109,7 +109,7 @@ namespace TaskManager.DomainLayer.Service
             }
             else
             {
-                Message.IncorrectPassword();
+                Message.AuthenticationFailed();
             }
 
             return null;
