@@ -1,4 +1,5 @@
-﻿using TaskManager.ConsoleInteraction.Components;
+﻿using System.Net.Security;
+using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Model;
 using TaskManager.DomainLayer.Repositories;
 
@@ -11,7 +12,7 @@ namespace TaskManager.DomainLayer.Service.MenuAnalyzer
             switch (userSelection)
             {
                 case 0:
-                    Console.WriteLine("Um");
+                    User user = Login.Authenticate(UserRepository.All());
                     break;
                 case 1:
                     Title.AllUsers();
