@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Core.People;
+﻿using TaskManager.DomainLayer.Model;
 
-namespace TaskManager.Core.Repository
+namespace TaskManager.DomainLayer.Repositories
 {
     internal static class UserRepository
     {
@@ -17,7 +12,8 @@ namespace TaskManager.Core.Repository
             new TechLeader("Kaio", "kaio", "123"),
         };
 
-        public static List<User> All() {
+        public static List<User> All()
+        {
             return userList;
         }
 

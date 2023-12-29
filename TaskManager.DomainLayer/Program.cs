@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.People
+namespace TaskManager.DomainLayer
 {
-    internal enum JobEnum
+    internal class Program
     {
-        Developer = 1,
-        TechLeader = 2
+        static void Main(string[] args)
+        {
+
+        }
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Text;
-using System.Threading.Tasks;
 
-namespace TaskManager.Core.People
+namespace TaskManager.DomainLayer.Model
 {
-    internal class User : IUser
+    internal abstract class User : IUser
     {
         private string? _email;
         public int Id { get; private set; }
@@ -51,7 +48,8 @@ namespace TaskManager.Core.People
                 return false;
             }
         }
-        public void SetJob(JobEnum job) {
+        public void SetJob(JobEnum job)
+        {
             Job = job;
         }
         public override string ToString()
@@ -64,5 +62,7 @@ namespace TaskManager.Core.People
             }
             return sb.ToString();
         }
+
+        public abstract void Greeting();
     }
 }

@@ -1,18 +1,30 @@
+﻿using TaskManager.ConsoleInteraction;
+using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Service.MenuAnalyzer;
+
 namespace TaskManager.UI
 {
-    internal static class Program
+    internal class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new StartScreen());
+            string[] mainMenu = { "Um", "Usuários", "Teste", "Sair" };
+            Menu options = new Menu(mainMenu);
+
+            try
+            {
+                while (true)
+                {
+                    string title = Title.MainMenu();
+                    int userSelection = options.DisplayMenu(title);
+                    MainMenu.Analyze(userSelection);
+                    Menu.PressAnyKeyToReturn();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

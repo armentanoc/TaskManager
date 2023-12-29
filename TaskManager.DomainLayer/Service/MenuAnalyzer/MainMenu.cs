@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.ConsoleInteraction;
-using TaskManager.Core.People;
-using TaskManager.Core.Repository;
+﻿using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Model;
+using TaskManager.DomainLayer.Repositories;
 
-namespace TaskManager.Core
+namespace TaskManager.DomainLayer.Service.MenuAnalyzer
 {
-    internal class MenuAnalyzer
+    public class MainMenu
     {
-        internal static void MainMenu(int userSelection)
+        public static void Analyze(int userSelection)
         {
             switch (userSelection)
             {
