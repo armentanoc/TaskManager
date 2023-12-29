@@ -1,6 +1,5 @@
-﻿using TaskManager.ConsoleInteraction;
+﻿using TaskManager.DomainLayer.Service;
 using TaskManager.ConsoleInteraction.Components;
-using TaskManager.DomainLayer.Service.MenuAnalyzer;
 
 namespace TaskManager.UI
 {
@@ -8,18 +7,10 @@ namespace TaskManager.UI
     {
         static void Main(string[] args)
         {
-            string[] mainMenu = { "Realizar Login", "Usuários", "Teste", "Sair" };
-            Menu options = new Menu(mainMenu);
-
             try
             {
-                while (true)
-                {
-                    string title = Title.MainMenu();
-                    int userSelection = options.DisplayMenu(title);
-                    MainMenu.Analyze(userSelection);
-                    Menu.PressAnyKeyToReturn();
-                }
+                var userService = new UserService();
+                userService.Run();
             }
             catch (Exception ex)
             {
