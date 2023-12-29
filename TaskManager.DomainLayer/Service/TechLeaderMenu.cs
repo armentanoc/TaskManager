@@ -2,6 +2,7 @@
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model;
+using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service
 {
@@ -13,7 +14,7 @@ namespace TaskManager.DomainLayer.Service
         public TechLeaderMenuService(User techLeader)
         {
             _techLeader = techLeader;
-            string[] techLeaderMenuOptions = { "Alterar senha", "Sair" };
+            string[] techLeaderMenuOptions = { "Alterar senha", "Adicionar novos desenvolvedores via JSON", "Sair" };
             _techLeaderMenu = new Menu(techLeaderMenuOptions);
         }
 
@@ -38,6 +39,10 @@ namespace TaskManager.DomainLayer.Service
                     _techLeader.TryChangingPassword();
                     return true;
                 case 1:
+                    string relativePath = Message.AskForJSONPath();
+                    UserRepository.AddUsersFromJson(relativePath);
+                    return false;
+                case 2:
                     Message.Returning();
                     return false;
                 default:

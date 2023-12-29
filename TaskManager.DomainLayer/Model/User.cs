@@ -1,6 +1,7 @@
 ﻿
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Service;
 
@@ -26,6 +27,7 @@ namespace TaskManager.DomainLayer.Model
             }
         }
 
+        [JsonConstructor]
         public User(string newName, string newLogin, string? newEmail = null)
         {
             Id = Math.Abs(Guid.NewGuid().GetHashCode());
@@ -34,7 +36,6 @@ namespace TaskManager.DomainLayer.Model
             Login = newLogin;
             Password = HashPassword("123");
         }
-
         public bool IsValidEmail(string? email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -106,7 +107,7 @@ namespace TaskManager.DomainLayer.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"\nId: {Id} \nName: {Name} \nJob: {Job}");
+            sb.Append($"\nId: {Id} \nName: {Name} \nLogin: {Login} \nJob: {Job}");
             if (Email != null)
             {
                 sb.AppendLine($"\nEmail: {Email}");
