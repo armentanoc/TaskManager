@@ -1,5 +1,7 @@
 ﻿
 
+
+
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Message
@@ -17,6 +19,12 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine("\nSenha incorreta. Tente novamente.");
         }
 
+        public static void IncorrectUser()
+        {
+            Title.Error();
+            Console.WriteLine("\nUsuário não existe. Tente novamente.");
+        }
+
         public static void NoUserWithThatLogin()
         {
             Title.Error();
@@ -26,6 +34,11 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void PressAnyKeyToReturn()
         {
             Console.WriteLine("Pressione qualquer tecla para retornar.");
+        }
+
+        public static void Returning()
+        {
+            Title.Returning();
         }
     }
 }
