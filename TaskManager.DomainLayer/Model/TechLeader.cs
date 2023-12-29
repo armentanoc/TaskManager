@@ -1,51 +1,20 @@
 ﻿
-using TaskManager.ConsoleInteraction;
-using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Service;
 
 namespace TaskManager.DomainLayer.Model
 {
     internal class TechLeader : User
     {
+        private readonly TechLeaderMenuService _techLeaderMenuService;
         public TechLeader(string newName, string newLogin, string? newEmail = null) : base(newName, newLogin, newEmail)
         {
             SetJob(JobEnum.TechLeader);
+            _techLeaderMenuService = new TechLeaderMenuService(this);
         }
 
         public override void Greeting()
         {
-            MainMenu();
+            _techLeaderMenuService.ShowMainMenu();
         }
-
-        public void MainMenu()
-        {
-            string[] menuTechLead = { "Alterar senha", "Sair" };
-            Menu options = new Menu(menuTechLead);
-
-            while (true)
-            {
-                Console.Clear();
-                int selectedOption = options.DisplayMenu(Title.GreetingTechLead());
-                if (!AnalyzeMainMenu(selectedOption))
-                {
-                    break;
-                }
-            }
-        }
-
-        private bool AnalyzeMainMenu(int selectedOption)
-        {
-            switch (selectedOption)
-            {
-                case 0:
-                    base.TryChangingPassword();
-                    return true;
-                case 1:
-                    Message.Returning();
-                    return false;
-                default:
-                    Console.WriteLine("Opção inválida");
-                    return true;
-            }
-        }
-    }
+   }
 }

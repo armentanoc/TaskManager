@@ -10,11 +10,11 @@ using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service
 {
-    internal class MenuService
+    internal class MainMenu
     {
         private readonly Menu _mainMenu;
 
-        public MenuService()
+        public MainMenu()
         {
             string[] mainMenuOptions = { "Realizar Login", "Usuários", "Teste", "Sair" };
             _mainMenu = new Menu(mainMenuOptions);

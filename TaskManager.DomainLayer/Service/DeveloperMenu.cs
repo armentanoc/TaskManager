@@ -4,12 +4,12 @@ using TaskManager.DomainLayer.Model;
 
 namespace TaskManager.DomainLayer.Service
 {
-    internal class DeveloperMenuService
+    internal class DeveloperMenu
     {
         private readonly Menu _developerMenu;
         private readonly User _developer;
 
-        public DeveloperMenuService(User developer)
+        public DeveloperMenu(User developer)
         {
             _developer = developer;
             string[] developerMenuOptions = { "Alterar senha", "Sair" };

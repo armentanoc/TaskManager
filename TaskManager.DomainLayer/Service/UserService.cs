@@ -5,11 +5,11 @@ namespace TaskManager.DomainLayer.Service
 {
     public class UserService
     {
-        private readonly MenuService _menuService;
+        private readonly MainMenu _menuService;
 
         public UserService()
         {
-            _menuService = new MenuService();
+            _menuService = new MainMenu();
         }
 
         public void Run()
