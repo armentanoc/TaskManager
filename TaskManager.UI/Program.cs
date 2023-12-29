@@ -8,7 +8,7 @@ namespace TaskManager.UI
     {
         static void Main(string[] args)
         {
-            string[] mainMenu = { "Um", "Usuários", "Teste", "Sair" };
+            string[] mainMenu = { "Realizar Login", "Usuários", "Teste", "Sair" };
             Menu options = new Menu(mainMenu);
 
             try
