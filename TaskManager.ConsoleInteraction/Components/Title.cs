@@ -3,6 +3,7 @@
 
 
 
+
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
@@ -72,6 +73,14 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void EnvironmentExit()
         {
             Console.WriteLine(" ____                                             \r\n|  _ \\ _ __ ___   __ _ _ __ __ _ _ __ ___   __ _  \r\n| |_) | '__/ _ \\ / _` | '__/ _` | '_ ` _ \\ / _` | \r\n|  __/| | | (_) | (_| | | | (_| | | | | | | (_| | \r\n|_|   |_|  \\___/ \\__, |_|  \\__,_|_| |_| |_|\\__,_| \r\n  ___ _ __   ___ |___/ __ _ __ __ _  __| | ___ | |\r\n / _ \\ '_ \\ / __/ _ \\ '__| '__/ _` |/ _` |/ _ \\| |\r\n|  __/ | | | (_|  __/ |  | | | (_| | (_| | (_) |_|\r\n \\___|_| |_|\\___\\___|_|  |_|  \\__,_|\\__,_|\\___/(_)");
+        }
+
+        public static void AllTasks()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(" _____         _        \r\n|_   _|_ _ ___| | _____ \r\n  | |/ _` / __| |/ / __|\r\n  | | (_| \\__ \\   <\\__ \\\r\n  |_|\\__,_|___/_|\\_\\___/");
+            Console.ResetColor();
         }
     }
 }
