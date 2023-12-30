@@ -36,6 +36,7 @@ namespace TaskManager.DomainLayer.Repositories
                 else
                 {
                     userList = JSONReader.Execute(userList, fullPath);
+                    DisplayAll();
                 }
             }
             catch (Exception ex)
