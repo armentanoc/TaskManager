@@ -1,4 +1,5 @@
 ﻿
+using System.Globalization;
 using System.Text;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Repositories;
@@ -16,6 +17,8 @@ namespace TaskManager.DomainLayer.Model.Tasks
         public bool RequiresApprovalToComplete { get; private set; }
         public DateTime Deadline { get; private set; }
         public DateTime? CompletionDateTime { get; private set; }
+        
+        //common constructor
         public DevTask(string techLeaderLogin, string title, DateTime deadline, string description = null, string developerLogin = null)
         {
             ValidateTechLeader(techLeaderLogin);
@@ -40,7 +43,23 @@ namespace TaskManager.DomainLayer.Model.Tasks
                 Status = StatusEnum.EmAnaliseParaBacklog;
             }
         }
-        
+          
+        //task created by developer
+        public DevTask(string developerLogin, string techLeaderLogin, string title, string description = null)
+        {
+            ValidateTechLeader(techLeaderLogin);
+            ValidateDeveloper(developerLogin);
+
+            Id = Math.Abs(DateTime.Now.GetHashCode());
+            DeveloperLogin = developerLogin;
+            TechLeaderLogin = techLeaderLogin;
+            Title = title;
+            Description = description;
+
+            RequiresApprovalToComplete = true;
+            Status = StatusEnum.EmAnaliseParaBacklog;
+        }
+
         // validations                        
         private void ValidateTechLeader(string techLeaderLogin)
         {
@@ -119,7 +138,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Desenvolvedor: Não atribuído");
+                Console.WriteLine("Desenvolvedor: TBD");
                 Console.ResetColor();
             }
         }
@@ -149,29 +168,53 @@ namespace TaskManager.DomainLayer.Model.Tasks
         }
         private void FormatCompletionDateTime()
         {
-            Console.WriteLine
-                (
-                CompletionDateTime.HasValue && CompletionDateTime.Value != DateTime.MinValue
-                ? $"Data de Conclusão: {CompletionDateTime}"
-                : "Data de Conclusão: Não concluída"
-                );
+            if (CompletionDateTime.HasValue && CompletionDateTime.Value != DateTime.MinValue)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                string completionDateTimeString = CompletionDateTime.Value.ToString("g", CultureInfo.GetCultureInfo("pt-BR"));
+                Console.WriteLine($"Data de Conclusão: {completionDateTimeString}");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Data de Conclusão: TBD");
+            }
+            Console.ResetColor();
+        }
+        private void FormatDeadline()
+        {
+            if (Deadline.Equals(DateTime.MinValue))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Prazo: TBD pela pessoa Tech Leader.");
+            }
+            else
+            {
+                Console.ForegroundColor = Deadline < DateTime.Now ? ConsoleColor.Red : ConsoleColor.Gray;
+                string deadlineString = Deadline.ToString("g", CultureInfo.GetCultureInfo("pt-BR"));
+                Console.WriteLine($"Prazo: {deadlineString}");
+            }
+
+            Console.ResetColor();
+        }
+        private void FormatRequiresApprovalToComplete()
+        {
+            Console.ForegroundColor = RequiresApprovalToComplete ? ConsoleColor.Yellow : ConsoleColor.Gray;
+            Console.WriteLine($"Requer aprovação para completar: {RequiresApprovalToComplete}");
+            Console.ResetColor();
         }
         public void ToStringPrint()
         {
-
             Console.WriteLine($"\n" +
                 $"ID: {Id}\n" +
                 $"Título: {Title}\n" +
-                $"Descrição: {Description}\n" +
+                $"Descrição: {Description ?? "TBD"}\n" +
                 $"Tech Leader: {TechLeaderLogin}");
 
             FormatDeveloper();
             FormatStatus();
-
-            Console.WriteLine
-                ($"Requer aprovação para completar: {RequiresApprovalToComplete}\n" +
-                $"Prazo: {Deadline}");
-
+            FormatRequiresApprovalToComplete();
+            FormatDeadline();
             FormatCompletionDateTime();
         }
     }
