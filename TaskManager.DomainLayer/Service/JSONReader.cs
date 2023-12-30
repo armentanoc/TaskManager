@@ -1,7 +1,7 @@
 ﻿
 using System.Text.Json;
 using TaskManager.ConsoleInteraction.Components;
-using TaskManager.DomainLayer.Model;
+using TaskManager.DomainLayer.Model.People;
 
 namespace TaskManager.DomainLayer.Service
 {

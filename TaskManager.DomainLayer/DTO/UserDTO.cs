@@ -16,5 +16,8 @@ namespace TaskManager.DomainLayer
 
         [JsonPropertyName("email")]
         public string? Email { get; set; }
+
+        [JsonPropertyName("techLeaderLogin")]
+        public string? TechLeaderLogin { get; set; }
     }
 }

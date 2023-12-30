@@ -1,7 +1,6 @@
-﻿
-using TaskManager.DomainLayer.Service;
+﻿using TaskManager.DomainLayer.Service;
 
-namespace TaskManager.DomainLayer.Model
+namespace TaskManager.DomainLayer.Model.People
 {
     internal class Developer : User
     {

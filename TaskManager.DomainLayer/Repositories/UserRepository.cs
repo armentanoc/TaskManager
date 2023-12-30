@@ -1,7 +1,6 @@
-﻿
-using TaskManager.DomainLayer.Model;
-using TaskManager.ConsoleInteraction.Components;
+﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Service;
+using TaskManager.DomainLayer.Model.People;
 
 namespace TaskManager.DomainLayer.Repositories
 {
@@ -17,8 +16,8 @@ namespace TaskManager.DomainLayer.Repositories
         {
             userList = new List<User>
             {
-                new Developer("Ana Carolina", "carolina"),
                 new TechLeader("Kaio", "kaio"),
+                new Developer("Ana Carolina", "carolina"),
             };
         }
         internal static void AddUsersFromJson(string filePath)

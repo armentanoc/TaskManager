@@ -1,5 +1,4 @@
-﻿
-namespace TaskManager.DomainLayer.Model
+﻿namespace TaskManager.DomainLayer.Model.People
 {
     internal enum JobEnum
     {

@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using TaskManager.ConsoleInteraction.Components;
-using TaskManager.DomainLayer.Model;
+using TaskManager.DomainLayer.Model.People;
 
 namespace TaskManager.DomainLayer.Service
 {

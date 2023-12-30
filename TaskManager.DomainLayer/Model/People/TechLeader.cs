@@ -1,7 +1,6 @@
-﻿
-using TaskManager.DomainLayer.Service;
+﻿using TaskManager.DomainLayer.Service;
 
-namespace TaskManager.DomainLayer.Model
+namespace TaskManager.DomainLayer.Model.People
 {
     internal class TechLeader : User
     {
@@ -16,5 +15,5 @@ namespace TaskManager.DomainLayer.Model
         {
             _techLeaderMenuService.ShowMainMenu();
         }
-   }
+    }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
-using TaskManager.DomainLayer.Model;
 using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Model.People;
 
 namespace TaskManager.DomainLayer.Service
 {
@@ -16,7 +12,7 @@ namespace TaskManager.DomainLayer.Service
 
         public MainMenu()
         {
-            string[] mainMenuOptions = { "Realizar Login", "Usuários", "Teste", "Sair" };
+            string[] mainMenuOptions = { "Realizar Login", "Usuários", "Tarefas", "Sair" };
             _mainMenu = new Menu(mainMenuOptions);
         }
 
@@ -37,8 +33,7 @@ namespace TaskManager.DomainLayer.Service
                     UserRepository.DisplayAll();
                     break;
                 case 2:
-                    Developer dev = new Developer("Ana Carolina", "ana", "armentanocarolina@gmail.com");
-                    Console.WriteLine(dev.ToString());
+                    DevTaskRepository.DisplayAll();
                     break;
                 case 3:
                     Title.EnvironmentExit();

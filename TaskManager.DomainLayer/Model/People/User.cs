@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Service;
 
-namespace TaskManager.DomainLayer.Model
+namespace TaskManager.DomainLayer.Model.People
 {
     internal abstract class User : IUser
     {
