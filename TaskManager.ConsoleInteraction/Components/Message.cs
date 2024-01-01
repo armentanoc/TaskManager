@@ -5,6 +5,8 @@
 
 
 
+
+
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Message
@@ -22,6 +24,11 @@ namespace TaskManager.ConsoleInteraction.Components
 
             Title.Error();
             Console.WriteLine("\nFalha na autenticação. Tente novamente.");
+        }
+
+        public static void CatchException(Exception ex)
+        {
+            Console.WriteLine($"\n{ex.Message}");
         }
 
         public static void IncorrectPassword()
@@ -51,6 +58,14 @@ namespace TaskManager.ConsoleInteraction.Components
             PressAnyKeyToReturn();
         }
 
+        public static void PasswordChanged()
+        {
+
+            Console.WriteLine("\nSenha alterada com sucesso.");
+            Console.WriteLine("\nPressione qualquer tecla para retornar.");
+            Console.ReadKey();
+        }
+
         public static void PressAnyKeyToReturn()
         {
             Console.WriteLine("\nPressione qualquer tecla para retornar.");
@@ -59,7 +74,6 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void Returning()
         {
             Title.Returning();
-            PressAnyKeyToReturn();
         }
 
         public static void SmallPassword()

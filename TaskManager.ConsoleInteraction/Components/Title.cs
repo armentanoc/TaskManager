@@ -4,6 +4,7 @@
 
 
 
+
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
@@ -80,6 +81,14 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(" _____         _        \r\n|_   _|_ _ ___| | _____ \r\n  | |/ _` / __| |/ / __|\r\n  | | (_| \\__ \\   <\\__ \\\r\n  |_|\\__,_|___/_|\\_\\___/");
+            Console.ResetColor();
+        }
+
+        public static void NewTask()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(" _   _                   _            _    \r\n| \\ | | _____   ____ _  | |_ __ _ ___| | __\r\n|  \\| |/ _ \\ \\ / / _` | | __/ _` / __| |/ /\r\n| |\\  | (_) \\ V / (_| | | || (_| \\__ \\   < \r\n|_| \\_|\\___/ \\_/ \\__,_|  \\__\\__,_|___/_|\\_\\");
             Console.ResetColor();
         }
     }
