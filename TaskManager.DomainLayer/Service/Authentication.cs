@@ -15,7 +15,7 @@ namespace TaskManager.DomainLayer.Service
             string login = ReadLogin();
             string password = ReadPassword("Senha: ");
 
-            if (password == null)
+            if (password.Equals(null))
             {
                 Message.AuthenticationFailed();
                 return null;
@@ -26,16 +26,14 @@ namespace TaskManager.DomainLayer.Service
             return user;
         }
 
-        private static string ReadLogin()
+        private static string? ReadLogin()
         {
             Console.Write("\nUsuário: ");
             return Console.ReadLine();
         }
 
-        internal static string ReadPassword(string prompt)
+        internal static string? ReadPassword(string prompt)
         {
-            const int MinPasswordLength = 3;
-
             Console.Write(prompt);
             var passwordBuilder = new StringBuilder();
 
@@ -57,11 +55,6 @@ namespace TaskManager.DomainLayer.Service
                             Console.Write("\b \b");
                         }
                     }
-                    else if (key.Key == ConsoleKey.Escape)
-                    {
-                        Console.WriteLine("\nPassword input canceled.");
-                        return null;
-                    }
                     else if (!char.IsControl(key.KeyChar))
                     {
                         passwordBuilder.Append(key.KeyChar);
@@ -73,12 +66,6 @@ namespace TaskManager.DomainLayer.Service
 
                 string password = passwordBuilder.ToString();
 
-                if (password.Length < MinPasswordLength)
-                {
-                    Message.SmallPassword();
-                    return null;
-                }
-
                 return password;
             }
             catch (Exception ex)
@@ -88,7 +75,7 @@ namespace TaskManager.DomainLayer.Service
             }
         }
 
-        private static User ValidateUser(List<User> users, string? login, string? password)
+        private static User? ValidateUser(List<User> users, string? login, string? password)
         {
             if (login == null || password == null)
             {
