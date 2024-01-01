@@ -69,5 +69,14 @@ namespace TaskManager.DomainLayer.Repositories
                 Console.WriteLine($"\nErro ao exibir as tarefas: {ex.Message}");
             }
         }
+
+        internal static void DisplayTeamTasksByTechLeader(string techLeaderLogin)
+        {
+            Console.Clear();
+            Title.TeamTasks(techLeaderLogin);
+            var tasksForTechLeader = taskList.Where(task => task.TechLeaderLogin == techLeaderLogin).ToList();
+            DisplayTasks(tasksForTechLeader);
+            Message.PressAnyKeyToReturn();
+        }
     }
 }

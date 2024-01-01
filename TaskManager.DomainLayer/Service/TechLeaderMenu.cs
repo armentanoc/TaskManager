@@ -14,7 +14,7 @@ namespace TaskManager.DomainLayer.Service
         public TechLeaderMenuService(User techLeader)
         {
             _techLeader = techLeader;
-            string[] techLeaderMenuOptions = { "Alterar senha", "Adicionar novos desenvolvedores via JSON", "Sair" };
+            string[] techLeaderMenuOptions = { "Alterar senha", "Minhas tarefas", "Tarefas do time", "Adicionar novos desenvolvedores via JSON", "Sair" };
             _techLeaderMenu = new Menu(techLeaderMenuOptions);
         }
 
@@ -39,10 +39,16 @@ namespace TaskManager.DomainLayer.Service
                     _techLeader.TryChangingPassword();
                     return true;
                 case 1:
+                    DevTaskRepository.DisplayTasksByDeveloper(_techLeader.Login);
+                    return true;
+                case 2:
+                    DevTaskRepository.DisplayTeamTasksByTechLeader(_techLeader.Login);
+                    return true;
+                case 3:
                     string relativePath = Message.AskForJSONPath();
                     UserRepository.AddUsersFromJson(relativePath);
                     return false;
-                case 2:
+                case 4:
                     Message.Returning();
                     return false;
                 default:
