@@ -42,6 +42,7 @@ namespace TaskManager.DomainLayer.Service
                     DevTaskRepository.DisplayTasksByDeveloper(_techLeader.Login);
                     return true;
                 case 2:
+                    DevTaskRepository.DisplayTeamTasksByTechLeader(_techLeader.Login);
                     return true;
                 case 3:
                     string relativePath = Message.AskForJSONPath();

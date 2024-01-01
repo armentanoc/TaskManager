@@ -106,5 +106,11 @@ namespace TaskManager.ConsoleInteraction.Components
                 "" => throw new ArgumentException($"{nameof(input)} não pode ser vazio.", nameof(input)),
                 _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
             };
+
+        public static void TeamTasks(string techLeaderLogin)
+        {
+            AllTasks();
+            Console.WriteLine($"\n(Tarefas do Time - Tech Leader {FirstCharToUpper(techLeaderLogin)})");
+        }
     }
 }
