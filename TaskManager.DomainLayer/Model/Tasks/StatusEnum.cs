@@ -7,6 +7,7 @@
         EmProgresso = 3,
         Atrasada = 4,
         EmAnaliseParaConclusao = 5,
-        Concluida = 6
+        Concluida = 6,
+        Cancelada = 7
     }
 }
