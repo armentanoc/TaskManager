@@ -30,17 +30,20 @@ namespace TaskManager.DomainLayer.Repositories
                 if (!File.Exists(fullPath))
                 {
                     Console.WriteLine("Arquivo JSON não encontrado. Verifique o caminho.");
+                    Message.PressAnyKeyToReturn();
                     return;
                 }
                 else
                 {
                     userList = JSONReader.Execute(userList, fullPath);
                     DisplayAll();
+                    Message.PressAnyKeyToReturn();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao inicializar usuários a partir do JSON: {ex.Message}");
+                Message.PressAnyKeyToReturn();
             }
         }
         public static List<User> All()

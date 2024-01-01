@@ -163,7 +163,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
             {
                 statusColor = ConsoleColor.Green;
             }
-            else if (Status.Equals(StatusEnum.Atrasada))
+            else if (new List<StatusEnum> { StatusEnum.Atrasada, StatusEnum.Cancelada }.Contains(Status))
             {
                 statusColor = ConsoleColor.Red;
             }

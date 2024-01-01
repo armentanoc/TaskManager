@@ -112,5 +112,12 @@ namespace TaskManager.ConsoleInteraction.Components
             AllTasks();
             Console.WriteLine($"\n(Tarefas do Time - Tech Leader {FirstCharToUpper(techLeaderLogin)})");
         }
+
+        public static void CancelTask()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("  ____                     _              _                  __       \r\n / ___|__ _ _ __   ___ ___| | __ _ _ __  | |_ __ _ _ __ ___ / _| __ _ \r\n| |   / _` | '_ \\ / __/ _ \\ |/ _` | '__| | __/ _` | '__/ _ \\ |_ / _` |\r\n| |__| (_| | | | | (_|  __/ | (_| | |    | || (_| | | |  __/  _| (_| |\r\n \\____\\__,_|_| |_|\\___\\___|_|\\__,_|_|     \\__\\__,_|_|  \\___|_|  \\__,_|");
+            Console.ResetColor();
+        }
     }
 }

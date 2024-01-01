@@ -66,6 +66,12 @@ namespace TaskManager.ConsoleInteraction.Components
             
         }
 
+        public static void PressAnyKeyToContinue()
+        {
+            Console.WriteLine("\nPressione qualquer tecla para continuar.");
+            Console.ReadKey();
+        }
+
         public static void PressAnyKeyToReturn()
         {
             Console.WriteLine("\nPressione qualquer tecla para retornar.");
