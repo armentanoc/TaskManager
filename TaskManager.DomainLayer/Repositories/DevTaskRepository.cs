@@ -6,12 +6,9 @@ namespace TaskManager.DomainLayer.Repositories
 {
     internal static class DevTaskRepository
     {
-        public static List<DevTask> taskList;
+        public static List<DevTask>? taskList;
 
-        static DevTaskRepository()
-        {
-            InitializeDefaultTasks();
-        }
+        static DevTaskRepository() => InitializeDefaultTasks();
 
         private static void InitializeDefaultTasks()
         {
@@ -37,7 +34,7 @@ namespace TaskManager.DomainLayer.Repositories
             };
         }
 
-        public static List<DevTask> All()
+        public static List<DevTask>? All()
         {
             return taskList;
         }
@@ -46,9 +43,23 @@ namespace TaskManager.DomainLayer.Repositories
         {
             Console.Clear();
             Title.AllTasks();
+            DisplayTasks(taskList);
+        }
+
+        public static void DisplayTasksByDeveloper(string developerLogin)
+        {
+            Console.Clear();
+            Title.DeveloperTasks(developerLogin);
+            var tasksForDeveloper = taskList.Where(task => task.DeveloperLogin == developerLogin).ToList();
+            DisplayTasks(tasksForDeveloper);
+            Message.PressAnyKeyToReturn();
+        }
+
+        private static void DisplayTasks(IEnumerable<DevTask> tasks)
+        {
             try
             {
-                foreach (var task in taskList)
+                foreach (var task in tasks)
                 {
                     task.ToStringPrint();
                 }
