@@ -11,7 +11,7 @@ namespace TaskManager.ConsoleInteraction.Components
 {
     public class Message
     {
-        public static string AskForJSONPath()
+        public static string? AskForJSONPath()
         {
             Title.AskForJSONPath();
             Console.WriteLine("\nObs.: O arquivo JSON deve estar localizado em TaskManager.DomainLayer.Files. " +
@@ -62,24 +62,19 @@ namespace TaskManager.ConsoleInteraction.Components
         {
 
             Console.WriteLine("\nSenha alterada com sucesso.");
-            Console.WriteLine("\nPressione qualquer tecla para retornar.");
-            Console.ReadKey();
+            PressAnyKeyToReturn();
+            
         }
 
         public static void PressAnyKeyToReturn()
         {
             Console.WriteLine("\nPressione qualquer tecla para retornar.");
+            Console.ReadKey();
         }
 
         public static void Returning()
         {
             Title.Returning();
-        }
-
-        public static void SmallPassword()
-        {
-            Console.WriteLine("\nA senha deve ter pelo menos 3 caracteres.");
-            PressAnyKeyToReturn();
         }
     }
 }

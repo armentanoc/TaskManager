@@ -44,7 +44,7 @@ namespace TaskManager.DomainLayer.Model.People
             try
             {
                 var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
+                return addr.Address.Equals(email);
             }
             catch (FormatException ex)
             {
@@ -66,11 +66,11 @@ namespace TaskManager.DomainLayer.Model.People
         }
         private bool PasswordMatches(string password)
         {
-            return Password == HashPassword(password);
+            return Password.Equals(HashPassword(password));
         }
         private void SetPassword(string newPassword)
         {
-            Password = HashPassword(newPassword);
+            Password.Equals(HashPassword(newPassword));
         }
         private static string HashPassword(string password)
         {
@@ -91,9 +91,13 @@ namespace TaskManager.DomainLayer.Model.People
             {
                 string newPassword = Authentication.ReadPassword("Senha nova: ");
 
-                if (newPassword != null)
+                if (!string.IsNullOrWhiteSpace(newPassword))
                 {
                     ChangePassword(oldPassword, newPassword);
+                }
+                else
+                {
+                    Console.WriteLine("\nA nova senha não pode ser nula ou composta apenas por espaços em branco.");
                 }
             }
             else
