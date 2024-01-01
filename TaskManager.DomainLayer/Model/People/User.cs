@@ -70,7 +70,7 @@ namespace TaskManager.DomainLayer.Model.People
         }
         private void SetPassword(string newPassword)
         {
-            Password.Equals(HashPassword(newPassword));
+            Password = HashPassword(newPassword);
         }
         private static string HashPassword(string password)
         {
