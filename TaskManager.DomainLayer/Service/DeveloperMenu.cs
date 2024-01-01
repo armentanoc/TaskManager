@@ -39,15 +39,8 @@ namespace TaskManager.DomainLayer.Service
                     _developer.TryChangingPassword();
                     return true;
                 case 1:
-                    DevTaskRepository.taskList.Add(
-                        new DevTask(
-                            techLeaderLogin : "kaio", 
-                            title: "Nova tarefa criada por dev", 
-                            developerLogin : _developer.Login
-                            )
-                        );
-                    Console.WriteLine("Tarefa teste criada, verificar em Tarefas.");
-                    return false;
+                    CreateDevTask.Execute(_developer);
+                    return true;
                 case 2:
                     Message.Returning();
                     return false;
