@@ -14,7 +14,7 @@ namespace TaskManager.DomainLayer.Service
         public DeveloperMenu(User developer)
         {
             _developer = developer;
-            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Sair" };
+            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Exibir tarefas", "Sair" };
             _developerMenu = new Menu(developerMenuOptions);
         }
 
@@ -42,6 +42,9 @@ namespace TaskManager.DomainLayer.Service
                     CreateDevTask.Execute(_developer);
                     return true;
                 case 2:
+                    DevTaskRepository.DisplayTasksByDeveloper(_developer.Login);
+                    return true;
+                case 3:
                     Message.Returning();
                     return false;
                 default:

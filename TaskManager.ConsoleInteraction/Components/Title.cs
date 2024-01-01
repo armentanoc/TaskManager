@@ -5,6 +5,7 @@
 
 
 
+
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
@@ -91,5 +92,19 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine(" _   _                   _            _    \r\n| \\ | | _____   ____ _  | |_ __ _ ___| | __\r\n|  \\| |/ _ \\ \\ / / _` | | __/ _` / __| |/ /\r\n| |\\  | (_) \\ V / (_| | | || (_| \\__ \\   < \r\n|_| \\_|\\___/ \\_/ \\__,_|  \\__\\__,_|___/_|\\_\\");
             Console.ResetColor();
         }
+
+        public static void DeveloperTasks(string developer)
+        {
+            AllTasks();
+            Console.WriteLine($"\n({FirstCharToUpper(developer)})");
+        }
+
+        public static string FirstCharToUpper(string input) =>
+            input switch
+            {
+                null => throw new ArgumentNullException(nameof(input)),
+                "" => throw new ArgumentException($"{nameof(input)} não pode ser vazio.", nameof(input)),
+                _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
+            };
     }
 }

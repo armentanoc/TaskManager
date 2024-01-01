@@ -9,7 +9,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
     {
         public readonly int Id;
         public string Title { get; private set; }
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
         public string TechLeaderLogin { get; private set; }
         public string DeveloperLogin { get; private set; }
         public StatusEnum Status { get; private set; }
@@ -18,7 +18,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
         public DateTime? CompletionDateTime { get; private set; }
         
         //common constructor
-        public DevTask(string techLeaderLogin, string title, DateTime deadline, string description = null, string developerLogin = null)
+        public DevTask(string techLeaderLogin, string title, DateTime deadline, string? description = null, string? developerLogin = null)
         {
             ValidateTechLeader(techLeaderLogin);
             ValidateDeveloper(developerLogin);
@@ -44,7 +44,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
         }
           
         //task created by developer
-        public DevTask(string developerLogin, string techLeaderLogin, string title, string description = null)
+        public DevTask(string developerLogin, string techLeaderLogin, string title, string? description = null)
         {
             ValidateTechLeader(techLeaderLogin);
             ValidateDeveloper(developerLogin);
@@ -74,7 +74,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
                 Console.WriteLine($"\n{ex.Message}");
             }
         }
-        private void ValidateDeveloper(string developerLogin)
+        private void ValidateDeveloper(string? developerLogin)
         {
             try
             {
