@@ -16,6 +16,7 @@ namespace TaskManager.UI
             {
                 Title.Error();
                 Console.WriteLine($"\n{ex.InnerException}");
+                Main(args);
             }
         }
     }

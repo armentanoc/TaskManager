@@ -1,6 +1,5 @@
 ﻿
 using System.Globalization;
-using System.Text;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Repositories;
 
@@ -63,23 +62,37 @@ namespace TaskManager.DomainLayer.Model.Tasks
         // validations                        
         private void ValidateTechLeader(string techLeaderLogin)
         {
-            if (!IsTechLeader(techLeaderLogin))
+            try
             {
-                throw new ArgumentException("A pessoa Tech Leader especificada não existe. A tarefa não será criada.");
+                if (!IsTechLeader(techLeaderLogin))
+                {
+                    throw new ArgumentException("A pessoa Tech Leader especificada não existe. A tarefa não será criada.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n{ex.Message}");
             }
         }
         private void ValidateDeveloper(string developerLogin)
         {
-            if (developerLogin != null && !IsDeveloper(developerLogin) && !IsTechLeader(developerLogin))
+            try
+            {
+                if (developerLogin != null && !IsDeveloper(developerLogin) && !IsTechLeader(developerLogin))
             {
                 throw new ArgumentException("A pessoa Desenvolvedora especificada não existe. Operação não será concluída.");
             }
         }
-        private bool IsDeveloper(string developerLogin)
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n{ex.Message}");
+            }
+}
+        internal static bool IsDeveloper(string developerLogin)
         {
             return UserRepository.userList.Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
         }
-        private bool IsTechLeader(string techLeaderLogin)
+        internal static bool IsTechLeader(string techLeaderLogin)
         {
             return UserRepository.userList.Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
         }

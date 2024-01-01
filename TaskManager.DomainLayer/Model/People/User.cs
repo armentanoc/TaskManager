@@ -61,7 +61,7 @@ namespace TaskManager.DomainLayer.Model.People
             if (PasswordMatches(currentPassword))
             {
                 SetPassword(newPassword);
-                Console.WriteLine("\nSenha alterada com sucesso.");
+                Message.PasswordChanged();
             }
         }
         private bool PasswordMatches(string password)
