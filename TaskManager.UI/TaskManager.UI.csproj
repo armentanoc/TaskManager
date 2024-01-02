@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
-    <ProjectReference Include="..\TaskManager.DomainLayer\TaskManager.DomainLayer.csproj" />
+    <ProjectReference Include="..\TaskManager.Infrastructure\TaskManager.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

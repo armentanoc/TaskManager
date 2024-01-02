@@ -1,9 +1,4 @@
 ﻿
-
-
-
-
-
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
@@ -81,6 +76,11 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(" _____         _        \r\n|_   _|_ _ ___| | _____ \r\n  | |/ _` / __| |/ / __|\r\n  | | (_| \\__ \\   <\\__ \\\r\n  |_|\\__,_|___/_|\\_\\___/");
             Console.ResetColor();
+        }
+
+        public static void DatabaseInformation()
+        {
+            Console.WriteLine(" ____        _        _                    \r\n|  _ \\  __ _| |_ __ _| |__   __ _ ___  ___ \r\n| | | |/ _` | __/ _` | '_ \\ / _` / __|/ _ \\\r\n| |_| | (_| | || (_| | |_) | (_| \\__ \\  __/\r\n|____/ \\__,_|\\__\\__,_|_.__/ \\__,_|___/\\___|");
         }
     }
 }
