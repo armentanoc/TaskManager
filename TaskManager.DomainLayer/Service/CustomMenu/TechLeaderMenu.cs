@@ -1,10 +1,10 @@
 ﻿
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
-//using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Repositories;
 using TaskManager.DomainLayer.Model.People;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.CustomMenu
 {
     internal class TechLeaderMenuService
     {
@@ -40,8 +40,8 @@ namespace TaskManager.DomainLayer.Service
                     return true;
                 case 1:
                     string relativePath = Message.AskForJSONPath();
-                    //UserRepository.AddUsersFromJson(relativePath);
-                    return false;
+                    UserRepository.AddUsersFromJson(relativePath);
+                    return true;
                 case 2:
                     Message.Returning();
                     return false;

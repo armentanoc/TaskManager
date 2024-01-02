@@ -59,7 +59,6 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void Returning()
         {
             Title.Returning();
-            PressAnyKeyToReturn();
         }
 
         public static void SmallPassword()

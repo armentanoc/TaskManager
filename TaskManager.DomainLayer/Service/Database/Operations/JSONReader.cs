@@ -1,16 +1,19 @@
 ﻿
 using System.Text.Json;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.DTO;
 using TaskManager.DomainLayer.Model.People;
+using TaskManager.DomainLayer.Repositories;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.Database.Operations
 {
     internal class JSONReader
     {
-        public static List<User> Execute(List<User> userList, string fullPath)
+        public static List<User> Execute(string fullPath)
         {
+            List<User> userList = UserRepository.GetUsersList();
             string jsonData = File.ReadAllText(fullPath);
-            var userDTOs = JsonSerializer.Deserialize<List<UserDTO>>(jsonData);
+            var userDTOs = JsonSerializer.Deserialize<List<UserDTOForJson>>(jsonData);
 
             foreach (var userDTO in userDTOs)
             {
@@ -47,7 +50,7 @@ namespace TaskManager.DomainLayer.Service
                         continue;
                 }
                 user.SetJob(job);
-                userList.Add(user);
+                UserRepository.AddUser(user);
             }
             Message.NewUsersInUserList();
             return userList;

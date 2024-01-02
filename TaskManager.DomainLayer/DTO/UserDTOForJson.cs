@@ -1,9 +1,9 @@
 ﻿
 using System.Text.Json.Serialization;
 
-namespace TaskManager.DomainLayer
+namespace TaskManager.DomainLayer.DTO
 {
-    public class UserDTO
+    public class UserDTOForJson
     {
         [JsonPropertyName("job")]
         public string Job { get; set; }

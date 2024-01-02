@@ -1,8 +1,8 @@
-﻿using TaskManager.DomainLayer.Service;
+﻿using TaskManager.DomainLayer.Service.CustomMenu;
+using TaskManager.DomainLayer.Service.Database;
 using TaskManager.ConsoleInteraction.Components;
-using TaskManager.Infrastructure;
 
-namespace TaskManager.DomainLayer
+namespace TaskManager.UI
 {
     internal class Program
     {
@@ -11,10 +11,9 @@ namespace TaskManager.DomainLayer
             try
             {
                 Title.DatabaseInformation();
-                DatabaseSetup.Main();
+                DatabaseSetup.Execute();
 
                 var userService = new UserService();
-                Console.WriteLine("User service criado.");
                 userService.Run();
             }
             catch (Exception ex)

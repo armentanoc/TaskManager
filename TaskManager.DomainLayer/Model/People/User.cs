@@ -3,12 +3,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using TaskManager.ConsoleInteraction.Components;
-using TaskManager.DomainLayer.Service;
+using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Service.Login;
 
 namespace TaskManager.DomainLayer.Model.People
 {
-    public abstract class User : IUser
+    public class User : IUser
     {
+        public string Id { get; private set; }
         private string? _email;
         public string Name { get; private set; }
         public string Login { get; private set; }
@@ -33,6 +35,15 @@ namespace TaskManager.DomainLayer.Model.People
             Email = newEmail;
             Login = newLogin;
             Password = HashPassword("1234");
+        }
+        public User(string id, string name, string login, string password, string email, JobEnum job)
+        {
+            Id = id;
+            Name = name;
+            Login = login;
+            Email = email;
+            Password = password;
+            Job = job;
         }
         public bool IsValidEmail(string? email)
         {
@@ -69,6 +80,7 @@ namespace TaskManager.DomainLayer.Model.People
         private void SetPassword(string newPassword)
         {
             Password = HashPassword(newPassword);
+            UserRepository.UpdatePasswordById(Id, Password);
         }
         private static string HashPassword(string password)
         {
@@ -101,7 +113,9 @@ namespace TaskManager.DomainLayer.Model.People
 
             Console.ReadKey();
         }
-        public abstract void Greeting();
+        public virtual void Greeting()
+        {
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

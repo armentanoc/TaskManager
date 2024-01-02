@@ -3,12 +3,13 @@ using System.Security.Cryptography;
 using System.Text;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Model.People;
+using TaskManager.DomainLayer.Repositories;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.Login
 {
     internal class Authentication
     {
-        public static User? Authenticate(List<User> users)
+        public static User? Authenticate()
         {
             Title.Login();
 
@@ -21,7 +22,7 @@ namespace TaskManager.DomainLayer.Service
                 return null;
             }
 
-            var user = ValidateUser(users, login, password);
+            var user = ValidateUser(login, password);
 
             return user;
         }
@@ -88,21 +89,17 @@ namespace TaskManager.DomainLayer.Service
             }
         }
 
-        private static User ValidateUser(List<User> users, string? login, string? password)
+        private static User ValidateUser(string login, string enteredPassword)
         {
-            if (login == null || password == null)
-            {
-                Message.AuthenticationFailed();
-                return null;
-            }
-
-            var user = users.FirstOrDefault(u => u.Login == login);
+           var user = UserRepository.GetUserByLogin(login);
 
             if (user == null)
             {
                 Message.IncorrectUser();
+                return null;
             }
-            else if (user.Password != null && PasswordMatches(user.Password, password))
+
+            if (PasswordMatches(user.Password, enteredPassword))
             {
                 user.Greeting();
                 return user;
@@ -110,9 +107,8 @@ namespace TaskManager.DomainLayer.Service
             else
             {
                 Message.AuthenticationFailed();
+                return null;
             }
-
-            return null;
         }
 
         internal static bool PasswordMatches(string storedHashedPassword, string enteredPassword)

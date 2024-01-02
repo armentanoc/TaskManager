@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
+    <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
   </ItemGroup>
 
 </Project>
