@@ -2,7 +2,7 @@
 
 namespace TaskManager.DomainLayer.Model.People
 {
-    internal class Developer : User
+    public class Developer : User
     {
         private readonly DeveloperMenu _developerMenuService;
         public Developer(string newName, string newLogin, string? newEmail = null) : base(newName, newLogin, newEmail)

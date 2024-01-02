@@ -2,7 +2,7 @@
 
 namespace TaskManager.DomainLayer.Model.People
 {
-    internal class TechLeader : User
+    public class TechLeader : User
     {
         private readonly TechLeaderMenuService _techLeaderMenuService;
         public TechLeader(string newName, string newLogin, string? newEmail = null) : base(newName, newLogin, newEmail)

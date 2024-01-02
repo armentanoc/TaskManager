@@ -7,10 +7,9 @@ using TaskManager.DomainLayer.Service;
 
 namespace TaskManager.DomainLayer.Model.People
 {
-    internal abstract class User : IUser
+    public abstract class User : IUser
     {
         private string? _email;
-        public int Id { get; private set; }
         public string Name { get; private set; }
         public string Login { get; private set; }
         public string Password { get; private set; }
@@ -30,11 +29,10 @@ namespace TaskManager.DomainLayer.Model.People
         [JsonConstructor]
         public User(string newName, string newLogin, string? newEmail = null)
         {
-            Id = Math.Abs(Guid.NewGuid().GetHashCode());
             Name = newName;
             Email = newEmail;
             Login = newLogin;
-            Password = HashPassword("123");
+            Password = HashPassword("1234");
         }
         public bool IsValidEmail(string? email)
         {
@@ -107,7 +105,7 @@ namespace TaskManager.DomainLayer.Model.People
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"\nId: {Id} \nName: {Name} \nLogin: {Login} \nJob: {Job}");
+            sb.Append($"\nName: {Name} \nLogin: {Login} \nJob: {Job}");
             if (Email != null)
             {
                 sb.AppendLine($"\nEmail: {Email}");

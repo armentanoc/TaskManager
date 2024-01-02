@@ -1,12 +1,11 @@
 ﻿
 using System.Globalization;
-using System.Text;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Repositories;
+//using TaskManager.Infrastructure.Repositories;
 
 namespace TaskManager.DomainLayer.Model.Tasks
 {
-    internal class DevTask
+    public class DevTask
     {
         public readonly int Id;
         public string Title { get; private set; }
@@ -77,11 +76,13 @@ namespace TaskManager.DomainLayer.Model.Tasks
         }
         private bool IsDeveloper(string developerLogin)
         {
-            return UserRepository.userList.Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
+            return true;
+            //return UserRepository.userList.Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
         }
         private bool IsTechLeader(string techLeaderLogin)
         {
-            return UserRepository.userList.Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
+            return true;
+            //return UserRepository.userList.Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
         }
 
         //tech leader methods
