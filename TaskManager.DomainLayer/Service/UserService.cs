@@ -11,7 +11,6 @@ namespace TaskManager.DomainLayer.Service
         {
             _menuService = new MainMenu();
         }
-
         public void Run()
         {
             while (true)

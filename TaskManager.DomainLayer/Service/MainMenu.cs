@@ -1,8 +1,7 @@
 ﻿
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
-using TaskManager.DomainLayer.Repositories;
-using TaskManager.DomainLayer.Model.People;
+//using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service
 {
@@ -27,13 +26,13 @@ namespace TaskManager.DomainLayer.Service
             switch (selectedOption)
             {
                 case 0:
-                    User user = Authentication.Authenticate(UserRepository.All());
+                    //User user = Authentication.Authenticate(UserRepository.All());
                     break;
                 case 1:
-                    UserRepository.DisplayAll();
+                    //UserRepository.DisplayAll();
                     break;
                 case 2:
-                    DevTaskRepository.DisplayAll();
+                    //DevTaskRepository.DisplayAll();
                     break;
                 case 3:
                     Title.EnvironmentExit();
