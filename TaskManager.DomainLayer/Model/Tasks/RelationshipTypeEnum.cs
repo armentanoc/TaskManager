@@ -9,6 +9,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
     public enum RelationshipTypeEnum
     {
         ParentChild = 1,
-        Dependency = 2
+        Dependency = 2,
+        Default = 3
     }
 }

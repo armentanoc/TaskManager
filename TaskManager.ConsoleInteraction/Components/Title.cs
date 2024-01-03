@@ -89,6 +89,13 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine(" _   _                   _            _    \r\n| \\ | | _____   ____ _  | |_ __ _ ___| | __\r\n|  \\| |/ _ \\ \\ / / _` | | __/ _` / __| |/ /\r\n| |\\  | (_) \\ V / (_| | | || (_| \\__ \\   < \r\n|_| \\_|\\___/ \\_/ \\__,_|  \\__\\__,_|___/_|\\_\\");
             Console.ResetColor();
         }
+        public static void NewRelationship()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(" _   _                   ____      _            /\\/|       \r\n| \\ | | _____   ____ _  |  _ \\ ___| | __ _  ___|/\\/_  ___  \r\n|  \\| |/ _ \\ \\ / / _` | | |_) / _ \\ |/ _` |/ __/ _` |/ _ \\ \r\n| |\\  | (_) \\ V / (_| | |  _ <  __/ | (_| | (_| (_| | (_) |\r\n|_| \\_|\\___/ \\_/ \\__,_| |_| \\_\\___|_|\\__,_|\\___\\__,_|\\___/ \r\n                                            )_)            ");
+            Console.ResetColor();
+        }
         public static void DeveloperTasks(string developer)
         {
             AllTasks();

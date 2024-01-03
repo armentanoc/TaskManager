@@ -73,6 +73,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             catch (Exception ex)
             {
                 Message.CatchException(ex);
+                Console.ReadKey();
             }
             finally
             {
