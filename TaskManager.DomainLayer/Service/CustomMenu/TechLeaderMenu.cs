@@ -3,8 +3,9 @@ using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Repositories;
 using TaskManager.DomainLayer.Model.People;
+using TaskManager.DomainLayer.Service.DevTaskHelper;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.CustomMenu
 {
     internal class TechLeaderMenuService
     {
@@ -14,7 +15,7 @@ namespace TaskManager.DomainLayer.Service
         public TechLeaderMenuService(User techLeader)
         {
             _techLeader = techLeader;
-            string[] techLeaderMenuOptions = { "Alterar senha", "Minhas tarefas", "Tarefas do time", "Adicionar novos desenvolvedores via JSON", "Cancelar tarefa", "Sair" };
+            string[] techLeaderMenuOptions = { "Alterar senha", "Add novos devs via JSON", "Minhas tarefas", "Tarefas do time", "Aprovar tarefa", "Cancelar tarefa", "Sair" };
             _techLeaderMenu = new Menu(techLeaderMenuOptions);
         }
 
@@ -39,19 +40,22 @@ namespace TaskManager.DomainLayer.Service
                     _techLeader.TryChangingPassword();
                     return true;
                 case 1:
-                    DevTaskRepository.DisplayTasksByDeveloper(_techLeader.Login);
-                    return true;
-                case 2:
-                    DevTaskRepository.DisplayTeamTasksByTechLeader(_techLeader.Login);
-                    return true;
-                case 3:
                     string relativePath = Message.AskForJSONPath();
                     UserRepository.AddUsersFromJson(relativePath);
                     return true;
+                case 2:
+                    DevTaskRepository.DisplayTasksByDeveloper(_techLeader.Login);
+                    return true;
+                case 3:
+                    DevTaskRepository.DisplayTasksByTeam(_techLeader.Login);
+                    return true;
                 case 4:
-                    DevTaskRepository.CancelTask(_techLeader.Login);
+                    ApproveTask.Execute(_techLeader);
                     return true;
                 case 5:
+                    CancelTask.Execute(_techLeader);
+                    return true;
+                case 6:
                     Message.Returning();
                     return false;
                 default:

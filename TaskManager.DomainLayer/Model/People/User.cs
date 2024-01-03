@@ -3,14 +3,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using TaskManager.ConsoleInteraction.Components;
-using TaskManager.DomainLayer.Service;
+using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Service.Login;
 
 namespace TaskManager.DomainLayer.Model.People
 {
-    internal abstract class User : IUser
+    public class User : IUser
     {
+        public string Id { get; private set; }
         private string? _email;
-        public int Id { get; private set; }
         public string Name { get; private set; }
         public string Login { get; private set; }
         public string Password { get; private set; }
@@ -30,11 +31,19 @@ namespace TaskManager.DomainLayer.Model.People
         [JsonConstructor]
         public User(string newName, string newLogin, string? newEmail = null)
         {
-            Id = Math.Abs(Guid.NewGuid().GetHashCode());
             Name = newName;
             Email = newEmail;
             Login = newLogin;
-            Password = HashPassword("123");
+            Password = HashPassword("1234");
+        }
+        public User(string id, string name, string login, string password, string email, JobEnum job)
+        {
+            Id = id;
+            Name = name;
+            Login = login;
+            Email = email;
+            Password = password;
+            Job = job;
         }
         public bool IsValidEmail(string? email)
         {
@@ -61,7 +70,7 @@ namespace TaskManager.DomainLayer.Model.People
             if (PasswordMatches(currentPassword))
             {
                 SetPassword(newPassword);
-                Message.PasswordChanged();
+                Console.WriteLine("\nSenha alterada com sucesso.");
             }
         }
         private bool PasswordMatches(string password)
@@ -71,6 +80,7 @@ namespace TaskManager.DomainLayer.Model.People
         private void SetPassword(string newPassword)
         {
             Password = HashPassword(newPassword);
+            UserRepository.UpdatePasswordById(this, Password);
         }
         private static string HashPassword(string password)
         {
@@ -94,10 +104,9 @@ namespace TaskManager.DomainLayer.Model.People
                 if (!string.IsNullOrWhiteSpace(newPassword))
                 {
                     ChangePassword(oldPassword, newPassword);
-                }
-                else
+                } else
                 {
-                    Console.WriteLine("\nA nova senha não pode ser nula ou composta apenas por espaços em branco.");
+                    Message.PasswordIsNullOrWhitespace();
                 }
             }
             else
@@ -107,11 +116,13 @@ namespace TaskManager.DomainLayer.Model.People
 
             Console.ReadKey();
         }
-        public abstract void Greeting();
+        public virtual void Greeting()
+        {
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"\nId: {Id} \nName: {Name} \nLogin: {Login} \nJob: {Job}");
+            sb.Append($"\nName: {Name} \nLogin: {Login} \nJob: {Job}");
             if (Email != null)
             {
                 sb.AppendLine($"\nEmail: {Email}");

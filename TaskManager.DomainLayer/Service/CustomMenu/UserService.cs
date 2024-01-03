@@ -1,7 +1,6 @@
-﻿
-using TaskManager.ConsoleInteraction;
+﻿using TaskManager.ConsoleInteraction;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.CustomMenu
 {
     public class UserService
     {
@@ -11,7 +10,6 @@ namespace TaskManager.DomainLayer.Service
         {
             _menuService = new MainMenu();
         }
-
         public void Run()
         {
             while (true)

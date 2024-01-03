@@ -1,10 +1,9 @@
 ﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Model.Tasks;
 using TaskManager.DomainLayer.Repositories;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.CustomMenu
 {
     internal class DeveloperMenu
     {
@@ -14,7 +13,7 @@ namespace TaskManager.DomainLayer.Service
         public DeveloperMenu(User developer)
         {
             _developer = developer;
-            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Exibir tarefas", "Sair" };
+            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Minhas tarefas", "Sair" };
             _developerMenu = new Menu(developerMenuOptions);
         }
 

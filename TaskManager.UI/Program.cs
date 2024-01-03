@@ -1,4 +1,5 @@
-﻿using TaskManager.DomainLayer.Service;
+﻿using TaskManager.DomainLayer.Service.CustomMenu;
+using TaskManager.DomainLayer.Service.Database;
 using TaskManager.ConsoleInteraction.Components;
 
 namespace TaskManager.UI
@@ -9,6 +10,9 @@ namespace TaskManager.UI
         {
             try
             {
+                Title.DatabaseInformation();
+                DatabaseSetup.Execute();
+
                 var userService = new UserService();
                 userService.Run();
             }
@@ -16,7 +20,6 @@ namespace TaskManager.UI
             {
                 Title.Error();
                 Console.WriteLine($"\n{ex.InnerException}");
-                Main(args);
             }
         }
     }

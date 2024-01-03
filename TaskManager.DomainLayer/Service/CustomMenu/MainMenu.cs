@@ -2,9 +2,10 @@
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Service.Login;
 using TaskManager.DomainLayer.Model.People;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.CustomMenu
 {
     internal class MainMenu
     {
@@ -27,7 +28,7 @@ namespace TaskManager.DomainLayer.Service
             switch (selectedOption)
             {
                 case 0:
-                    User user = Authentication.Authenticate(UserRepository.All());
+                    User user = Authentication.Authenticate();
                     break;
                 case 1:
                     UserRepository.DisplayAll();

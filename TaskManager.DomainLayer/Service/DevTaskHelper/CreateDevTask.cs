@@ -1,14 +1,15 @@
-﻿using TaskManager.ConsoleInteraction.Components;
+﻿using System.Data.SQLite;
+using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service
+{
+    internal class CreateDevTask
     {
-        internal class CreateDevTask
+        public static void Execute(User _developer)
         {
-            public static void Execute(User _developer)
-            {
             Title.NewTask();
 
             try
@@ -52,9 +53,8 @@ namespace TaskManager.DomainLayer.Service
                     developerLogin: developer.Login,
                     description: description
                 );
-
-            DevTaskRepository.taskList.Add(newDevTask);
-            Console.WriteLine($"\nDevTask criada com sucesso: \n{newDevTask.Title} \nID: {newDevTask.Id}.");
+            DevTaskRepository.InitializeNewDevTask(newDevTask);
+            Console.WriteLine($"\nDevTask criada com sucesso: \n{newDevTask.Title}.");
         }
 
         private static void IsTechLeader(string? techLeaderLogin)
@@ -73,4 +73,4 @@ namespace TaskManager.DomainLayer.Service
             }
         }
     }
-    }
+}
