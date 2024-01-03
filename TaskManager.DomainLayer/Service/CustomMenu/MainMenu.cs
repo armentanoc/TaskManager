@@ -1,9 +1,12 @@
 ﻿
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
-using TaskManager.DomainLayer.Repositories;
 using TaskManager.DomainLayer.Service.Login;
 using TaskManager.DomainLayer.Model.People;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
+using System.Reflection;
+using TaskManager.DomainLayer.Infrastructure;
+using System.Text;
 
 namespace TaskManager.DomainLayer.Service.CustomMenu
 {
@@ -19,8 +22,11 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
 
         public int DisplayMainMenu()
         {
-            string title = Title.MainMenu();
-            return _mainMenu.DisplayMenu(title);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Title.MainMenu());
+            sb.AppendLine($"\nLog: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
+            sb.Append(DatabaseSetup.WriteDatabasePath());
+            return _mainMenu.DisplayMenu(sb.ToString());
         }
 
         public void AnalyzeMainMenu(int selectedOption)

@@ -2,11 +2,11 @@
 using System.Data;
 using System.Data.SQLite;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Operations;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Operations;
-using TaskManager.DomainLayer.Service.Database.Operations;
+using TaskManager.DomainLayer.Infrastructure.Operations.UserRepositoryOperations;
 
-namespace TaskManager.DomainLayer.Repositories
+namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
     internal class UserRepository
     {
@@ -17,28 +17,12 @@ namespace TaskManager.DomainLayer.Repositories
         {
             using (var connection = DatabaseConnection.CreateConnection("inicializar tabela de usuários"))
             {
-                CreateUsersTable(connection);
+                Create.Table(connection, TableName);
                 InsertDefaultUsersIntoTable(connection);
                 DatabaseConnection.CloseConnection(connection, "inicializar tabela de usuários");
             }
         }
-        
-        //create methods
-        private static void CreateUsersTable(SQLiteConnection connection)
-        {
-            const string createUsersQuery = $@"
-                    CREATE TABLE IF NOT EXISTS {TableName} (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        Name TEXT NOT NULL,
-                        Login TEXT NOT NULL,
-                        Password TEXT NOT NULL,
-                        Email TEXT,
-                        JobType TEXT NOT NULL
-                    );";
 
-            Tables.Create(connection, TableName, createUsersQuery);
-        }
-        
         //insert methods
         private static void InsertDefaultUsersIntoTable(SQLiteConnection connection)
         {
@@ -50,7 +34,7 @@ namespace TaskManager.DomainLayer.Repositories
 
             InsertUsersIfNotExist(connection, userList);
         }
-        private static void InsertUsersIfNotExist(SQLiteConnection connection, List<User> users)
+        private static void InsertUsersIfNotExist(SQLiteConnection connection, List<User> users, bool isFirstRun = true)
         {
             try
             {
@@ -59,7 +43,13 @@ namespace TaskManager.DomainLayer.Repositories
                     if (!DoesUserExist(connection, user))
                     {
                         InsertUser(user);
-                    } 
+                    }
+                    else if (!isFirstRun)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Message.LogAndConsoleWrite($"Obs: User de nome {user.Name} ou login {user.Login} já existe. Pulando.");
+                        Console.ResetColor();
+                    }
                 }
             }
             catch (SQLiteException ex)
@@ -85,11 +75,11 @@ namespace TaskManager.DomainLayer.Repositories
                 };
 
                 DatabaseConnection.ExecuteNonQuery(insertUserQuery, parameters);
-                Console.WriteLine($"Usuário {user.Name} inserido com sucesso na tabela.");
+                Message.LogAndConsoleWrite($"User de nome {user.Name} inserido(a) com sucesso na tabela.");
             }
             catch (SQLiteException ex)
             {
-                Console.WriteLine($"Erro ao inserir usuário na tabela: {ex.Message}");
+                Message.LogAndConsoleWrite($"Erro ao inserir usuário na tabela: {ex.Message}");
             }
         }
         public static void AddUsersFromJson(string filePath)
@@ -109,18 +99,19 @@ namespace TaskManager.DomainLayer.Repositories
                     else
                     {
                         userList = JSONReader.Execute(fullPath);
-                        InsertUsersIfNotExist(connection, userList);
+                        InsertUsersIfNotExist(connection, userList, false);
+                        Message.NewUsersInUserList();
                         DisplayAll();
-                        Message.PressAnyKeyToContinue();
+                        Message.PressAnyKeyToReturn();
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Erro ao adicionar usuários do JSON: {ex.Message}");
+                    Message.Error($"Erro ao adicionar usuários do JSON: {ex.Message}");
                 }
             }
         }
-        
+
         //validation methods
         private static bool DoesUserExist(SQLiteConnection connection, User user)
         {
@@ -136,7 +127,7 @@ namespace TaskManager.DomainLayer.Repositories
 
             return count > 0;
         }
-        
+
         //read and display methods
         public static void DisplayAll()
         {
@@ -242,7 +233,7 @@ namespace TaskManager.DomainLayer.Repositories
                 return new List<User>();
             }
         }
-        
+
         //update methods
         internal static void UpdatePasswordById(User user, string newPassword)
         {
@@ -257,11 +248,11 @@ namespace TaskManager.DomainLayer.Repositories
                 };
 
                 DatabaseConnection.ExecuteNonQuery(updatePasswordQuery, parameters);
-                Console.WriteLine($"Senha alterada com sucesso para o User de Login {user.Login}.");
+                Message.PasswordChangedSuccessfully($"Senha alterada com sucesso para o User de Login {user.Login}.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro alterando senha: {ex.Message}");
+                Message.Error($"Erro alterando senha: {ex.Message}");
             }
         }
     }

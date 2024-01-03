@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
+    <ProjectReference Include="..\TaskManager.Logger\TaskManager.Logger.csproj" />
   </ItemGroup>
 
 </Project>

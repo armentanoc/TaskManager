@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TaskManager.Logger\TaskManager.Logger.csproj" />
-  </ItemGroup>
-
 </Project>

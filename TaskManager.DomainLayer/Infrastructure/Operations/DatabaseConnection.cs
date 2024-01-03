@@ -1,13 +1,15 @@
 ﻿
 using System.Data;
 using System.Data.SQLite;
-using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
+using TaskManager.UI;
 
-namespace TaskManager.DomainLayer.Operations
+namespace TaskManager.DomainLayer.Infrastructure.Operations
 {
     internal class DatabaseConnection
     {
         internal const string DatabasePath = "task_manager_data.db";
+        static LogWriter _logWriter;
 
         internal static SQLiteConnection? CreateConnection(string context)
         {
@@ -15,7 +17,7 @@ namespace TaskManager.DomainLayer.Operations
             try
             {
                 connection.Open();
-                Console.WriteLine($"\nConexão aberta com sucesso ({context})");
+                _logWriter = new LogWriter($"\nConexão aberta com sucesso ({context})");
                 return connection;
             }
             catch (SQLiteException ex)
@@ -24,45 +26,44 @@ namespace TaskManager.DomainLayer.Operations
                 return null;
             }
         }
-
         internal static void CloseConnection(SQLiteConnection connection, string operation)
         {
-            if (connection != null && connection.State != System.Data.ConnectionState.Closed)
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
                 connection.Close();
-                Console.WriteLine($"Conexão fechada ({operation})");
+                _logWriter = new LogWriter($"Conexão fechada ({operation})");
             }
         }
-
         private static void HandleDatabaseOperationError(string operationType, SQLiteException ex, string? query = null)
         {
-            Console.WriteLine($"Operação falhou ({operationType})");
+            _logWriter = new LogWriter($"Operação falhou ({operationType})");
             if (!string.IsNullOrEmpty(query))
             {
-                Console.WriteLine($"Consulta: {query}");
+                _logWriter = new LogWriter($"Consulta: {query}");
             }
-            Console.WriteLine($"Erro: {ex.Message}");
-            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            _logWriter = new LogWriter($"Erro: {ex.Message}");
+            _logWriter = new LogWriter($"StackTrace: {ex.StackTrace}");
         }
-
-        public static void EstablishConnection()
+        public static bool EstablishConnection()
         {
 
             using (var connection = CreateConnection("inicializar banco de dados"))
             {
                 if (connection == null)
-                    return;
+                    return false;
                 InitializeDatabase(connection);
 
-                Console.WriteLine("\n-------------------------------------------------");
-                Console.WriteLine("\nINICIALIZAR USERS");
+                LogWriter logWriter;
+
+                logWriter = new LogWriter("Inicialização de Users começou");
                 UserRepository.Initialize();
-                Console.WriteLine("\n-------------------------------------------------");
-                Console.WriteLine("\nINICIALIZAR DEVTASKS");
+
+                logWriter = new LogWriter("Inicialização de DevTasks começou");
                 DevTaskRepository.Initialize();
+
+                return true;
             }
         }
-
         internal static void InitializeDatabase(SQLiteConnection connection)
         {
             string operation = "inicializar banco de dados";
@@ -73,20 +74,19 @@ namespace TaskManager.DomainLayer.Operations
                 {
                     try
                     {
-                        // Código de inicialização do esquema do banco de dados pode ser adicionado aqui
-                        Console.WriteLine($"Arquivo do banco de dados criado com sucesso: {DatabasePath}");
+                        _logWriter = new LogWriter($"Arquivo do banco de dados criado com sucesso: {DatabasePath}");
                     }
                     catch (IOException ex)
                     {
-                        Console.WriteLine($"Erro ao criar arquivo do banco de dados: {ex.Message}");
+                        _logWriter = new LogWriter($"Erro ao criar arquivo do banco de dados: {ex.Message}");
                         return;
                     }
                 }
                 else
                 {
-                    Console.WriteLine($"Arquivo do banco de dados já existe: {DatabasePath}");
+                    _logWriter = new LogWriter($"Arquivo do banco de dados já existe: {DatabasePath}");
                 }
-                Console.WriteLine("Banco de dados inicializado com sucesso.");
+                _logWriter = new LogWriter("Banco de dados inicializado com sucesso.");
                 CloseConnection(connection, "inicializar banco de dados");
             }
             catch (SQLiteException ex)
@@ -94,7 +94,6 @@ namespace TaskManager.DomainLayer.Operations
                 HandleDatabaseOperationError(operation, ex);
             }
         }
-
         public static void ExecuteWithinTransaction(Action<SQLiteConnection> action)
         {
             try
@@ -126,8 +125,7 @@ namespace TaskManager.DomainLayer.Operations
                 Console.WriteLine($"Erro executando within transaction: {ex.Message}");
             }
         }
-
-    internal static DataTable? ExecuteQuery(string query)
+        internal static DataTable? ExecuteQuery(string query)
         {
             string operation = "fetch data from table";
 
@@ -179,7 +177,7 @@ namespace TaskManager.DomainLayer.Operations
         }
         internal static bool DoesTableExist(SQLiteConnection connection, string tableName)
         {
-            Console.WriteLine($"Verificando se a tabela {tableName} já existe...");
+            _logWriter = new LogWriter($"Verificando se a tabela {tableName} já existe...");
             const string query = "SELECT name FROM sqlite_master WHERE type='table' AND name=@TableName;";
             var parameters = new Dictionary<string, object> { { "@TableName", tableName } };
 

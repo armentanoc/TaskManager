@@ -2,8 +2,8 @@
 using System.Security.Cryptography;
 using System.Text;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service.Login
 {
@@ -26,13 +26,11 @@ namespace TaskManager.DomainLayer.Service.Login
 
             return user;
         }
-
         private static string? ReadLogin()
         {
             Console.Write("\nUsuário: ");
             return Console.ReadLine();
         }
-
         internal static string? ReadPassword(string prompt)
         {
             Console.Write(prompt);
@@ -58,7 +56,7 @@ namespace TaskManager.DomainLayer.Service.Login
                     }
                     else if (key.Key == ConsoleKey.Escape)
                     {
-                        Console.WriteLine("\nDigitação de senha cancelada.");
+                        Message.LogAndConsoleWrite("\nDigitação de senha cancelada.");
                         return null;
                     }
                     else if (!char.IsControl(key.KeyChar))
@@ -69,16 +67,14 @@ namespace TaskManager.DomainLayer.Service.Login
                 } while (true);
 
                 Console.WriteLine();
-                string password = passwordBuilder.ToString();
-                return password;
+                return passwordBuilder.ToString();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nError: {ex.Message}");
+                Message.CatchException(ex);
                 return null;
             }
         }
-
         private static User? ValidateUser(string login, string enteredPassword)
         {
            var user = UserRepository.GetUserByLogin(login);
@@ -104,14 +100,12 @@ namespace TaskManager.DomainLayer.Service.Login
                 return null;
             }
         }
-
         internal static bool PasswordMatches(string storedHashedPassword, string enteredPassword)
         {
             using (var sha256 = SHA256.Create())
             {
                 byte[] enteredHashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
                 string enteredHashedPassword = BitConverter.ToString(enteredHashedBytes).Replace("-", "").ToLower();
-
                 return storedHashedPassword.Equals(enteredHashedPassword);
             }
         }

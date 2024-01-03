@@ -1,11 +1,12 @@
 ﻿
 using System.Data.SQLite;
-using TaskManager.DomainLayer.Operations;
+using TaskManager.UI;
 
-namespace TaskManager.DomainLayer.Service.Database.Operations
+namespace TaskManager.DomainLayer.Infrastructure.Operations
 {
     internal class Tables
     {
+        static LogWriter _logWriter;
         internal static void Create(SQLiteConnection connection, string tableName, string query)
         {
             try
@@ -14,17 +15,18 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
                 {
                     string createTableQuery = query;
                     DatabaseConnection.ExecuteNonQuery(createTableQuery);
-                    Console.WriteLine($"Tabela {tableName} criada com sucesso.");
+                    _logWriter = new LogWriter($"Tabela {tableName} criada com sucesso.");
                 }
                 else
                 {
-                    Console.Write($"A tabela {tableName} já existe.");
+
+                    _logWriter = new LogWriter($"A tabela {tableName} já existe.");
                 }
             }
             catch (SQLiteException ex)
             {
-                Console.WriteLine($"Erro ao criar a tabela: {ex.Message}");
-            } 
+                _logWriter = new LogWriter($"Erro ao criar a tabela: {ex.Message}");
+            }
         }
     }
 }
