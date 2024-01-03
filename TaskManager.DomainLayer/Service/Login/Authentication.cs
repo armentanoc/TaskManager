@@ -16,7 +16,7 @@ namespace TaskManager.DomainLayer.Service.Login
             string? login = ReadLogin();
             string? password = ReadPassword("Senha: ");
 
-            if (password == null)
+            if (password.Equals(null))
             {
                 Message.AuthenticationFailed();
                 return null;
