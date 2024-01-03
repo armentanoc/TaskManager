@@ -141,6 +141,15 @@ namespace TaskManager.DomainLayer.Model.Tasks
         {
             RequiresApprovalToComplete = requiresApproval;
         }
+        public void SetStatusTechLeader(StatusEnum status)
+        {
+            if (status == StatusEnum.Concluida)
+            {
+                RequiresApprovalToComplete = false;
+                CompletionDateTime = DateTime.Now;
+            }
+            Status = status;
+        }
 
         //common methods
         public void SetStatus(StatusEnum status)

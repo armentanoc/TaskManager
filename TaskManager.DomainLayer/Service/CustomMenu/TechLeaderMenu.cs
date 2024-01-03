@@ -16,6 +16,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
         public TechLeaderMenuService(User techLeader)
         {
             _techLeader = techLeader;
+
             string[] techLeaderMenuOptions = 
                 { 
                 "Alterar senha", 
@@ -26,7 +27,10 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                 "Cancelar tarefa", 
                 "Criar tarefa", 
                 "Criar relacionamento",
-                "Sair" };
+                "Modificar status de tarefa",
+                "Sair" 
+            };
+
             _techLeaderMenu = new Menu(techLeaderMenuOptions);
         }
 
@@ -73,6 +77,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     CreateDevTaskRelationship.Execute(_techLeader);
                     return true;
                 case 8:
+                    UpdateTaskStatus.ExecuteTechLeader(_techLeader);
+                    return true;
+                case 9:
                     Message.Returning();
                     return false;
                 default:
