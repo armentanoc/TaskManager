@@ -1,4 +1,4 @@
-﻿namespace TaskManager.DomainLayer.Infrastructure
+﻿namespace TaskManager.ConsoleInteraction.Components
 {
     public class ConsoleSpinner
     {

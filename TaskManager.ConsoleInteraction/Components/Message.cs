@@ -1,5 +1,5 @@
 ﻿
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.ConsoleInteraction.Components
 {

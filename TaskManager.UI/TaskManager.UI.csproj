@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TaskManager.ConsoleInteraction\TaskManager.ConsoleInteraction.csproj" />
     <ProjectReference Include="..\TaskManager.DomainLayer\TaskManager.DomainLayer.csproj" />
     <ProjectReference Include="..\TaskManager.Logger\TaskManager.Logger.csproj" />

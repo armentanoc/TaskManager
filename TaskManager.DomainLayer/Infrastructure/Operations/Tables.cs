@@ -1,6 +1,6 @@
 ﻿
 using System.Data.SQLite;
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.DomainLayer.Infrastructure.Operations
 {

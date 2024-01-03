@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SQLite;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.DomainLayer.Infrastructure.Operations
 {
