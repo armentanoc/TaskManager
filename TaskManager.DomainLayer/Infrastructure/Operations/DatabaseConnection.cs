@@ -44,13 +44,13 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
             _logWriter = new LogWriter($"Erro: {ex.Message}");
             _logWriter = new LogWriter($"StackTrace: {ex.StackTrace}");
         }
-        public static void EstablishConnection()
+        public static bool EstablishConnection()
         {
 
             using (var connection = CreateConnection("inicializar banco de dados"))
             {
                 if (connection == null)
-                    return;
+                    return false;
                 InitializeDatabase(connection);
 
                 LogWriter logWriter;
@@ -60,6 +60,8 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
 
                 logWriter = new LogWriter("Inicialização de DevTasks começou");
                 DevTaskRepository.Initialize();
+
+                return true;
             }
         }
         internal static void InitializeDatabase(SQLiteConnection connection)

@@ -46,7 +46,6 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
                 user.SetJob(job);
                 userList.Add(user);
             }
-            Message.NewUsersInUserList();
             return userList;
         }
         private static void LogError(string prompt)

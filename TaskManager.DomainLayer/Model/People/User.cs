@@ -132,7 +132,7 @@ namespace TaskManager.DomainLayer.Model.People
         {
             StringBuilder sb = new StringBuilder();
             sb.Append($"\nName: {Name} \nLogin: {Login} \nJob: {Job}");
-            if (Email != null)
+            if (!string.IsNullOrWhiteSpace(Email))
             {
                 sb.AppendLine($"\nEmail: {Email}");
             }

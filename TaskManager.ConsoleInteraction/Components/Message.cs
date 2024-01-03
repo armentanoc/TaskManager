@@ -6,6 +6,11 @@ namespace TaskManager.ConsoleInteraction.Components
     public class Message
     {
         static LogWriter _logWriter;
+
+        public static void PasswordChangedSuccessfully(string prompt) {
+            LogAndConsoleWrite(prompt);
+            Console.ReadKey();
+        }
         public static string? AskForJSONPath()
         {
             Title.AskForJSONPath();
@@ -71,7 +76,8 @@ namespace TaskManager.ConsoleInteraction.Components
         }
         public static void AuthenticationFailed()
         {
-            Error("Falha na autenticação. Tente novamente.");
+            Title.Error();
+            LogAndConsoleWrite("Falha na autenticação. Tente novamente.");
         }
         public static void CatchException(Exception ex)
         {
@@ -79,19 +85,23 @@ namespace TaskManager.ConsoleInteraction.Components
         }
         public static void IncorrectPassword()
         {
-            Error("\nSenha incorreta. Tente novamente.");
+            Title.Error();
+            LogAndConsoleWrite("Senha incorreta. Tente novamente.\"");
         }
         public static void IncorrectUser()
         {
-            Error("\nUsuário não existe. Tente novamente.");
+            Title.Error();
+            LogAndConsoleWrite("Usuário não existe. Tente novamente.");
         }
         public static void NoUserWithThatLogin()
         {
-            Error("Não há funcionário com esse login. Tente novamente.");
+            Title.Error();
+            LogAndConsoleWrite("Não há funcionário com esse login. Tente novamente.");
         }
         public static void PasswordIsNullOrWhitespace()
         {
-            Error("\nA senha não pode ser nula ou composta apenas de espaços em branco. Tente novamente.");
+            Title.Error();
+            LogAndConsoleWrite("A senha não pode ser nula ou composta apenas de espaços em branco. Tente novamente.");
         }
 
         // log write
