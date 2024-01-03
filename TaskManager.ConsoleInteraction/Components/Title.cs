@@ -1,6 +1,4 @@
 ﻿
-using TaskManager.UI;
-
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
@@ -118,12 +116,17 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine("    _                                     _                  __       \r\n   / \\   _ __  _ __ _____   ____ _ _ __  | |_ __ _ _ __ ___ / _| __ _ \r\n  / _ \\ | '_ \\| '__/ _ \\ \\ / / _` | '__| | __/ _` | '__/ _ \\ |_ / _` |\r\n / ___ \\| |_) | | | (_) \\ V / (_| | |    | || (_| | | |  __/  _| (_| |\r\n/_/   \\_\\ .__/|_|  \\___/ \\_/ \\__,_|_|     \\__\\__,_|_|  \\___|_|  \\__,_|\r\n        |_|                                                           ");
             Console.ResetColor();
         }
-
         public static void AllRelationships()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(" ____      _            _                                        _            \r\n|  _ \\ ___| | __ _  ___(_) ___  _ __   __ _ _ __ ___   ___ _ __ | |_ ___  ___ \r\n| |_) / _ \\ |/ _` |/ __| |/ _ \\| '_ \\ / _` | '_ ` _ \\ / _ \\ '_ \\| __/ _ \\/ __|\r\n|  _ <  __/ | (_| | (__| | (_) | | | | (_| | | | | | |  __/ | | | || (_) \\__ \\\r\n|_| \\_\\___|_|\\__,_|\\___|_|\\___/|_| |_|\\__,_|_| |_| |_|\\___|_| |_|\\__\\___/|___/");
+            Console.ResetColor();
+        }
+        public static void UpdateTask()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("    _   _               _ _                 _                  __       \r\n   / \\ | |_ _   _  __ _| (_)______ _ _ __  | |_ __ _ _ __ ___ / _| __ _ \r\n  / _ \\| __| | | |/ _` | | |_  / _` | '__| | __/ _` | '__/ _ \\ |_ / _` |\r\n / ___ \\ |_| |_| | (_| | | |/ / (_| | |    | || (_| | | |  __/  _| (_| |\r\n/_/   \\_\\__|\\__,_|\\__,_|_|_/___\\__,_|_|     \\__\\__,_|_|  \\___|_|  \\__,_|");
             Console.ResetColor();
         }
     }
