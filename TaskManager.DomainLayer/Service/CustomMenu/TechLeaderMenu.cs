@@ -40,12 +40,6 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     _techLeader.TryChangingPassword();
                     return true;
                 case 1:
-                    DevTaskRepository.DisplayTasksByDeveloper(_techLeader.Login);
-                    return true;
-                case 2:
-                    DevTaskRepository.DisplayTeamTasksByTechLeader(_techLeader.Login);
-                    return true;
-                case 3:
                     string relativePath = Message.AskForJSONPath();
                     UserRepository.AddUsersFromJson(relativePath);
                     return true;

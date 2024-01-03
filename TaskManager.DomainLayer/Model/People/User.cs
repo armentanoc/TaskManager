@@ -70,7 +70,7 @@ namespace TaskManager.DomainLayer.Model.People
             if (PasswordMatches(currentPassword))
             {
                 SetPassword(newPassword);
-                Message.PasswordChanged();
+                Console.WriteLine("\nSenha alterada com sucesso.");
             }
         }
         private bool PasswordMatches(string password)
@@ -107,10 +107,6 @@ namespace TaskManager.DomainLayer.Model.People
                 } else
                 {
                     Message.PasswordIsNullOrWhitespace();
-                }
-                else
-                {
-                    Console.WriteLine("\nA nova senha não pode ser nula ou composta apenas por espaços em branco.");
                 }
             }
             else

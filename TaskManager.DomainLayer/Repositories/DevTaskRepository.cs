@@ -344,52 +344,5 @@ namespace TaskManager.DomainLayer.Repositories
                 Console.WriteLine($"Erro alterando RequiresApprovalToComplete da tarefa: {ex.Message}");
             }
         }
-
-        internal static void DisplayTeamTasksByTechLeader(string techLeaderLogin)
-        {
-            Console.Clear();
-            Title.TeamTasks(techLeaderLogin);
-            var tasksForTechLeader = taskList.Where(task => task.TechLeaderLogin == techLeaderLogin).ToList();
-            DisplayTasks(tasksForTechLeader);
-            Message.PressAnyKeyToContinue();
-        }
-
-        internal static void CancelTask(string techLeaderLogin)
-        {
-            DisplayTeamTasksByTechLeader(techLeaderLogin);
-
-            Title.CancelTask();
-            Console.Write("\n\nInforme o ID da tarefa que deseja cancelar: ");
-            if (int.TryParse(Console.ReadLine(), out int taskId) && TryCancelTask(taskId, techLeaderLogin))
-            {
-                Console.WriteLine($"\nTarefa {taskId} cancelada com sucesso.");
-            }
-            else
-            {
-                Console.WriteLine("\nNão foi possível cancelar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
-            }
-
-            Message.PressAnyKeyToReturn();
-        }
-
-        private static bool TryCancelTask(int taskId, string techLeaderLogin)
-        {
-            var taskToCancel = taskList.FirstOrDefault(
-        task =>
-            task.Id.Equals(taskId)
-            && task.TechLeaderLogin.Equals(techLeaderLogin)
-            && !task.Status.Equals(StatusEnum.Cancelada)
-    );
-
-            if (taskToCancel != null)
-            {
-                taskToCancel.SetStatus(StatusEnum.Cancelada);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }

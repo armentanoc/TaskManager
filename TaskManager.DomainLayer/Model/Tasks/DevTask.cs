@@ -42,7 +42,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
         }
 
         //common constructor
-        public DevTask(string techLeaderLogin, string title, DateTime deadline, string? description = null, string? developerLogin = null)
+        public DevTask(string techLeaderLogin, string title, DateTime deadline, string description = null, string developerLogin = null)
         {
             ValidateTechLeader(techLeaderLogin);
             ValidateDeveloper(developerLogin);
@@ -66,7 +66,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
         }
           
         //task created by developer
-        public DevTask(string developerLogin, string techLeaderLogin, string title, string? description = null)
+        public DevTask(string developerLogin, string techLeaderLogin, string title, string description = null)
         {
             ValidateTechLeader(techLeaderLogin);
             ValidateDeveloper(developerLogin);

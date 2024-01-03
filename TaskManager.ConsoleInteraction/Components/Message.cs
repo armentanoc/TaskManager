@@ -72,7 +72,6 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void PressAnyKeyToReturn()
         {
             Console.WriteLine("\nPressione qualquer tecla para retornar.");
-            Console.ReadKey();
         }
 
         public static void Returning()
