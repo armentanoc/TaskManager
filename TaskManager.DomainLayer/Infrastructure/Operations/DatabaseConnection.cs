@@ -61,6 +61,9 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
                 logWriter = new LogWriter("Inicialização de DevTasks começou");
                 DevTaskRepository.Initialize();
 
+                logWriter = new LogWriter("Inicialização de DevTasksRelationships começou");
+                DevTaskRelationshipRepository.Initialize();
+
                 return true;
             }
         }

@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SQLite;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Operations;
-using TaskManager.DomainLayer.Infrastructure.Operations.DevTasksRepositoryOperations;
+using TaskManager.DomainLayer.Infrastructure.Operations.DevTaskRepositoryOperations;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 

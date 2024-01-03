@@ -56,6 +56,10 @@ namespace TaskManager.ConsoleInteraction.Components
         {
             LogWrite("\nInicializando tarefas padrão em DevTasks");
         }
+        public static void InitializeDefaultDevTaskRelationships()
+        {
+            LogWrite("\nInicializando relacionamentos padrão em DevTaskRelationships");
+        }
         public static void InitializeDatabase()
         {
             _logWriter.LogWrite("Inicializando Database");

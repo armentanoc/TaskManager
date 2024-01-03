@@ -1,7 +1,7 @@
 ﻿
 using System.Data.SQLite;
 
-namespace TaskManager.DomainLayer.Infrastructure.Operations.DevTasksRepositoryOperations
+namespace TaskManager.DomainLayer.Infrastructure.Operations.DevTaskRepositoryOperations
 {
     internal class Create
     {
