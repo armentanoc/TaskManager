@@ -100,7 +100,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
         {
             try
             {
-                if (developerLogin != null && !IsDeveloper(developerLogin) && !IsTechLeader(developerLogin))
+                if (developerLogin != "TBD" && developerLogin != null && !IsDeveloper(developerLogin) && !IsTechLeader(developerLogin))
                 {
                     throw new ArgumentException("A pessoa Desenvolvedora especificada não existe. Operação não será concluída.");
                 }

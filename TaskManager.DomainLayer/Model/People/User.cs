@@ -83,7 +83,7 @@ namespace TaskManager.DomainLayer.Model.People
                 Message.IncorrectPassword();
             }
 
-            Console.ReadKey();
+            Message.PressAnyKeyToContinue();
         }
         public void ChangePassword(string currentPassword, string newPassword)
         {

@@ -15,7 +15,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
         public TechLeaderMenuService(User techLeader)
         {
             _techLeader = techLeader;
-            string[] techLeaderMenuOptions = { "Alterar senha", "Add novos devs via JSON", "Minhas tarefas", "Tarefas do time", "Aprovar tarefa", "Cancelar tarefa", "Sair" };
+            string[] techLeaderMenuOptions = { "Alterar senha", "Add novos devs via JSON", "Minhas tarefas", "Tarefas do time", "Aprovar tarefa", "Cancelar tarefa", "Criar tarefa", "Sair" };
             _techLeaderMenu = new Menu(techLeaderMenuOptions);
         }
 
@@ -56,6 +56,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     CancelTask.Execute(_techLeader);
                     return true;
                 case 6:
+                    CreateDevTask.ExecuteTechLeader(_techLeader);
+                    return true;
+                case 7:
                     Message.Returning();
                     return false;
                 default:
