@@ -1,8 +1,8 @@
 ﻿
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
-using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
@@ -18,17 +18,16 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
             if (TryToApproveTask(taskId, techLeader))
             {
-                Console.WriteLine($"\nOperação de aprovação efetuada com sucesso.");
+                Message.LogAndConsoleWrite($"\nOperação de aprovação efetuada com sucesso.");
                 Message.PressAnyKeyToContinue();
             }
             else
             {
-                Console.WriteLine("\nNão foi possível aprovar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
+                Message.LogAndConsoleWrite("\nNão foi possível aprovar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
                 Message.PressAnyKeyToContinue();
             }
 
         }
-
         private static bool TryToApproveTask(string taskId, User techLeader)
         {
             var taskToApprove =

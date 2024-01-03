@@ -1,14 +1,13 @@
 ﻿
 using System.Data;
 using System.Data.SQLite;
-using System.Threading.Tasks;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Operations;
+using TaskManager.DomainLayer.Infrastructure.Operations.DevTasksRepositoryOperations;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
-using TaskManager.DomainLayer.Operations;
-using TaskManager.DomainLayer.Service.Database.Operations;
 
-namespace TaskManager.DomainLayer.Repositories
+namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
     internal static class DevTaskRepository
     {
@@ -19,8 +18,7 @@ namespace TaskManager.DomainLayer.Repositories
         {
             using (var connection = DatabaseConnection.CreateConnection("inicializar tabela DevTasks"))
             {
-                CreateDevTasksTable(connection);
-                Console.WriteLine();
+                Create.Table(connection, TableName);
                 DatabaseConnection.CloseConnection(connection, "inicializar tabela DevTasks");
             }
 
@@ -44,7 +42,6 @@ namespace TaskManager.DomainLayer.Repositories
             }
             finally
             {
-                Console.WriteLine();
                 DatabaseConnection.CloseConnection(defaultConnection, "inserir tarefas padrão em DevTasks");
             }
         }
@@ -85,31 +82,8 @@ namespace TaskManager.DomainLayer.Repositories
             }
             finally
             {
-                Console.WriteLine();
                 DatabaseConnection.CloseConnection(defaultConnection, "inserir nova tarefa em DevTasks");
             }
-        }
-
-        // create methods
-        private static void CreateDevTasksTable(SQLiteConnection connection)
-        {
-            const string createDevTasksQuery = $@"
-
-                    CREATE TABLE {TableName} (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Title TEXT NOT NULL,
-                    Description TEXT,
-                    TechLeaderLogin TEXT NOT NULL,
-                    DeveloperLogin TEXT,
-                    Status TEXT NOT NULL,
-                    RequiresApprovalToComplete TEXT NOT NULL,
-                    Deadline DATETIME,
-                    CompletionDateTime DATETIME,
-                    FOREIGN KEY (TechLeaderLogin) REFERENCES Users(Login),
-                    FOREIGN KEY (DeveloperLogin) REFERENCES Users(Login)
-                    )";
-
-            Tables.Create(connection, TableName, createDevTasksQuery);
         }
 
         // insert methods
@@ -123,7 +97,7 @@ namespace TaskManager.DomainLayer.Repositories
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Erro executando transação: {ex.Message}");
+                    Message.Error($"Erro executando transação: {ex.Message}");
                     throw;
                 }
             });
@@ -139,7 +113,7 @@ namespace TaskManager.DomainLayer.Repositories
             }
             catch (SQLiteException ex)
             {
-                Console.WriteLine($"Erro ao inserir as tarefas DevTasks na tabela: {ex.Message}");
+                Message.Error($"Erro ao inserir as tarefas DevTasks na tabela: {ex.Message}");
             }
         }
         private static void InsertTask(DevTask task)
@@ -163,14 +137,14 @@ namespace TaskManager.DomainLayer.Repositories
                 };
 
                 DatabaseConnection.ExecuteNonQuery(insertTaskQuery, parameters);
-                Console.WriteLine($"Task '{task.Title}' inserida com sucesso na tabela.");
+                Message.LogAndConsoleWrite($"Task '{task.Title}' inserida com sucesso na tabela.");
             }
             catch (SQLiteException ex)
             {
-                Console.WriteLine($"Erro ao inserir DevTask na tabela: {ex.Message}");
+                Message.Error($"Erro ao inserir DevTask na tabela: {ex.Message}");
             }
         }
-        
+
         // validation methods
         private static bool DoesTaskExist(SQLiteConnection connection, DevTask task)
         {
@@ -203,12 +177,12 @@ namespace TaskManager.DomainLayer.Repositories
                     foreach (DataRow row in dataTable.Rows)
                     {
                         var task = new DevTask(
-                            id : row["Id"].ToString(),
-                            title : row["Title"].ToString(),
-                            description : row["Description"].ToString(),
-                            techLeaderLogin : row["TechLeaderLogin"].ToString(),
-                            developerLogin : row["DeveloperLogin"].ToString(),
-                            status : Enum.Parse<StatusEnum>(row["Status"].ToString()),
+                            id: row["Id"].ToString(),
+                            title: row["Title"].ToString(),
+                            description: row["Description"].ToString(),
+                            techLeaderLogin: row["TechLeaderLogin"].ToString(),
+                            developerLogin: row["DeveloperLogin"].ToString(),
+                            status: Enum.Parse<StatusEnum>(row["Status"].ToString()),
                             requiresApprovalToComplete: row["RequiresApprovalToComplete"].ToString().Equals("1"),
                             deadline: string.IsNullOrEmpty(row["Deadline"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["Deadline"].ToString()),
                             completionDateTime: string.IsNullOrEmpty(row["CompletionDateTime"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["CompletionDateTime"].ToString())
@@ -223,7 +197,7 @@ namespace TaskManager.DomainLayer.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro obtendo lista de DevTasks: {ex.Message}");
+                Message.Error($"Erro obtendo lista de {TableName}: {ex.Message}");
                 return new List<DevTask>();
             }
         }
@@ -244,12 +218,12 @@ namespace TaskManager.DomainLayer.Repositories
                 }
                 else
                 {
-                    Console.WriteLine("Erro ao capturar data da tabela DevTasks.");
+                    Message.Error($"Erro ao capturar dados da tabela {TableName}.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nErro ao apresentar Tasks: {ex.Message}");
+                Message.Error($"Erro ao apresentar {TableName}: {ex.Message}");
             }
         }
         private static void PrintTasks(DataTable tasksData)
@@ -289,7 +263,7 @@ namespace TaskManager.DomainLayer.Repositories
             Title.AllTasks();
             Console.WriteLine($"\nTech Leader: {login}");
 
-            List<DevTask> thisDevTaskList = 
+            List<DevTask> thisDevTaskList =
                 GetTaskList()
                 .Where(user => user.TechLeaderLogin == login)
                 .OrderBy(task => task.Status == StatusEnum.Cancelada ? 1 : 0) //cancelada vem ao final
@@ -315,11 +289,11 @@ namespace TaskManager.DomainLayer.Repositories
                 };
 
                 DatabaseConnection.ExecuteNonQuery(updateStatusToCancelledQuery, parameters);
-                Console.WriteLine($"Status alterado para Cancelado na tarefa '{task.Title}' (ID: {task.Id}).");
+                Message.LogAndConsoleWrite($"Status alterado para Cancelado na tarefa '{task.Title}' (ID: {task.Id}).");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro alterando status da tarefa: {ex.Message}");
+                Message.LogAndConsoleWrite($"Erro alterando status da tarefa: {ex.Message}");
             }
         }
 
@@ -337,11 +311,11 @@ namespace TaskManager.DomainLayer.Repositories
                 };
 
                 DatabaseConnection.ExecuteNonQuery(updateStatusToCancelledQuery, parameters);
-                Console.WriteLine($"RequiresApprovalToComplete alterado para False na tarefa '{taskToApprove.Title}' (ID: {taskToApprove.Id}).");
+                Message.LogAndConsoleWrite($"RequiresApprovalToComplete alterado para False na tarefa '{taskToApprove.Title}' (ID: {taskToApprove.Id}).");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro alterando RequiresApprovalToComplete da tarefa: {ex.Message}");
+                Message.Error($"Erro alterando RequiresApprovalToComplete da tarefa: {ex.Message}");
             }
         }
     }

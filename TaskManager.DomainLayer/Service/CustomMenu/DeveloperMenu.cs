@@ -1,7 +1,8 @@
 ﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Repositories;
+using TaskManager.DomainLayer.Service.DevTaskHelper;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 
 namespace TaskManager.DomainLayer.Service.CustomMenu
 {

@@ -1,10 +1,10 @@
 ﻿using System.Data.SQLite;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
-using TaskManager.DomainLayer.Repositories;
 
-namespace TaskManager.DomainLayer.Service
+namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
     internal class CreateDevTask
     {
@@ -30,21 +30,17 @@ namespace TaskManager.DomainLayer.Service
             }
             catch (Exception ex)
             {
-                Title.Error();
                 Message.CatchException(ex);
             }
             finally
             {
-                Console.WriteLine("\nPressione qualquer tecla para retornar. ");
-                Console.ReadKey();
+                Message.PressAnyKeyToReturn();
             }
         }
-
         private static string IsDescriptionNullOrWhitespace(string? description)
         {
             return string.IsNullOrWhiteSpace(description) ? "TBD" : description;
         }
-
         private static void CreateTask(User developer, string title, string? description, string? techLeaderLogin)
         {
             DevTask newDevTask = new DevTask(
@@ -54,9 +50,8 @@ namespace TaskManager.DomainLayer.Service
                     description: description
                 );
             DevTaskRepository.InitializeNewDevTask(newDevTask);
-            Console.WriteLine($"\nDevTask criada com sucesso: \n{newDevTask.Title}.");
+            Message.LogAndConsoleWrite($"\nDevTask criada com sucesso: \n{newDevTask.Title}.");
         }
-
         private static void IsTechLeader(string? techLeaderLogin)
         {
             if (!DevTask.IsTechLeader(techLeaderLogin))
@@ -64,7 +59,6 @@ namespace TaskManager.DomainLayer.Service
                 throw new ArgumentException("A pessoa Tech Leader especificada não existe. A tarefa não será criada.");
             }
         }
-
         private static void IsTitleNullOrWhitespace(string title)
         {
             if (string.IsNullOrWhiteSpace(title))

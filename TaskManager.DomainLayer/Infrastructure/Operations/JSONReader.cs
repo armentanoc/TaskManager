@@ -2,13 +2,15 @@
 using System.Text.Json;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.DTO;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Repositories;
+using TaskManager.UI;
 
-namespace TaskManager.DomainLayer.Service.Database.Operations
+namespace TaskManager.DomainLayer.Infrastructure.Operations
 {
     internal class JSONReader
     {
+        static LogWriter _logWriter;
         public static List<User> Execute(string fullPath)
         {
             List<User> userList = UserRepository.GetUsersList();
@@ -21,7 +23,8 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
 
                 if (!Enum.TryParse(userDTO.Job, out JobEnum job))
                 {
-                    Console.WriteLine($"Tipo de trabalho inválido: {userDTO.Job}");
+                    string prompt = $"Tipo de trabalho inválido: {userDTO.Job}";
+                    LogError(prompt);
                     continue;
                 }
 
@@ -36,7 +39,8 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
                         break;
 
                     default:
-                        Console.WriteLine($"Tipo de usuário desconhecido: {userDTO.Job}");
+                        string prompt = $"Tipo de usuário desconhecido: {userDTO.Job}";
+                        LogError(prompt);
                         continue;
                 }
                 user.SetJob(job);
@@ -44,6 +48,11 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
             }
             Message.NewUsersInUserList();
             return userList;
+        }
+        private static void LogError(string prompt)
+        {
+            Console.WriteLine(prompt);
+            _logWriter = new LogWriter($"Erro ao ler do JSON: {prompt}");
         }
     }
 }

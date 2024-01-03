@@ -1,7 +1,8 @@
 ﻿
 using System.Globalization;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Repositories;
+using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 
 namespace TaskManager.DomainLayer.Model.Tasks
 {
@@ -92,7 +93,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\n{ex.Message}");
+                Message.CatchException(ex);
             }
         }
         private void ValidateDeveloper(string developerLogin)
@@ -106,12 +107,11 @@ namespace TaskManager.DomainLayer.Model.Tasks
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\n{ex.Message}");
+                Message.CatchException(ex);
             }
         }
         static internal bool IsDeveloper(string developerLogin)
         {
-
             return UserRepository.GetUsersList().Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
         }
         static internal bool IsTechLeader(string techLeaderLogin)

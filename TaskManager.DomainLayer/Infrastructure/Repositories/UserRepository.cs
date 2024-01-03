@@ -2,11 +2,11 @@
 using System.Data;
 using System.Data.SQLite;
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Operations;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Operations;
-using TaskManager.DomainLayer.Service.Database.Operations;
+using TaskManager.DomainLayer.Infrastructure.Operations.UserRepositoryOperations;
 
-namespace TaskManager.DomainLayer.Repositories
+namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
     internal class UserRepository
     {
@@ -17,28 +17,12 @@ namespace TaskManager.DomainLayer.Repositories
         {
             using (var connection = DatabaseConnection.CreateConnection("inicializar tabela de usuários"))
             {
-                CreateUsersTable(connection);
+                Create.Table(connection, TableName);
                 InsertDefaultUsersIntoTable(connection);
                 DatabaseConnection.CloseConnection(connection, "inicializar tabela de usuários");
             }
         }
-        
-        //create methods
-        private static void CreateUsersTable(SQLiteConnection connection)
-        {
-            const string createUsersQuery = $@"
-                    CREATE TABLE IF NOT EXISTS {TableName} (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        Name TEXT NOT NULL,
-                        Login TEXT NOT NULL,
-                        Password TEXT NOT NULL,
-                        Email TEXT,
-                        JobType TEXT NOT NULL
-                    );";
 
-            Tables.Create(connection, TableName, createUsersQuery);
-        }
-        
         //insert methods
         private static void InsertDefaultUsersIntoTable(SQLiteConnection connection)
         {
@@ -59,7 +43,7 @@ namespace TaskManager.DomainLayer.Repositories
                     if (!DoesUserExist(connection, user))
                     {
                         InsertUser(user);
-                    } 
+                    }
                 }
             }
             catch (SQLiteException ex)
@@ -120,7 +104,7 @@ namespace TaskManager.DomainLayer.Repositories
                 }
             }
         }
-        
+
         //validation methods
         private static bool DoesUserExist(SQLiteConnection connection, User user)
         {
@@ -136,7 +120,7 @@ namespace TaskManager.DomainLayer.Repositories
 
             return count > 0;
         }
-        
+
         //read and display methods
         public static void DisplayAll()
         {
@@ -242,7 +226,7 @@ namespace TaskManager.DomainLayer.Repositories
                 return new List<User>();
             }
         }
-        
+
         //update methods
         internal static void UpdatePasswordById(User user, string newPassword)
         {
@@ -257,11 +241,11 @@ namespace TaskManager.DomainLayer.Repositories
                 };
 
                 DatabaseConnection.ExecuteNonQuery(updatePasswordQuery, parameters);
-                Console.WriteLine($"Senha alterada com sucesso para o User de Login {user.Login}.");
+                Message.LogAndConsoleWrite($"Senha alterada com sucesso para o User de Login {user.Login}.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro alterando senha: {ex.Message}");
+                Message.Error($"Erro alterando senha: {ex.Message}");
             }
         }
     }

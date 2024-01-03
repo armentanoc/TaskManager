@@ -1,8 +1,8 @@
 ﻿
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
-using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
@@ -13,24 +13,23 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                 DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
 
                 Title.CancelTask();
-                Console.Write("\n\nInforme o ID da tarefa que deseja cancelar: ");
+                Message.LogAndConsoleWrite("\n\nInforme o ID da tarefa que deseja cancelar: ");
                 string taskId = Console.ReadLine();
 
                 if (TryCancelTask(taskId, techLeader))
                 {
-                    Console.WriteLine($"\nOperação de cancelamento efetuado com sucesso.");
+                    Message.LogAndConsoleWrite($"\nOperação de cancelamento efetuado com sucesso.");
                     Message.PressAnyKeyToContinue();
                 }
                 else
                 {
-                    Console.WriteLine("\nNão foi possível cancelar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
+                    Message.LogAndConsoleWrite("\nNão foi possível cancelar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
                     Message.PressAnyKeyToContinue();
                 }
 
             }
-
-            private static bool TryCancelTask(string taskId, User techLeader)
-            {
+        private static bool TryCancelTask(string taskId, User techLeader)
+        {
                 var taskToCancel = 
                     DevTaskRepository
                     .GetTaskList()
@@ -52,5 +51,6 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                     return false;
                 }
             }
+
         }
     }
