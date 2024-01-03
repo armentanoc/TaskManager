@@ -1,6 +1,4 @@
 ﻿
-using TaskManager.UI;
-
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
