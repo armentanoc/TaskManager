@@ -18,7 +18,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
                 if (TryCancelTask(taskId, techLeader))
                 {
-                    Message.LogAndConsoleWrite($"\nOperação de cancelamento efetuado com sucesso.");
+                    Message.LogAndConsoleWrite($"Operação de cancelamento efetuada com sucesso.");
                     Message.PressAnyKeyToContinue();
                 }
                 else

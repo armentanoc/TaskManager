@@ -9,7 +9,6 @@ namespace TaskManager.ConsoleInteraction.Components
 
         public static void PasswordChangedSuccessfully(string prompt) {
             LogAndConsoleWrite(prompt);
-            Console.ReadKey();
         }
         public static string? AskForJSONPath()
         {
@@ -86,7 +85,7 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void IncorrectPassword()
         {
             Title.Error();
-            LogAndConsoleWrite("Senha incorreta. Tente novamente.\"");
+            LogAndConsoleWrite("Senha incorreta. Tente novamente.");
         }
         public static void IncorrectUser()
         {

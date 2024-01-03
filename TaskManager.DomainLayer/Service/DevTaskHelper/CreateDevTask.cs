@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using System.Linq.Expressions;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
@@ -24,9 +25,50 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
                 Console.Write("\nInforme o login do líder técnico: ");
                 string techLeaderLogin = Console.ReadLine();
+                
                 IsTechLeader(techLeaderLogin);
+                CreateTask(title, description, techLeaderLogin, _developer);
 
-                CreateTask(_developer, title, description, techLeaderLogin);
+            }
+            catch (Exception ex)
+            {
+                Message.CatchException(ex);
+            }
+            finally
+            {
+                Message.PressAnyKeyToReturn();
+            }
+        }
+
+        public static void ExecuteTechLeader(User _techLeader)
+        {
+            Title.NewTask();
+
+            try
+            {
+                Console.Write("\nInforme o título para a nova DevTask: ");
+                string title = Console.ReadLine();
+                IsTitleNullOrWhitespace(title);
+
+                Console.Write("\nInforme um descrição opcional (pressione Enter para pular): ");
+                string description = Console.ReadLine();
+                description = IsDescriptionNullOrWhitespace(description);
+
+                Console.Write("\nInforme o login de quem irá assumir a tarefa: ");
+                string developerLogin = Console.ReadLine();
+                developerLogin = string.IsNullOrWhiteSpace(developerLogin) ? "TBD" : developerLogin;
+
+                User developerInstance = null;
+
+                if(DevTask.IsDeveloper(developerLogin) || developerLogin.Equals("TBD"))
+                {
+                    developerInstance = UserRepository.GetUsersList().FirstOrDefault(x => x.Login.Equals(developerLogin));
+                } else
+                {
+                    Message.Error($"User {developerLogin} informado não é Developer.");
+                }
+
+                CreateTask(title, description, _techLeader.Login, developerInstance);
             }
             catch (Exception ex)
             {
@@ -41,22 +83,39 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
         {
             return string.IsNullOrWhiteSpace(description) ? "TBD" : description;
         }
-        private static void CreateTask(User developer, string title, string? description, string? techLeaderLogin)
+        private static void CreateTask(string title, string? description, string? techLeaderLogin, User developer)
         {
+            string developerLogin;
+
+            if(developer == null)
+            {
+                developerLogin = "TBD";
+            } else
+            {
+                developerLogin = developer.Login;
+            }
+
             DevTask newDevTask = new DevTask(
                     techLeaderLogin: techLeaderLogin,
                     title: title,
-                    developerLogin: developer.Login,
+                    developerLogin: developerLogin,
                     description: description
                 );
             DevTaskRepository.InitializeNewDevTask(newDevTask);
-            Message.LogAndConsoleWrite($"\nDevTask criada com sucesso: \n{newDevTask.Title}.");
+            Console.ReadKey();
         }
         private static void IsTechLeader(string? techLeaderLogin)
         {
             if (!DevTask.IsTechLeader(techLeaderLogin))
             {
                 throw new ArgumentException("A pessoa Tech Leader especificada não existe. A tarefa não será criada.");
+            }
+        }
+        private static void IsDeveloper(string? developerLogin)
+        {
+            if (!DevTask.IsDeveloper(developerLogin) && !string.IsNullOrWhiteSpace(developerLogin))
+            {
+                throw new ArgumentException("A pessoa Desenvolvedora especificada não existe. A tarefa não será criada.");
             }
         }
         private static void IsTitleNullOrWhitespace(string title)

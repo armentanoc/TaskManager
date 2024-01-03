@@ -25,7 +25,8 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
             StringBuilder sb = new StringBuilder();
             sb.Append(Title.MainMenu());
             sb.AppendLine($"\nLog: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
-            sb.Append(DatabaseSetup.WriteDatabasePath());
+            sb.AppendLine(DatabaseSetup.WriteDatabasePath());
+            sb.Append("Obs.: senha padrão é 1234");
             return _mainMenu.DisplayMenu(sb.ToString());
         }
 

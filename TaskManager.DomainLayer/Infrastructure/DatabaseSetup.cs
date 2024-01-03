@@ -11,16 +11,17 @@ namespace TaskManager.DomainLayer.Infrastructure
             ConsoleSpinner spin = new();
             ShowFunnyMessage();
 
-            bool doWeHaveTheData;
+            bool doWeHaveTheData = false;
             doWeHaveTheData = !DatabaseConnection.EstablishConnection();
 
             DateTime startTime = DateTime.Now;
 
-            while (doWeHaveTheData == null || (DateTime.Now - startTime).TotalSeconds < 3)
+            while (doWeHaveTheData == false && (DateTime.Now - startTime).TotalSeconds < 3)
             {
                 ShowFunLoadingAnimationStars();
             }
 
+            Console.Clear();
             Console.CursorVisible = true;
         }
 

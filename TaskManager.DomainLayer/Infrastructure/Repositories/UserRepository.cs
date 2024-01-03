@@ -54,7 +54,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
             }
             catch (SQLiteException ex)
             {
-                Console.WriteLine($"Erro ao inserir usuários na tabela: {ex.Message}");
+                Message.LogAndConsoleWrite($"Erro ao inserir usuários na tabela: {ex.Message}");
             }
         }
         private static void InsertUser(User user)
@@ -93,7 +93,8 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                     if (!File.Exists(fullPath))
                     {
-                        Console.WriteLine("Arquivo JSON não encontrado. Por favor, verifique o caminho.");
+                        Message.Error("Arquivo JSON não encontrado. Por gentileza, verifique o path fornecido.");
+                        Console.ReadKey();
                         return;
                     }
                     else
@@ -102,13 +103,13 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                         InsertUsersIfNotExist(connection, userList, false);
                         Message.NewUsersInUserList();
                         DisplayAll();
-                        Message.PressAnyKeyToReturn();
+                        Message.PressAnyKeyToContinue();
                     }
                 }
                 catch (Exception ex)
                 {
                     Message.Error($"Erro ao adicionar usuários do JSON: {ex.Message}");
-                }
+                } 
             }
         }
 
@@ -195,7 +196,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving user: {ex.Message}");
+                Console.WriteLine($"Erro recuperando usuário: {ex.Message}");
                 return null;
             }
         }

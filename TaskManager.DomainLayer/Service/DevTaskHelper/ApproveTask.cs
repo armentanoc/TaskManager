@@ -18,7 +18,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
             if (TryToApproveTask(taskId, techLeader))
             {
-                Message.LogAndConsoleWrite($"\nOperação de aprovação efetuada com sucesso.");
+                Message.LogAndConsoleWrite($"Operação de aprovação efetuada com sucesso.");
                 Message.PressAnyKeyToContinue();
             }
             else

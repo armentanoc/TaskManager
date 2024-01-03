@@ -79,6 +79,9 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 var tasks = GetTaskList();
 
                 InsertTaskIfNotExists(defaultConnection, newTask);
+            } catch (Exception ex)
+            {
+                Message.CatchException(ex);
             }
             finally
             {
@@ -109,9 +112,16 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 if (!DoesTaskExist(connection, task))
                 {
                     InsertTask(task);
+                } else
+                {
+                    throw new Exception($"DevTask com título {task.Title} e descrição {task.Description} já existe.");
                 }
             }
             catch (SQLiteException ex)
+            {
+                Message.Error($"Erro ao inserir as tarefas DevTasks na tabela: {ex.Message}");
+            }
+            catch (Exception ex)
             {
                 Message.Error($"Erro ao inserir as tarefas DevTasks na tabela: {ex.Message}");
             }
@@ -138,6 +148,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 DatabaseConnection.ExecuteNonQuery(insertTaskQuery, parameters);
                 Message.LogAndConsoleWrite($"Task '{task.Title}' inserida com sucesso na tabela.");
+                Console.WriteLine("\nPressione qualquer tecla para continuar\n");
             }
             catch (SQLiteException ex)
             {
@@ -203,28 +214,30 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         public static void DisplayAll()
         {
-            try
-            {
-                string query = "SELECT Id, TechLeaderLogin, Title, Deadline, DeveloperLogin FROM DevTasks;";
-                var dataTable = DatabaseConnection.ExecuteQuery(query);
+            List<DevTask> devTasks = GetTaskList();
+            PrintTasks(devTasks);
+            //try
+            //{
+            //    string query = "SELECT Id, DeveloperLogin, TechLeaderLogin, Title, Description, Deadline, Status, CompletionDateTime FROM DevTasks;";
+            //    var dataTable = DatabaseConnection.ExecuteQuery(query);
 
-                Console.Clear();
-                Title.AllTasks();
-                Console.WriteLine();
+            //    Console.Clear();
+            //    Title.AllTasks();
+            //    Console.WriteLine();
 
-                if (dataTable != null)
-                {
-                    PrintTasks(dataTable);
-                }
-                else
-                {
-                    Message.Error($"Erro ao capturar dados da tabela {TableName}.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Message.Error($"Erro ao apresentar {TableName}: {ex.Message}");
-            }
+            //    if (dataTable != null)
+            //    {
+            //        PrintTasks(dataTable);
+            //    }
+            //    else
+            //    {
+            //        Message.Error($"Erro ao capturar dados da tabela {TableName}.");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Message.Error($"Erro ao apresentar {TableName}: {ex.Message}");
+            //}
         }
         private static void PrintTasks(DataTable tasksData)
         {
