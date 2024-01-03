@@ -360,5 +360,35 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false)");
             }
         }
+        internal static void UpdateTaskStatusByIdFromTechLeader(DevTask? taskToUpdate, User developer)
+        {
+            try
+            {
+                const string updateStatusQuery = @"
+                       
+                        UPDATE DevTasks 
+                            SET Status = @Status, 
+                            RequiresApprovalToComplete = @RequiresApprovalToComplete,  
+                            CompletionDateTime = @CompletionDateTime  
+                        WHERE Id = @Id 
+                        AND TechLeaderLogin = @TechLeaderLogin;";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@Id", taskToUpdate.Id },
+                    { "@Status", taskToUpdate.Status.ToString() },
+                    { "@RequiresApprovalToComplete", taskToUpdate.RequiresApprovalToComplete },
+                    { "@TechLeaderLogin", developer.Login },
+                    { "@CompletionDateTime", taskToUpdate.CompletionDateTime }
+                };
+
+                DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
+                Message.LogAndConsoleWrite($"Status alterado para {taskToUpdate.Status} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+            }
+            catch (Exception ex)
+            {
+                Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false) ou se você é o líder técnico responsável.");
+            }
+        }
     }
 }

@@ -14,7 +14,16 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
         public DeveloperMenu(User developer)
         {
             _developer = developer;
-            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Minhas tarefas", "Modificar status de tarefa", "Sair" };
+
+            string[] developerMenuOptions = 
+                { 
+                "Alterar senha", 
+                "Criar tarefa", 
+                "Minhas tarefas", 
+                "Modificar status de tarefa", 
+                "Sair" 
+            };
+
             _developerMenu = new Menu(developerMenuOptions);
         }
 
