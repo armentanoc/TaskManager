@@ -1,15 +1,9 @@
 ﻿
-
-
-
-
-
-
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Message
     {
-        public static string AskForJSONPath()
+        public static string? AskForJSONPath()
         {
             Title.AskForJSONPath();
             Console.WriteLine("\nObs.: O arquivo JSON deve estar localizado em TaskManager.DomainLayer.Files. " +
@@ -24,6 +18,10 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine("\nFalha na autenticação. Tente novamente.");
         }
 
+        public static void CatchException(Exception ex)
+        {
+            Console.WriteLine($"\n{ex.Message}");
+        }
         public static void IncorrectPassword()
         {
             Title.Error();
@@ -51,6 +49,26 @@ namespace TaskManager.ConsoleInteraction.Components
             PressAnyKeyToReturn();
         }
 
+        public static void PasswordIsNullOrWhitespace()
+        {
+            Title.Error();
+            Console.WriteLine("\nA senha não pode ser nula ou composta apenas de espaços em branco. Tente novamente.");
+            PressAnyKeyToReturn();
+        }
+
+        public static void PasswordChanged()
+        {
+
+            Console.WriteLine("\nSenha alterada com sucesso.");
+            PressAnyKeyToReturn();
+
+        }
+
+        public static void PressAnyKeyToContinue()
+        {
+            Console.WriteLine("\nPressione qualquer tecla para continuar.");
+            Console.ReadKey();
+        }
         public static void PressAnyKeyToReturn()
         {
             Console.WriteLine("\nPressione qualquer tecla para retornar.");
@@ -61,10 +79,30 @@ namespace TaskManager.ConsoleInteraction.Components
             Title.Returning();
         }
 
-        public static void SmallPassword()
+        public static void PressAnyKeyToGoFoward()
         {
-            Console.WriteLine("\nA senha deve ter pelo menos 3 caracteres.");
-            PressAnyKeyToReturn();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nPressione qualquer tecla para avançar para a aplicação.");
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+
+        public static void Divider()
+        {
+            Console.WriteLine("\n-------------------------------------------------");
+        }
+
+        public static void ShowDatabasePath(string databasePath)
+        {
+            Divider();
+            Console.WriteLine("\nPARA DEBUGGAR LOCALMENTE NO TERMINAL");
+            Console.WriteLine($"\nsqlite3 {databasePath}");
+        }
+
+        public static void InitializeDefaultDevTasks()
+        {
+            Divider();
+            Console.WriteLine("\nINICIALIZAR TAREFAS PADRÃO EM DEVTASKS");
         }
     }
 }

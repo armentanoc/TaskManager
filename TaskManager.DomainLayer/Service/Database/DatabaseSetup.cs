@@ -1,5 +1,5 @@
 ﻿using TaskManager.DomainLayer.Operations;
-using TaskManager.DomainLayer.Service.Database.Operations;
+using TaskManager.ConsoleInteraction.Components;
 
 namespace TaskManager.DomainLayer.Service.Database
 {
@@ -12,9 +12,10 @@ namespace TaskManager.DomainLayer.Service.Database
         }
         private static void WriteMessages()
         {
-            Console.WriteLine($"\nsqlite3 {AppDomain.CurrentDomain.BaseDirectory}{DatabaseConnection.DatabasePath}");
-            Console.WriteLine("\nPressione qualquer tecla para avançar para a aplicação.");
-            Console.ReadKey();
+            string databasePath = $"{AppDomain.CurrentDomain.BaseDirectory}{DatabaseConnection.DatabasePath}";
+            Message.ShowDatabasePath(databasePath);
+            Message.Divider();
+            Message.PressAnyKeyToGoFoward();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.DomainLayer.Model.Tasks;
 using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Service.CustomMenu
@@ -14,7 +13,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
         public DeveloperMenu(User developer)
         {
             _developer = developer;
-            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Sair" };
+            string[] developerMenuOptions = { "Alterar senha", "Criar tarefa", "Minhas tarefas", "Sair" };
             _developerMenu = new Menu(developerMenuOptions);
         }
 
@@ -39,16 +38,12 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     _developer.TryChangingPassword();
                     return true;
                 case 1:
-                    //DevTaskRepository.taskList.Add(
-                    //    new DevTask(
-                    //        techLeaderLogin: "kaio",
-                    //        title: "Nova tarefa criada por dev",
-                    //        developerLogin: _developer.Login
-                    //        )
-                    //    );
-                    Console.WriteLine("Tarefa teste criada, verificar em Tarefas.");
-                    return false;
+                    CreateDevTask.Execute(_developer);
+                    return true;
                 case 2:
+                    DevTaskRepository.DisplayTasksByDeveloper(_developer.Login);
+                    return true;
+                case 3:
                     Message.Returning();
                     return false;
                 default:

@@ -18,13 +18,13 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
                 }
                 else
                 {
-                    Console.WriteLine($"A tabela {tableName} já existe.");
+                    Console.Write($"A tabela {tableName} já existe.");
                 }
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine($"Erro ao criar a tabela: {ex.Message}");
-            }
+            } 
         }
     }
 }

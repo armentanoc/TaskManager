@@ -11,18 +11,19 @@ namespace TaskManager.DomainLayer.Repositories
     internal class UserRepository
     {
         private const string TableName = "Users";
-        private static readonly object lockObject = new object();
-        public static List<User> userList = new List<User>();
+        private static List<User> userList = new List<User>();
 
         internal static void Initialize()
         {
-            using (var connection = DatabaseConnection.CreateConnection())
+            using (var connection = DatabaseConnection.CreateConnection("inicializar tabela de usuários"))
             {
                 CreateUsersTable(connection);
                 InsertDefaultUsersIntoTable(connection);
                 DatabaseConnection.CloseConnection(connection, "inicializar tabela de usuários");
             }
         }
+        
+        //create methods
         private static void CreateUsersTable(SQLiteConnection connection)
         {
             const string createUsersQuery = $@"
@@ -37,6 +38,8 @@ namespace TaskManager.DomainLayer.Repositories
 
             Tables.Create(connection, TableName, createUsersQuery);
         }
+        
+        //insert methods
         private static void InsertDefaultUsersIntoTable(SQLiteConnection connection)
         {
             userList = new List<User>
@@ -56,7 +59,7 @@ namespace TaskManager.DomainLayer.Repositories
                     if (!DoesUserExist(connection, user))
                     {
                         InsertUser(user);
-                    }
+                    } 
                 }
             }
             catch (SQLiteException ex)
@@ -89,6 +92,36 @@ namespace TaskManager.DomainLayer.Repositories
                 Console.WriteLine($"Erro ao inserir usuário na tabela: {ex.Message}");
             }
         }
+        public static void AddUsersFromJson(string filePath)
+        {
+            using (var connection = DatabaseConnection.CreateConnection("adicionar usuários via JSON"))
+            {
+                try
+                {
+                    string domainLayerDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "TaskManager.DomainLayer", "Files", filePath);
+                    string fullPath = Path.GetFullPath(domainLayerDirectory);
+
+                    if (!File.Exists(fullPath))
+                    {
+                        Console.WriteLine("Arquivo JSON não encontrado. Por favor, verifique o caminho.");
+                        return;
+                    }
+                    else
+                    {
+                        userList = JSONReader.Execute(fullPath);
+                        InsertUsersIfNotExist(connection, userList);
+                        DisplayAll();
+                        Message.PressAnyKeyToContinue();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao adicionar usuários do JSON: {ex.Message}");
+                }
+            }
+        }
+        
+        //validation methods
         private static bool DoesUserExist(SQLiteConnection connection, User user)
         {
             string query = $"SELECT COUNT(*) FROM {TableName} WHERE Name = @Name OR Login = @Login;";
@@ -103,67 +136,13 @@ namespace TaskManager.DomainLayer.Repositories
 
             return count > 0;
         }
-        public static void AddUser(User user)
-        {
-            lock (lockObject)
-            {
-                DatabaseConnection.ExecuteWithinTransaction((connection) =>
-                {
-                    InsertUser(user);
-                });
-            }
-        }
-        public static void AddUsersFromJson(string filePath)
-        {
-            try
-            {
-                string domainLayerDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "TaskManager.DomainLayer", "Files", filePath);
-                string fullPath = Path.GetFullPath(domainLayerDirectory);
-
-                if (!File.Exists(fullPath))
-                {
-                    Console.WriteLine("Arquivo JSON não encontrado. Por favor, verifique o caminho.");
-                    return;
-                }
-                else
-                {
-                    userList = JSONReader.Execute(fullPath);
-
-                    DatabaseConnection.ExecuteWithinTransaction((connection) =>
-                    {
-                        InsertUsersIfNotExist(connection, userList);
-                    });
-
-                    DisplayAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao adicionar usuários do JSON: {ex.Message}");
-            }
-        }
+        
+        //read and display methods
         public static void DisplayAll()
         {
             Console.Clear();
             Title.AllUsers();
-            try
-            {
-                string query = "SELECT Id, Name, Login, Password, Email, JobType FROM Users;";
-                var dataTable = DatabaseConnection.ExecuteQuery(query);
-
-                if (dataTable != null)
-                {
-                    PrintUsers(dataTable);
-                }
-                else
-                {
-                    Console.WriteLine("Erro puxando dados da tabela Users.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\nErro exibindo Users: {ex.Message}");
-            }
+            PrintUsers(GetUsersList());
         }
         private static void PrintUsers(DataTable usersData)
         {
@@ -175,6 +154,15 @@ namespace TaskManager.DomainLayer.Repositories
                     row["Id"], row["Name"], row["Login"], row["JobType"]);
             }
         }
+        private static void PrintUsers(List<User> users)
+        {
+            foreach (User user in users)
+            {
+                Console.WriteLine(user.ToString());
+            }
+        }
+
+        //get user methods
         public static User GetUserByLogin(string login)
         {
             try
@@ -254,14 +242,9 @@ namespace TaskManager.DomainLayer.Repositories
                 return new List<User>();
             }
         }
-        private static void PrintUsers(List<User> users)
-        {
-            foreach (User user in users)
-            {
-                user.ToString();
-            }
-        }
-        internal static void UpdatePasswordById(string id, string newPassword)
+        
+        //update methods
+        internal static void UpdatePasswordById(User user, string newPassword)
         {
             try
             {
@@ -269,12 +252,12 @@ namespace TaskManager.DomainLayer.Repositories
 
                 var parameters = new Dictionary<string, object>
                 {
-                    { "@Id", id },
+                    { "@Id", user.Id },
                     { "@Password", newPassword}
                 };
 
                 DatabaseConnection.ExecuteNonQuery(updatePasswordQuery, parameters);
-                Console.WriteLine($"Senha alterada com sucesso para o User de Id {id}.");
+                Console.WriteLine($"Senha alterada com sucesso para o User de Login {user.Login}.");
             }
             catch (Exception ex)
             {

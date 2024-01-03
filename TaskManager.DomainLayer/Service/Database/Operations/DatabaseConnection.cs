@@ -9,13 +9,13 @@ namespace TaskManager.DomainLayer.Operations
     {
         internal const string DatabasePath = "task_manager_data.db";
 
-        internal static SQLiteConnection CreateConnection()
+        internal static SQLiteConnection? CreateConnection(string context)
         {
             var connection = new SQLiteConnection($"Data Source={DatabasePath};Version=3;");
             try
             {
                 connection.Open();
-                Console.WriteLine($"\nConexão aberta com sucesso");
+                Console.WriteLine($"\nConexão aberta com sucesso ({context})");
                 return connection;
             }
             catch (SQLiteException ex)
@@ -47,13 +47,18 @@ namespace TaskManager.DomainLayer.Operations
 
         public static void EstablishConnection()
         {
-            using (var connection = CreateConnection())
+
+            using (var connection = CreateConnection("inicializar banco de dados"))
             {
                 if (connection == null)
                     return;
-
                 InitializeDatabase(connection);
+
+                Console.WriteLine("\n-------------------------------------------------");
+                Console.WriteLine("\nINICIALIZAR USERS");
                 UserRepository.Initialize();
+                Console.WriteLine("\n-------------------------------------------------");
+                Console.WriteLine("\nINICIALIZAR DEVTASKS");
                 DevTaskRepository.Initialize();
             }
         }
@@ -92,37 +97,43 @@ namespace TaskManager.DomainLayer.Operations
 
         public static void ExecuteWithinTransaction(Action<SQLiteConnection> action)
         {
-            using (var connection = CreateConnection())
+            try
             {
-                if (connection == null)
-                    return;
-
-                using (var transaction = connection.BeginTransaction())
+                using (var connection = CreateConnection("within transaction"))
                 {
-                    try
+                    if (connection.State == ConnectionState.Closed)
                     {
-                        action.Invoke(connection);
-                        transaction.Commit();
+                        connection.Open();
                     }
-                    catch (Exception)
+
+                    using (var transaction = connection.BeginTransaction())
                     {
-                        transaction.Rollback();
-                        throw;
-                    }
-                    finally
-                    {
-                        CloseConnection(connection, "within transaction");
+                        try
+                        {
+                            action(connection);
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro executando within transaction: {ex.Message}");
+            }
         }
-        internal static DataTable ExecuteQuery(string query)
+
+    internal static DataTable? ExecuteQuery(string query)
         {
             string operation = "fetch data from table";
 
             try
             {
-                using (var connection = CreateConnection())
+                using (var connection = CreateConnection("executar query"))
                 {
                     using (var command = new SQLiteCommand(query, connection))
                     {
@@ -147,7 +158,7 @@ namespace TaskManager.DomainLayer.Operations
             string operation = "executar alterações no banco";
             try
             {
-                using (var connection = CreateConnection())
+                using (var connection = CreateConnection("executar non-query"))
                 {
                     using (var command = new SQLiteCommand(query, connection))
                     {
@@ -168,6 +179,7 @@ namespace TaskManager.DomainLayer.Operations
         }
         internal static bool DoesTableExist(SQLiteConnection connection, string tableName)
         {
+            Console.WriteLine($"Verificando se a tabela {tableName} já existe...");
             const string query = "SELECT name FROM sqlite_master WHERE type='table' AND name=@TableName;";
             var parameters = new Dictionary<string, object> { { "@TableName", tableName } };
 
@@ -178,7 +190,7 @@ namespace TaskManager.DomainLayer.Operations
                 return result != null && result.ToString() == tableName;
             }
         }
-        internal static object ExecuteScalar(SQLiteConnection connection, string query, Dictionary<string, object> parameters = null)
+        internal static object? ExecuteScalar(SQLiteConnection connection, string query, Dictionary<string, object> parameters = null)
         {
             string operation = "executar escalar";
 
@@ -196,7 +208,6 @@ namespace TaskManager.DomainLayer.Operations
                 return null;
             }
         }
-
         private static void AddParameters(SQLiteCommand command, object parameters)
         {
             if (parameters is Dictionary<string, object> paramDict)

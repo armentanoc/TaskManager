@@ -13,8 +13,8 @@ namespace TaskManager.DomainLayer.Service.Login
         {
             Title.Login();
 
-            string login = ReadLogin();
-            string password = ReadPassword("Senha: ");
+            string? login = ReadLogin();
+            string? password = ReadPassword("Senha: ");
 
             if (password == null)
             {
@@ -27,16 +27,14 @@ namespace TaskManager.DomainLayer.Service.Login
             return user;
         }
 
-        private static string ReadLogin()
+        private static string? ReadLogin()
         {
             Console.Write("\nUsuário: ");
             return Console.ReadLine();
         }
 
-        internal static string ReadPassword(string prompt)
+        internal static string? ReadPassword(string prompt)
         {
-            const int MinPasswordLength = 3;
-
             Console.Write(prompt);
             var passwordBuilder = new StringBuilder();
 
@@ -60,7 +58,7 @@ namespace TaskManager.DomainLayer.Service.Login
                     }
                     else if (key.Key == ConsoleKey.Escape)
                     {
-                        Console.WriteLine("\nPassword input canceled.");
+                        Console.WriteLine("\nDigitação de senha cancelada.");
                         return null;
                     }
                     else if (!char.IsControl(key.KeyChar))
@@ -71,15 +69,7 @@ namespace TaskManager.DomainLayer.Service.Login
                 } while (true);
 
                 Console.WriteLine();
-
                 string password = passwordBuilder.ToString();
-
-                if (password.Length < MinPasswordLength)
-                {
-                    Message.SmallPassword();
-                    return null;
-                }
-
                 return password;
             }
             catch (Exception ex)
@@ -89,7 +79,7 @@ namespace TaskManager.DomainLayer.Service.Login
             }
         }
 
-        private static User ValidateUser(string login, string enteredPassword)
+        private static User? ValidateUser(string login, string enteredPassword)
         {
            var user = UserRepository.GetUserByLogin(login);
 
@@ -97,7 +87,11 @@ namespace TaskManager.DomainLayer.Service.Login
             {
                 Message.IncorrectUser();
                 return null;
-            }
+            } else if (string.IsNullOrWhiteSpace(enteredPassword))
+            {
+                Message.PasswordIsNullOrWhitespace();
+                return null;
+            } 
 
             if (PasswordMatches(user.Password, enteredPassword))
             {

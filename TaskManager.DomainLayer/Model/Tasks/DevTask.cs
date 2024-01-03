@@ -1,22 +1,46 @@
 ﻿
 using System.Globalization;
 using TaskManager.DomainLayer.Model.People;
-//using TaskManager.Infrastructure.Repositories;
+using TaskManager.DomainLayer.Repositories;
 
 namespace TaskManager.DomainLayer.Model.Tasks
 {
     public class DevTask
     {
-        public readonly int Id;
+        public string Id { get; private set; }
         public string Title { get; private set; }
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
         public string TechLeaderLogin { get; private set; }
         public string DeveloperLogin { get; private set; }
         public StatusEnum Status { get; private set; }
         public bool RequiresApprovalToComplete { get; private set; }
         public DateTime Deadline { get; private set; }
         public DateTime? CompletionDateTime { get; private set; }
-        
+
+        //general constructor to recovery information
+
+        public DevTask(
+            string id,
+            string title,
+            string description,
+            string techLeaderLogin,
+            string developerLogin,
+            StatusEnum status,
+            bool requiresApprovalToComplete,
+            DateTime deadline,
+            DateTime completionDateTime)
+        {
+            Id = id;
+            Title = title;
+            Description = description ?? string.Empty;
+            TechLeaderLogin = techLeaderLogin;
+            DeveloperLogin = developerLogin;
+            Status = status;
+            RequiresApprovalToComplete = requiresApprovalToComplete;
+            Deadline = deadline;
+            CompletionDateTime = completionDateTime;
+        }
+
         //common constructor
         public DevTask(string techLeaderLogin, string title, DateTime deadline, string description = null, string developerLogin = null)
         {
@@ -24,12 +48,10 @@ namespace TaskManager.DomainLayer.Model.Tasks
             ValidateDeveloper(developerLogin);
             ValidateDeadline(deadline);
 
-            Id = Math.Abs(DateTime.Now.GetHashCode());
-
             TechLeaderLogin = techLeaderLogin;
             Title = title;
-            Description = description;
-            DeveloperLogin = developerLogin;
+            Description = description ?? string.Empty;
+            DeveloperLogin = developerLogin ?? string.Empty;
             Deadline = deadline;
                                             
             if (IsTechLeader(developerLogin))
@@ -49,11 +71,10 @@ namespace TaskManager.DomainLayer.Model.Tasks
             ValidateTechLeader(techLeaderLogin);
             ValidateDeveloper(developerLogin);
 
-            Id = Math.Abs(DateTime.Now.GetHashCode());
             DeveloperLogin = developerLogin;
             TechLeaderLogin = techLeaderLogin;
             Title = title;
-            Description = description;
+            Description = description ?? string.Empty;
 
             RequiresApprovalToComplete = true;
             Status = StatusEnum.EmAnaliseParaBacklog;
@@ -62,27 +83,40 @@ namespace TaskManager.DomainLayer.Model.Tasks
         // validations                        
         private void ValidateTechLeader(string techLeaderLogin)
         {
-            if (!IsTechLeader(techLeaderLogin))
+            try
             {
-                throw new ArgumentException("A pessoa Tech Leader especificada não existe. A tarefa não será criada.");
+                if (!IsTechLeader(techLeaderLogin))
+                {
+                    throw new ArgumentException("A pessoa Tech Leader especificada não existe. A tarefa não será criada.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n{ex.Message}");
             }
         }
         private void ValidateDeveloper(string developerLogin)
         {
-            if (developerLogin != null && !IsDeveloper(developerLogin) && !IsTechLeader(developerLogin))
+            try
             {
-                throw new ArgumentException("A pessoa Desenvolvedora especificada não existe. Operação não será concluída.");
+                if (developerLogin != null && !IsDeveloper(developerLogin) && !IsTechLeader(developerLogin))
+                {
+                    throw new ArgumentException("A pessoa Desenvolvedora especificada não existe. Operação não será concluída.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n{ex.Message}");
             }
         }
-        private bool IsDeveloper(string developerLogin)
+        static internal bool IsDeveloper(string developerLogin)
         {
-            return true;
-            //return UserRepository.userList.Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
+
+            return UserRepository.GetUsersList().Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
         }
-        private bool IsTechLeader(string techLeaderLogin)
+        static internal bool IsTechLeader(string techLeaderLogin)
         {
-            return true;
-            //return UserRepository.userList.Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
+            return UserRepository.GetUsersList().Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
         }
 
         //tech leader methods
@@ -151,7 +185,7 @@ namespace TaskManager.DomainLayer.Model.Tasks
             {
                 statusColor = ConsoleColor.Green;
             }
-            else if (Status.Equals(StatusEnum.Atrasada))
+            else if (new List<StatusEnum> { StatusEnum.Atrasada, StatusEnum.Cancelada }.Contains(Status))
             {
                 statusColor = ConsoleColor.Red;
             }

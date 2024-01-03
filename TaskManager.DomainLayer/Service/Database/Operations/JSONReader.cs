@@ -17,16 +17,6 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
 
             foreach (var userDTO in userDTOs)
             {
-                User existingUser = userList.FirstOrDefault(u => u.Name == userDTO.Name || u.Login == userDTO.Login);
-
-                if (existingUser != null)
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"\nAtenção: Usuário com nome '{userDTO.Name}' ou login '{userDTO.Login}' já existe. Pulando.");
-                    Console.ResetColor();
-                    continue;
-                }
-
                 User user;
 
                 if (!Enum.TryParse(userDTO.Job, out JobEnum job))
@@ -50,7 +40,7 @@ namespace TaskManager.DomainLayer.Service.Database.Operations
                         continue;
                 }
                 user.SetJob(job);
-                UserRepository.AddUser(user);
+                userList.Add(user);
             }
             Message.NewUsersInUserList();
             return userList;
