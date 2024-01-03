@@ -16,7 +16,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
 
         public MainMenu()
         {
-            string[] mainMenuOptions = { "Realizar Login", "Usuários", "Tarefas", "Sair" };
+            string[] mainMenuOptions = { "Realizar Login", "Usuários", "Tarefas", "Relacionamentos", "Sair" };
             _mainMenu = new Menu(mainMenuOptions);
         }
 
@@ -44,6 +44,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     DevTaskRepository.DisplayAll();
                     break;
                 case 3:
+                    DevTaskRelationshipRepository.DisplayAll();
+                    break;
+                case 4:
                     Title.EnvironmentExit();
                     Environment.Exit(0);
                     break;

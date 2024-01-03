@@ -1,6 +1,4 @@
 ﻿
-using TaskManager.UI;
-
 namespace TaskManager.ConsoleInteraction.Components
 {
     public class Title
@@ -89,6 +87,13 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine(" _   _                   _            _    \r\n| \\ | | _____   ____ _  | |_ __ _ ___| | __\r\n|  \\| |/ _ \\ \\ / / _` | | __/ _` / __| |/ /\r\n| |\\  | (_) \\ V / (_| | | || (_| \\__ \\   < \r\n|_| \\_|\\___/ \\_/ \\__,_|  \\__\\__,_|___/_|\\_\\");
             Console.ResetColor();
         }
+        public static void NewRelationship()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(" _   _                   ____      _            /\\/|       \r\n| \\ | | _____   ____ _  |  _ \\ ___| | __ _  ___|/\\/_  ___  \r\n|  \\| |/ _ \\ \\ / / _` | | |_) / _ \\ |/ _` |/ __/ _` |/ _ \\ \r\n| |\\  | (_) \\ V / (_| | |  _ <  __/ | (_| | (_| (_| | (_) |\r\n|_| \\_|\\___/ \\_/ \\__,_| |_| \\_\\___|_|\\__,_|\\___\\__,_|\\___/ \r\n                                            )_)            ");
+            Console.ResetColor();
+        }
         public static void DeveloperTasks(string developer)
         {
             AllTasks();
@@ -109,6 +114,14 @@ namespace TaskManager.ConsoleInteraction.Components
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("    _                                     _                  __       \r\n   / \\   _ __  _ __ _____   ____ _ _ __  | |_ __ _ _ __ ___ / _| __ _ \r\n  / _ \\ | '_ \\| '__/ _ \\ \\ / / _` | '__| | __/ _` | '__/ _ \\ |_ / _` |\r\n / ___ \\| |_) | | | (_) \\ V / (_| | |    | || (_| | | |  __/  _| (_| |\r\n/_/   \\_\\ .__/|_|  \\___/ \\_/ \\__,_|_|     \\__\\__,_|_|  \\___|_|  \\__,_|\r\n        |_|                                                           ");
+            Console.ResetColor();
+        }
+
+        public static void AllRelationships()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine(" ____      _            _                                        _            \r\n|  _ \\ ___| | __ _  ___(_) ___  _ __   __ _ _ __ ___   ___ _ __ | |_ ___  ___ \r\n| |_) / _ \\ |/ _` |/ __| |/ _ \\| '_ \\ / _` | '_ ` _ \\ / _ \\ '_ \\| __/ _ \\/ __|\r\n|  _ <  __/ | (_| | (__| | (_) | | | | (_| | | | | | |  __/ | | | || (_) \\__ \\\r\n|_| \\_\\___|_|\\__,_|\\___|_|\\___/|_| |_|\\__,_|_| |_| |_|\\___|_| |_|\\__\\___/|___/");
             Console.ResetColor();
         }
     }

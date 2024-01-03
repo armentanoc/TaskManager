@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Service.Login;
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.DomainLayer.Model.People
 {

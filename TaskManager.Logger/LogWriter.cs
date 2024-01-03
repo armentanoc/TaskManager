@@ -1,9 +1,9 @@
 ﻿
 using System.Reflection;
 
-namespace TaskManager.UI
+namespace TaskManager.Logger
 {
-   public class LogWriter
+    public class LogWriter
     {
         private string m_exePath = string.Empty;
         public LogWriter(string logMessage)

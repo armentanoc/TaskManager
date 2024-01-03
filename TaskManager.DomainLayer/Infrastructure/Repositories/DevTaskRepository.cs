@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SQLite;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Operations;
-using TaskManager.DomainLayer.Infrastructure.Operations.DevTasksRepositoryOperations;
+using TaskManager.DomainLayer.Infrastructure.Operations.DevTaskRepositoryOperations;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
@@ -157,21 +157,40 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
 
         // validation methods
-        private static bool DoesTaskExist(SQLiteConnection connection, DevTask task)
+        internal static bool DoesTaskExist(SQLiteConnection connection, DevTask task)
         {
+                string query = $"SELECT COUNT(*) FROM {TableName} WHERE Title = @Title AND Description = @Description;";
 
-            string query = $"SELECT COUNT(*) FROM {TableName} WHERE Title = @Title AND Description = @Description;";
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@Title", task.Title },
+                    { "@Description", task.Description }
+                };
 
-            var parameters = new Dictionary<string, object>
-            {
-                { "@Title", task.Title },
-                { "@Description", task.Description }
-            };
+                int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
 
-            int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
-
-            return count > 0;
+                return count > 0;
+            
         }
+        internal static bool DoesTaskExist(string taskId, User user)
+            {
+                string operation = "checar se tarefa existe para relacionamento";
+
+                using (var connection = DatabaseConnection.CreateConnection(operation))
+                {
+                    string query = $"SELECT COUNT(*) FROM DevTasks WHERE Id = @Id AND TechLeaderLogin = @TechLeaderLogin;";
+
+                    var parameters = new Dictionary<string, object>
+                    {
+                        { "@Id", taskId },
+                        { "@TechLeaderLogin", user.Login }
+                    };
+
+                    int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
+                    DatabaseConnection.CloseConnection(connection, operation);
+                    return count > 0;
+                }
+            }
 
         // read and display methods
         internal static List<DevTask> GetTaskList()
@@ -214,30 +233,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         public static void DisplayAll()
         {
-            List<DevTask> devTasks = GetTaskList();
-            PrintTasks(devTasks);
-            //try
-            //{
-            //    string query = "SELECT Id, DeveloperLogin, TechLeaderLogin, Title, Description, Deadline, Status, CompletionDateTime FROM DevTasks;";
-            //    var dataTable = DatabaseConnection.ExecuteQuery(query);
-
-            //    Console.Clear();
-            //    Title.AllTasks();
-            //    Console.WriteLine();
-
-            //    if (dataTable != null)
-            //    {
-            //        PrintTasks(dataTable);
-            //    }
-            //    else
-            //    {
-            //        Message.Error($"Erro ao capturar dados da tabela {TableName}.");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Message.Error($"Erro ao apresentar {TableName}: {ex.Message}");
-            //}
+            PrintTasks(GetTaskList());
         }
         private static void PrintTasks(DataTable tasksData)
         {
@@ -251,6 +247,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         private static void PrintTasks(List<DevTask> tasks)
         {
+            Console.Clear();
             Title.AllTasks();
             foreach (DevTask task in tasks)
             {
@@ -309,7 +306,6 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 Message.LogAndConsoleWrite($"Erro alterando status da tarefa: {ex.Message}");
             }
         }
-
         internal static void ApproveTaskById(DevTask? taskToApprove, User techLeader)
         {
             try

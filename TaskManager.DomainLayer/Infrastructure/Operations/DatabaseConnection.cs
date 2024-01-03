@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SQLite;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.DomainLayer.Infrastructure.Operations
 {
@@ -60,6 +60,9 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
 
                 logWriter = new LogWriter("Inicialização de DevTasks começou");
                 DevTaskRepository.Initialize();
+
+                logWriter = new LogWriter("Inicialização de DevTasksRelationships começou");
+                DevTaskRelationshipRepository.Initialize();
 
                 return true;
             }

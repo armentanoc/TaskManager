@@ -1,5 +1,5 @@
 ﻿
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.ConsoleInteraction.Components
 {
@@ -55,6 +55,10 @@ namespace TaskManager.ConsoleInteraction.Components
         public static void InitializeDefaultDevTasks()
         {
             LogWrite("\nInicializando tarefas padrão em DevTasks");
+        }
+        public static void InitializeDefaultDevTaskRelationships()
+        {
+            LogWrite("\nInicializando relacionamentos padrão em DevTaskRelationships");
         }
         public static void InitializeDatabase()
         {

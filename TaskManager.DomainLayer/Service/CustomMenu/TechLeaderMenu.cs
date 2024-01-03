@@ -4,6 +4,7 @@ using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Service.DevTaskHelper;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
+using TaskManager.DomainLayer.Service.DevTaskRelationshipHelper;
 
 namespace TaskManager.DomainLayer.Service.CustomMenu
 {
@@ -15,7 +16,17 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
         public TechLeaderMenuService(User techLeader)
         {
             _techLeader = techLeader;
-            string[] techLeaderMenuOptions = { "Alterar senha", "Add novos devs via JSON", "Minhas tarefas", "Tarefas do time", "Aprovar tarefa", "Cancelar tarefa", "Criar tarefa", "Sair" };
+            string[] techLeaderMenuOptions = 
+                { 
+                "Alterar senha", 
+                "Add novos devs via JSON", 
+                "Minhas tarefas", 
+                "Tarefas do time", 
+                "Aprovar tarefa", 
+                "Cancelar tarefa", 
+                "Criar tarefa", 
+                "Criar relacionamento",
+                "Sair" };
             _techLeaderMenu = new Menu(techLeaderMenuOptions);
         }
 
@@ -59,6 +70,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     CreateDevTask.ExecuteTechLeader(_techLeader);
                     return true;
                 case 7:
+                    CreateDevTaskRelationship.Execute(_techLeader);
+                    return true;
+                case 8:
                     Message.Returning();
                     return false;
                 default:

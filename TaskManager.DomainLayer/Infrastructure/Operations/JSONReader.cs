@@ -4,7 +4,7 @@ using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.DTO;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
-using TaskManager.UI;
+using TaskManager.Logger;
 
 namespace TaskManager.DomainLayer.Infrastructure.Operations
 {
