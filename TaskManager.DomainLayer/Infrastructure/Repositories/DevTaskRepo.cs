@@ -492,6 +492,32 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 Message.Error($"Erro alterando Deadline da tarefa: {ex.Message}. ");
             }
         }
+        internal static void UpdateTaskDeveloperLoginById(DevTask taskToAlter, string developerLogin, string techLeaderLogin)
+        {
+            try
+            {
+                const string updateStatusQuery = @"
+                       
+                        UPDATE DevTasks 
+                            SET DeveloperLogin = @DeveloperLogin
+                        WHERE Id = @Id 
+                        AND TechLeaderLogin = @TechLeaderLogin;";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@Id", taskToAlter.Id },
+                    { "@DeveloperLogin", developerLogin },
+                    { "@TechLeaderLogin", techLeaderLogin }
+                };
+
+                DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
+                Message.LogAndConsoleWrite($"Dev da tarefa '{taskToAlter.Title}' (ID {taskToAlter.Id}) alterado para {developerLogin}.");
+            }
+            catch (Exception ex)
+            {
+                Message.Error($"Erro alterando Deadline da tarefa: {ex.Message}. ");
+            }
+        }
     }
 }
 

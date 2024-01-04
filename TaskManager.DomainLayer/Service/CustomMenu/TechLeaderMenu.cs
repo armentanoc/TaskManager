@@ -32,6 +32,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                 "Modificar status de tarefa",
                 "Modificar deadline de tarefa",
                 "Estatísticas de tarefas do time",
+                "Atribuir Dev a Tarefa",
                 "Sair" 
             };
 
@@ -93,6 +94,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     GetTeamStatistics.Execute(_techLeader);
                     return true;
                 case 12:
+                    SetDeveloper.Execute(_techLeader);
+                    return true;
+                case 13:
                     Message.Returning();
                     return false;
                 default:

@@ -143,5 +143,12 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine(" _____     _        _   __    _   _               \r\n| ____|___| |_ __ _| |_/_/___| |_(_) ___ __ _ ___ \r\n|  _| / __| __/ _` | __| / __| __| |/ __/ _` / __|\r\n| |___\\__ \\ || (_| | |_| \\__ \\ |_| | (_| (_| \\__ \\\r\n|_____|___/\\__\\__,_|\\__|_|___/\\__|_|\\___\\__,_|___/\n");
             Console.ResetColor();
         }
+
+        public static void SetDeveloper()
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("    _   _        _ _           _        ____              \r\n   / \\ | |_ _ __(_) |__  _   _(_)_ __  |  _ \\  _____   __ \r\n  / _ \\| __| '__| | '_ \\| | | | | '__| | | | |/ _ \\ \\ / / \r\n / ___ \\ |_| |  | | |_) | |_| | | |    | |_| |  __/\\ V /  \r\n/_/   \\_\\__|_|  |_|_.__/ \\__,_|_|_|    |____/ \\___| \\_/   ");
+            Console.ResetColor();
+        }
     }
 }
