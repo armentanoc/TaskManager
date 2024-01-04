@@ -95,7 +95,7 @@ namespace TaskManager.DomainLayer.Model.People
         private void SetPassword(string newPassword)
         {
             Password = HashPassword(newPassword);
-            UserRepository.UpdatePasswordById(this, Password);
+            UserRepo.UpdatePasswordById(this, Password);
         }
 
         // helpers and validation

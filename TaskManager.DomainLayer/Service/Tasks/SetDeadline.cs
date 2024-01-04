@@ -5,7 +5,7 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.Tasks
 {
     internal class SetDeadline
     {
@@ -14,7 +14,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             try
             {
                 Console.Clear();
-                DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
+                DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
                 Title.SetDeadline();
 
                 Console.Write("\n\nInforme o ID da tarefa cuja Deadline deseja modificar: ");
@@ -35,20 +35,20 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                 Console.ReadKey();
             }
         }
-        
+
         private static bool TrySettingDeadline(string taskId, User techLeader)
         {
             var taskToAlter = IsTaskAppropriate(taskId, techLeader);
             DateTime deadline = GetDeadline();
             taskToAlter.SetDeadline(deadline);
-            DevTaskRepository.UpdateTaskDeadlineById(taskToAlter, techLeader);
+            DevTaskRepo.UpdateTaskDeadlineById(taskToAlter, techLeader);
             return true;
         }
 
         private static DevTask IsTaskAppropriate(string taskId, User techLeader)
         {
             var taskToAlter =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
             task =>

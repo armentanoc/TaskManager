@@ -112,11 +112,11 @@ namespace TaskManager.DomainLayer.Model.Tasks
         }
         static internal bool IsDeveloper(string developerLogin)
         {
-            return UserRepository.GetUsersList().Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
+            return UserRepo.GetUsersList().Any(user => user.Login == developerLogin && user.Job == JobEnum.Developer);
         }
         static internal bool IsTechLeader(string techLeaderLogin)
         {
-            return UserRepository.GetUsersList().Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
+            return UserRepo.GetUsersList().Any(user => user.Login == techLeaderLogin && user.Job == JobEnum.TechLeader);
         }
 
         //tech leader methods

@@ -8,7 +8,7 @@ using TaskManager.DomainLayer.Infrastructure.Operations.UserRepositoryOperations
 
 namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
-    internal class UserRepository
+    internal class UserRepo
     {
         private const string TableName = "Users";
         private static List<User> userList = new List<User>();

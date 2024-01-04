@@ -1,16 +1,15 @@
-﻿
-using TaskManager.ConsoleInteraction.Components;
+﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.Tasks
 {
     internal class ApproveTask
     {
         internal static void Execute(User techLeader)
         {
-            DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
+            DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
 
             Title.ApproveTask();
             Console.Write("\n\nInforme o ID da tarefa que deseja aprovar: ");
@@ -31,7 +30,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
         private static bool TryToApproveTask(string taskId, User techLeader)
         {
             var taskToApprove =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
                     task =>
@@ -43,7 +42,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             if (taskToApprove != null)
             {
                 taskToApprove.SetRequiresApprovalToComplete(false);
-                DevTaskRepository.ApproveTaskById(taskToApprove, techLeader);
+                DevTaskRepo.ApproveTaskById(taskToApprove, techLeader);
                 return true;
             }
             else

@@ -1,10 +1,9 @@
-﻿
-using TaskManager.ConsoleInteraction.Components;
+﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.Tasks
 {
     internal class UpdateStatus
     {
@@ -13,7 +12,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             try
             {
                 Console.Clear();
-                DevTaskRepository.DisplayTasksByDeveloper(developer.Login);
+                DevTaskRepo.DisplayTasksByDeveloper(developer.Login);
                 Title.UpdateTask();
                 Console.Write("\n\nInforme o ID da tarefa cujo status deseja modificar: ");
                 string taskId = Console.ReadLine();
@@ -32,7 +31,8 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             catch (Exception ex)
             {
                 Message.CatchException(ex);
-            } finally
+            }
+            finally
             {
                 Console.ReadKey();
             }
@@ -43,7 +43,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             try
             {
                 Console.Clear();
-                DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
+                DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
                 Title.UpdateTask();
                 Console.Write("\n\nInforme o ID da tarefa cujo status deseja modificar: ");
                 string taskId = Console.ReadLine();
@@ -71,7 +71,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
         private static bool TryToUpdateTask(string taskId, User developer)
         {
             var taskToAlter =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
                     task =>
@@ -83,7 +83,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             {
                 StatusEnum status = GetStatus();
                 taskToAlter.SetStatus(status);
-                DevTaskRepository.UpdateTaskDeadlineById(taskToAlter, developer);
+                DevTaskRepo.UpdateTaskDeadlineById(taskToAlter, developer);
                 return true;
             }
             else
@@ -95,7 +95,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
         private static bool TryToUpdateTaskTechLeader(string taskId, User techLeader)
         {
             var taskToAlter =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
                     task =>
@@ -107,7 +107,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             {
                 StatusEnum status = GetStatus();
                 taskToAlter.SetStatusTechLeader(status);
-                DevTaskRepository.UpdateTaskStatusByIdFromTechLeader(taskToAlter, techLeader);
+                DevTaskRepo.UpdateTaskStatusByIdFromTechLeader(taskToAlter, techLeader);
                 return true;
             }
             else

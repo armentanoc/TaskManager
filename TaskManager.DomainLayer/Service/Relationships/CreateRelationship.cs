@@ -5,14 +5,14 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
+namespace TaskManager.DomainLayer.Service.Relationships
 {
     internal class CreateRelationship
     {
         public static void Execute(User _developer)
         {
             Console.Clear();
-            DevTaskRepository.DisplayTasksByTeam(_developer.Login);
+            DevTaskRepo.DisplayTasksByTeam(_developer.Login);
             Title.NewRelationship();
             StringBuilder firstItem = new StringBuilder();
             StringBuilder secondItem = new StringBuilder();
@@ -32,15 +32,18 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
                         {
                             firstItem.Append("Pai (Mais Genérico)");
                             secondItem.Append("Filho (Mais Específico)");
-                        } else if (relationshipType.Equals(RelationshipTypeEnum.Dependency))
+                        }
+                        else if (relationshipType.Equals(RelationshipTypeEnum.Dependency))
                         {
                             firstItem.Append("Primeira (Deve Ser Executada Antes)");
                             secondItem.Append("Segunda (Deve Ser Executada Depois)");
-                        } else
+                        }
+                        else
                         {
                             throw new Exception("O valor informado não corresponde a relação de ParentChild ou Dependency");
                         }
-                    } else
+                    }
+                    else
                     {
                         throw new Exception("O valor informado não corresponde a um RelationshipTypeEnum");
                     }
@@ -48,7 +51,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
                     Console.WriteLine($"\nInforme o Id da task {firstItem}: ");
                     string firstId = Console.ReadLine();
 
-                    if (!DevTaskRepository.DoesTaskExist(firstId, _developer))
+                    if (!DevTaskRepo.DoesTaskExist(firstId, _developer))
                     {
                         NotThisTaskOrTechLeader(firstId);
                     }
@@ -56,7 +59,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
                     Console.WriteLine($"\nInforme o Id da task {secondItem}: ");
                     string secondId = Console.ReadLine();
 
-                    if (!DevTaskRepository.DoesTaskExist(secondId, _developer))
+                    if (!DevTaskRepo.DoesTaskExist(secondId, _developer))
                     {
                         NotThisTaskOrTechLeader(secondId);
                     }
@@ -88,7 +91,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
                     childOrSecond: secondId,
                     relationshipType: relationship
                 );
-            DevTaskRelationshipRepository.InitializeNewDevTaskRelationship(newRelation);
+            DevTaskRelationshipRepo.InitializeNewDevTaskRelationship(newRelation);
             Console.ReadKey();
         }
     }

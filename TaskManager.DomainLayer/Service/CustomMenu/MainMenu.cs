@@ -38,13 +38,13 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     User user = Authentication.Authenticate();
                     break;
                 case 1:
-                    UserRepository.DisplayAll();
+                    UserRepo.DisplayAll();
                     break;
                 case 2:
-                    DevTaskRepository.DisplayAll();
+                    DevTaskRepo.DisplayAll();
                     break;
                 case 3:
-                    DevTaskRelationshipRepository.DisplayAll();
+                    DevTaskRelationshipRepo.DisplayAll();
                     break;
                 case 4:
                     Title.EnvironmentExit();

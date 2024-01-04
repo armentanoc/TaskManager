@@ -8,7 +8,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
-    internal static class DevTaskRelationshipRepository
+    internal static class DevTaskRelationshipRepo
     {
         private const string TableName = "DevTaskRelationships";
 
