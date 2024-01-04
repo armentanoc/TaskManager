@@ -7,7 +7,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
-    internal class CreateDevTask
+    internal class CreateTask
     {
         public static void Execute(User _developer)
         {

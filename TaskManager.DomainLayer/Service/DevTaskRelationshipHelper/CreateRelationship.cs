@@ -7,7 +7,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
 {
-    internal class CreateDevTaskRelationship
+    internal class CreateRelationship
     {
         public static void Execute(User _developer)
         {

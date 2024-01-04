@@ -71,13 +71,13 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     CancelTask.Execute(_techLeader);
                     return true;
                 case 6:
-                    CreateDevTask.ExecuteTechLeader(_techLeader);
+                    CreateTask.ExecuteTechLeader(_techLeader);
                     return true;
                 case 7:
-                    CreateDevTaskRelationship.Execute(_techLeader);
+                    CreateRelationship.Execute(_techLeader);
                     return true;
                 case 8:
-                    UpdateTaskStatus.ExecuteTechLeader(_techLeader);
+                    UpdateStatus.ExecuteTechLeader(_techLeader);
                     return true;
                 case 9:
                     Message.Returning();

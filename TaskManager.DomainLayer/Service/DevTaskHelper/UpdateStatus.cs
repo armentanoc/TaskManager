@@ -6,7 +6,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
-    internal class UpdateTaskStatus
+    internal class UpdateStatus
     {
         internal static void Execute(User developer)
         {
