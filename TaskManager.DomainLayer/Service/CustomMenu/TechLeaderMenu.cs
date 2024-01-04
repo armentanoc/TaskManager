@@ -28,6 +28,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                 "Criar tarefa", 
                 "Criar relacionamento",
                 "Modificar status de tarefa",
+                "Modificar deadline de tarefa",
                 "Sair" 
             };
 
@@ -80,6 +81,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     UpdateStatus.ExecuteTechLeader(_techLeader);
                     return true;
                 case 9:
+                    SetDeadline.Execute(_techLeader);
+                    return true;
+                case 10:
                     Message.Returning();
                     return false;
                 default:
