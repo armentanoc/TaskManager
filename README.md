@@ -39,6 +39,7 @@ O Sistema de Gerenciamento de Tarefas foi projetado para otimizar a colaboraçã
 
 Agora está pronto para começar a trabalhar com o SQLite nesse projeto!
 
+## Recursos
 
 ### 🧑‍💻 Capacidades do Tech Leader
 
