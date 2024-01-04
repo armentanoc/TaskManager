@@ -5,6 +5,7 @@ using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Service.Relationships;
 using TaskManager.DomainLayer.Service.Tasks;
+using TaskManager.DomainLayer.Service.Statistics;
 
 namespace TaskManager.DomainLayer.Service.CustomMenu
 {
