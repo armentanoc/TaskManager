@@ -16,15 +16,15 @@ namespace TaskManager.DomainLayer.Service.Tasks
             try
             {
                 Console.Write("\nInforme o título para a nova DevTask: ");
-                string title = Console.ReadLine();
+                string? title = Console.ReadLine();
                 IsTitleNullOrWhitespace(title);
 
                 Console.Write("\nInforme um descrição opcional (pressione Enter para pular): ");
-                string description = Console.ReadLine();
+                string? description = Console.ReadLine();
                 description = IsDescriptionNullOrWhitespace(description);
 
                 Console.Write("\nInforme o login do líder técnico: ");
-                string techLeaderLogin = Console.ReadLine();
+                string? techLeaderLogin = Console.ReadLine();
 
                 IsTechLeader(techLeaderLogin);
                 CreateNewTask(title, description, techLeaderLogin, _developer);
@@ -47,18 +47,18 @@ namespace TaskManager.DomainLayer.Service.Tasks
             try
             {
                 Console.Write("\nInforme o título para a nova DevTask: ");
-                string title = Console.ReadLine();
+                string? title = Console.ReadLine();
                 IsTitleNullOrWhitespace(title);
 
                 Console.Write("\nInforme um descrição opcional (pressione Enter para pular): ");
-                string description = Console.ReadLine();
+                string? description = Console.ReadLine();
                 description = IsDescriptionNullOrWhitespace(description);
 
                 Console.Write("\nInforme o login de quem irá assumir a tarefa: ");
-                string developerLogin = Console.ReadLine();
+                string? developerLogin = Console.ReadLine();
                 developerLogin = string.IsNullOrWhiteSpace(developerLogin) ? "TBD" : developerLogin;
 
-                User developerInstance = null;
+                User? developerInstance = null;
 
                 if (DevTask.IsDeveloper(developerLogin) || developerLogin.Equals("TBD"))
                 {

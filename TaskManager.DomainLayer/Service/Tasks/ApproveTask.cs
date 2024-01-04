@@ -13,7 +13,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
 
             Title.ApproveTask();
             Console.Write("\n\nInforme o ID da tarefa que deseja aprovar: ");
-            string taskId = Console.ReadLine();
+            string? taskId = Console.ReadLine();
 
             if (TryToApproveTask(taskId, techLeader))
             {

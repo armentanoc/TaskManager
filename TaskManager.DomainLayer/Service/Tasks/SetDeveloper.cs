@@ -1,5 +1,4 @@
 ﻿
-using System.Globalization;
 using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
@@ -7,22 +6,29 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Service.Tasks
 {
-    internal class SetDeadline
+    internal class SetDeveloper
     {
         internal static void Execute(User techLeader)
         {
             try
             {
                 Console.Clear();
-                DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
-                Title.SetDeadline();
 
-                Console.Write("\n\nInforme o ID da tarefa cuja Deadline deseja modificar: ");
+                DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
+                Title.SetDeveloper();
+
+                Console.Write("\n\nInforme o ID da tarefa que deseja modificar: ");
                 string? taskId = Console.ReadLine();
 
-                if (TrySettingDeadline(taskId, techLeader))
+                UserRepo.DisplayDevelopers();
+                Title.SetDeveloper();
+
+                Console.Write("\n\nInforme o Login do Dev que irá receber a tarefa: ");
+                string? devLogin = Console.ReadLine();
+
+                if (TrySettingDeveloperToTask(taskId, devLogin, techLeader))
                 {
-                    Message.LogAndConsoleWrite($"Operação de alteração de Deadline efetuada com sucesso.");
+                    Message.LogAndConsoleWrite($"Operação efetuada com sucesso.");
                     Message.PressAnyKeyToReturn();
                 }
             }
@@ -36,15 +42,15 @@ namespace TaskManager.DomainLayer.Service.Tasks
             }
         }
 
-        private static bool TrySettingDeadline(string taskId, User techLeader)
+        private static bool TrySettingDeveloperToTask(string? taskId, string? devId, User techLeader)
         {
             var taskToAlter = IsTaskAppropriate(taskId, techLeader);
-            DateTime deadline = GetDeadline();
-            taskToAlter.SetDeadline(deadline);
-            DevTaskRepo.UpdateTaskDeadlineById(taskToAlter, techLeader);
+            var developerLogin = IsDevAppropriate(devId, techLeader);
+
+            taskToAlter.SetDeveloper(developerLogin);
+            DevTaskRepo.UpdateTaskDeveloperLoginById(taskToAlter, developerLogin, techLeader.Login);
             return true;
         }
-
         private static DevTask IsTaskAppropriate(string taskId, User techLeader)
         {
             var taskToAlter =
@@ -62,22 +68,26 @@ namespace TaskManager.DomainLayer.Service.Tasks
             }
             else
             {
-                throw new ArgumentException("Não foi possível atualizar o Deadline da tarefa. Verifique o ID ou se você é o dev associado.");
+                throw new ArgumentException("Não foi possível atualizar o Dev da tarefa. Verifique o ID ou se você é o Tech Leader associado.");
             }
         }
-        private static DateTime GetDeadline()
+        private static string IsDevAppropriate(string devLogin, User techLeader)
         {
-            Console.Write("\nInforme para qual data e horário deseja alterar a tarefa (DD/MM/YYYY HH:mm): ");
-            string? dateTimeString = Console.ReadLine();
+            var dev =
+                UserRepo
+                .GetDevelopersInDatabase()
+                .FirstOrDefault(
+                dev =>
+                        dev.Login.Equals(devLogin)
+                );
 
-            if (DateTime.TryParseExact(dateTimeString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime deadline))
+            if (dev is User)
             {
-                Message.LogWrite($"Data e horário informados: {deadline:dd/MM/yyyy HH:mm}");
-                return deadline;
+                return dev.Login;
             }
             else
             {
-                throw new ArgumentException("Formato de data e horário inválido. Utilize o formato DD/MM/YYYY HH:mm");
+                throw new ArgumentException($"Usuário '{devLogin}' não encontrado.");
             }
         }
     }

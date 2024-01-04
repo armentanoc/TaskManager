@@ -109,7 +109,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 catch (Exception ex)
                 {
                     Message.Error($"Erro ao adicionar usuários do JSON: {ex.Message}");
-                } 
+                }
             }
         }
 
@@ -256,5 +256,48 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 Message.Error($"Erro alterando senha: {ex.Message}");
             }
         }
+
+        internal static void DisplayDevelopers()
+        {
+            Console.Clear();
+            Title.AllUsers();
+            PrintUsers(GetDevelopersInDatabase());
+        }
+
+        internal static List<User> GetDevelopersInDatabase()
+        {
+            try
+            {
+                const string query = "SELECT * FROM Users WHERE JobType = 'Developer';";
+
+                var dataTable = DatabaseConnection.ExecuteQuery(query);
+                var developers = new List<User>();
+
+                if (dataTable != null && dataTable.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        var user = new User(
+                            id: row["Id"].ToString(),
+                            name: row["Name"].ToString(),
+                            login: row["Login"].ToString(),
+                            password: row["Password"].ToString(),
+                            email: row["Email"].ToString(),
+                            job: Enum.Parse<JobEnum>(row["JobType"].ToString())
+                        );
+
+                        developers.Add(user);
+                    }
+                }
+
+                return developers;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro obtendo lista de usuários: {ex.Message}");
+                return new List<User>();
+            }
+        }
     }
 }
+

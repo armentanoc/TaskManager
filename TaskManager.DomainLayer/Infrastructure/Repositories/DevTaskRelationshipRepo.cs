@@ -25,7 +25,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         private static void InitializeDefaultRelationships()
         {
-            SQLiteConnection defaultConnection = null;
+            SQLiteConnection? defaultConnection = null;
 
             try
             {
@@ -54,7 +54,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         internal static void InitializeNewDevTaskRelationship(DevTaskRelationship newRelation)
         {
-            SQLiteConnection defaultConnection = null;
+            SQLiteConnection? defaultConnection = null;
 
             try
             {
@@ -150,7 +150,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                            $"OR " +
                            $"(ParentOrFirst_DevTask_Id = @ChildOrSecond AND ChildOrSecond_DevTask_Id = @ParentOrFirst);";
 
-            var parameters = new Dictionary<string, object>
+            var parameters = new Dictionary<string, object?>
     {
         { "@ParentOrFirst", relationship.ParentOrFirstTaskId },
         { "@ChildOrSecond", relationship.ChildOrSecondTaskId }

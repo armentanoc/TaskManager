@@ -15,7 +15,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
                 DevTaskRepo.DisplayTasksByDeveloper(developer.Login);
                 Title.UpdateTask();
                 Console.Write("\n\nInforme o ID da tarefa cujo status deseja modificar: ");
-                string taskId = Console.ReadLine();
+                string? taskId = Console.ReadLine();
 
                 if (TryToUpdateTask(taskId, developer))
                 {
@@ -46,7 +46,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
                 DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
                 Title.UpdateTask();
                 Console.Write("\n\nInforme o ID da tarefa cujo status deseja modificar: ");
-                string taskId = Console.ReadLine();
+                string? taskId = Console.ReadLine();
 
                 if (TryToUpdateTaskTechLeader(taskId, techLeader))
                 {
@@ -120,7 +120,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
         {
             Console.Write("\nInforme para qual status deseja alterar a tarefa (EmAnaliseParaBacklog," +
                 " Backlog, EmProgresso, EmAnaliseParaConclusao, Concluida, Cancelada): ");
-            string status = Console.ReadLine();
+            string? status = Console.ReadLine();
 
             if (Enum.TryParse(status, true, out StatusEnum statusEnum))
             {
