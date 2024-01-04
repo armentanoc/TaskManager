@@ -11,6 +11,8 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
     {
         public static void Execute(User _developer)
         {
+            Console.Clear();
+            DevTaskRepository.DisplayTasksByTeam(_developer.Login);
             Title.NewRelationship();
             StringBuilder firstItem = new StringBuilder();
             StringBuilder secondItem = new StringBuilder();
