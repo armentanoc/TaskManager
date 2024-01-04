@@ -61,7 +61,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
                         NotThisTaskOrTechLeader(secondId);
                     }
 
-                    CreateRelationship(firstId, secondId, relationshipType);
+                    CreateNewRelationship(firstId, secondId, relationshipType);
                 }
                 catch (Exception ex)
                 {
@@ -81,7 +81,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
             throw new Exception($"Task de Id {id} não encontrada ou você não é o tech leader responsável por essa tarefa\"");
         }
 
-        private static void CreateRelationship(string firstId, string secondId, RelationshipTypeEnum relationship)
+        private static void CreateNewRelationship(string firstId, string secondId, RelationshipTypeEnum relationship)
         {
             DevTaskRelationship newRelation = new DevTaskRelationship(
                     parentOrFirst: firstId,

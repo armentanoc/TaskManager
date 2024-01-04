@@ -83,7 +83,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             {
                 StatusEnum status = GetStatus();
                 taskToAlter.SetStatus(status);
-                DevTaskRepository.UpdateTaskStatusById(taskToAlter, developer);
+                DevTaskRepository.UpdateTaskDeadlineById(taskToAlter, developer);
                 return true;
             }
             else
