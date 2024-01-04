@@ -118,7 +118,8 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
         private static StatusEnum GetStatus()
         {
-            Console.Write("\nInforme para qual status deseja alterar a tarefa: ");
+            Console.Write("\nInforme para qual status deseja alterar a tarefa (EmAnaliseParaBacklog," +
+                " Backlog, EmProgresso, EmAnaliseParaConclusao, Concluida, Cancelada): ");
             string status = Console.ReadLine();
 
             if (Enum.TryParse(status, true, out StatusEnum statusEnum))
