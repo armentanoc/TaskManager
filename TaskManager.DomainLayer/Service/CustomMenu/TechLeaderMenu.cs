@@ -22,7 +22,8 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                 "Alterar senha", 
                 "Add novos devs via JSON", 
                 "Minhas tarefas", 
-                "Tarefas do time", 
+                "Tarefas relacionadas às minhas",
+                "Tarefas do time",
                 "Aprovar tarefa", 
                 "Cancelar tarefa", 
                 "Criar tarefa", 
@@ -63,27 +64,30 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     DevTaskRepo.DisplayTasksByDeveloper(_techLeader.Login);
                     return true;
                 case 3:
-                    DevTaskRepo.DisplayTasksByTeam(_techLeader.Login);
+                    DevTaskRepo.DisplayRelatedTasksByDeveloper(_techLeader.Login);
                     return true;
                 case 4:
-                    ApproveTask.Execute(_techLeader);
+                    DevTaskRepo.DisplayTasksByTeam(_techLeader.Login);
                     return true;
                 case 5:
-                    CancelTask.Execute(_techLeader);
+                    ApproveTask.Execute(_techLeader);
                     return true;
                 case 6:
-                    CreateTask.ExecuteTechLeader(_techLeader);
+                    CancelTask.Execute(_techLeader);
                     return true;
                 case 7:
-                    CreateRelationship.Execute(_techLeader);
+                    CreateTask.ExecuteTechLeader(_techLeader);
                     return true;
                 case 8:
-                    UpdateStatus.ExecuteTechLeader(_techLeader);
+                    CreateRelationship.Execute(_techLeader);
                     return true;
                 case 9:
-                    SetDeadline.Execute(_techLeader);
+                    UpdateStatus.ExecuteTechLeader(_techLeader);
                     return true;
                 case 10:
+                    SetDeadline.Execute(_techLeader);
+                    return true;
+                case 11:
                     Message.Returning();
                     return false;
                 default:

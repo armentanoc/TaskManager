@@ -216,7 +216,6 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                             requiresApprovalToComplete: row["RequiresApprovalToComplete"].ToString().Equals("1"),
                             deadline: string.IsNullOrEmpty(row["Deadline"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["Deadline"].ToString()),
                             completionDateTime: string.IsNullOrEmpty(row["CompletionDateTime"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["CompletionDateTime"].ToString())
-
                         );
 
                         tasks.Add(task);
@@ -254,6 +253,8 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 task.ToStringPrint();
             }
         }
+
+        // display tasks methods
         internal static void DisplayTasksByDeveloper(string login)
         {
             Title.AllTasks();
@@ -287,6 +288,16 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
             Title.AllTasks();
             Console.WriteLine($"\nDeveloper: {login}");
             var thisDevTaskList = GetDevTaskList(login);
+            var relationships = GetRelationships(thisDevTaskList);
+            var allRelatedTasks = GetRelatedTasks(login, relationships);
+            PrintTasks(allRelatedTasks);
+            Message.PressAnyKeyToContinue();
+        }
+        internal static void DisplayRelatedTasksByTechLeader(string login)
+        {
+            Title.AllTasks();
+            Console.WriteLine($"\nTechLeader: {login}");
+            var thisDevTaskList = GetTeamTaskList(login);
             var relationships = GetRelationships(thisDevTaskList);
             var allRelatedTasks = GetRelatedTasks(login, relationships);
             PrintTasks(allRelatedTasks);
@@ -337,6 +348,12 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         {
             return GetTaskList()
                 .Where(task => task.DeveloperLogin.Equals(login))
+                .ToList();
+        }
+        private static IEnumerable<DevTask> GetTeamTaskList(string login)
+        {
+            return GetTaskList()
+                .Where(task => task.TechLeaderLogin.Equals(login))
                 .ToList();
         }
 
