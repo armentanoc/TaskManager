@@ -135,5 +135,13 @@ namespace TaskManager.ConsoleInteraction.Components
             Console.WriteLine(" ____       _     ____                 _ _ _            \r\n/ ___|  ___| |_  |  _ \\  ___  __ _  __| | (_)_ __   ___ \r\n\\___ \\ / _ \\ __| | | | |/ _ \\/ _` |/ _` | | | '_ \\ / _ \\\r\n ___) |  __/ |_  | |_| |  __/ (_| | (_| | | | | | |  __/\r\n|____/ \\___|\\__| |____/ \\___|\\__,_|\\__,_|_|_|_| |_|\\___|");
             Console.ResetColor();
         }
+
+        public static void TeamStatistics()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine(" _____     _        _   __    _   _               \r\n| ____|___| |_ __ _| |_/_/___| |_(_) ___ __ _ ___ \r\n|  _| / __| __/ _` | __| / __| __| |/ __/ _` / __|\r\n| |___\\__ \\ || (_| | |_| \\__ \\ |_| | (_| (_| \\__ \\\r\n|_____|___/\\__\\__,_|\\__|_|___/\\__|_|\\___\\__,_|___/\n");
+            Console.ResetColor();
+        }
     }
 }
