@@ -3,8 +3,8 @@ using TaskManager.ConsoleInteraction.Components;
 using TaskManager.ConsoleInteraction;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
-using TaskManager.DomainLayer.Service.DevTaskRelationship;
-using TaskManager.DomainLayer.Service.DevTask;
+using TaskManager.DomainLayer.Service.Relationships;
+using TaskManager.DomainLayer.Service.Tasks;
 
 namespace TaskManager.DomainLayer.Service.CustomMenu
 {

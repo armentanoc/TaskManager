@@ -3,7 +3,7 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTask
+namespace TaskManager.DomainLayer.Service.Tasks
 {
     internal class UpdateStatus
     {
