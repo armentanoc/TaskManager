@@ -89,7 +89,6 @@ namespace TaskManager.ConsoleInteraction.Components
         }
         public static void NewRelationship()
         {
-            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(" _   _                   ____      _            /\\/|       \r\n| \\ | | _____   ____ _  |  _ \\ ___| | __ _  ___|/\\/_  ___  \r\n|  \\| |/ _ \\ \\ / / _` | | |_) / _ \\ |/ _` |/ __/ _` |/ _ \\ \r\n| |\\  | (_) \\ V / (_| | |  _ <  __/ | (_| | (_| (_| | (_) |\r\n|_| \\_|\\___/ \\_/ \\__,_| |_| \\_\\___|_|\\__,_|\\___\\__,_|\\___/ \r\n                                            )_)            ");
             Console.ResetColor();
