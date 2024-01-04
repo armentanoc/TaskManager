@@ -7,7 +7,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
-    internal class CreateDevTask
+    internal class CreateTask
     {
         public static void Execute(User _developer)
         {
@@ -27,7 +27,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                 string techLeaderLogin = Console.ReadLine();
                 
                 IsTechLeader(techLeaderLogin);
-                CreateTask(title, description, techLeaderLogin, _developer);
+                CreateNewTask(title, description, techLeaderLogin, _developer);
 
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                     Message.Error($"User {developerLogin} informado não é Developer.");
                 }
 
-                CreateTask(title, description, _techLeader.Login, developerInstance);
+                CreateNewTask(title, description, _techLeader.Login, developerInstance);
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
         {
             return string.IsNullOrWhiteSpace(description) ? "TBD" : description;
         }
-        private static void CreateTask(string title, string? description, string? techLeaderLogin, User developer)
+        private static void CreateNewTask(string title, string? description, string? techLeaderLogin, User developer)
         {
             string developerLogin;
 

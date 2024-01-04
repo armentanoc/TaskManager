@@ -48,13 +48,13 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     _developer.TryChangingPassword();
                     return true;
                 case 1:
-                    CreateDevTask.Execute(_developer);
+                    CreateTask.Execute(_developer);
                     return true;
                 case 2:
                     DevTaskRepository.DisplayTasksByDeveloper(_developer.Login);
                     return true;
                 case 3:
-                    UpdateTaskStatus.Execute(_developer);
+                    UpdateStatus.Execute(_developer);
                     return true;
                 case 4:
                     Message.Returning();

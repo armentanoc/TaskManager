@@ -390,5 +390,31 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false) ou se você é o líder técnico responsável.");
             }
         }
+        internal static void UpdateTaskDeadlineById(DevTask? taskToUpdate, User techLeader)
+        {
+            try
+            {
+                const string updateStatusQuery = @"
+                       
+                        UPDATE DevTasks 
+                            SET Deadline = @Deadline
+                        WHERE Id = @Id 
+                        AND TechLeaderLogin = @TechLeaderLogin;";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@Id", taskToUpdate.Id },
+                    { "@Deadline", taskToUpdate.Deadline },
+                    { "@TechLeaderLogin", techLeader.Login }
+                };
+
+                DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
+                Message.LogAndConsoleWrite($"Deadline alterada para {taskToUpdate.Deadline} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+            }
+            catch (Exception ex)
+            {
+                Message.Error($"Erro alterando Deadline da tarefa: {ex.Message}. ");
+            }
+        }
     }
 }

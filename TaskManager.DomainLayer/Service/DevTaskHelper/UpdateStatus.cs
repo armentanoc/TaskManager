@@ -6,7 +6,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
-    internal class UpdateTaskStatus
+    internal class UpdateStatus
     {
         internal static void Execute(User developer)
         {
@@ -83,7 +83,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             {
                 StatusEnum status = GetStatus();
                 taskToAlter.SetStatus(status);
-                DevTaskRepository.UpdateTaskStatusById(taskToAlter, developer);
+                DevTaskRepository.UpdateTaskDeadlineById(taskToAlter, developer);
                 return true;
             }
             else
