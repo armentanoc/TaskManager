@@ -16,4 +16,8 @@
     <ProjectReference Include="..\TaskManager.Logger\TaskManager.Logger.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\Statistics\" />
+  </ItemGroup>
+
 </Project>

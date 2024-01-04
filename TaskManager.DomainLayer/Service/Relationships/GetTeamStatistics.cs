@@ -1,7 +1,7 @@
 ﻿using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 
-namespace TaskManager.DomainLayer.Service.CustomMenu
+namespace TaskManager.DomainLayer.Service.Relationships
 {
     internal class GetTeamStatistics
     {
