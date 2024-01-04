@@ -30,6 +30,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                 "Criar relacionamento",
                 "Modificar status de tarefa",
                 "Modificar deadline de tarefa",
+                "Estatísticas de tarefas do time",
                 "Sair" 
             };
 
@@ -57,7 +58,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     _techLeader.TryChangingPassword();
                     return true;
                 case 1:
-                    string relativePath = Message.AskForJSONPath();
+                    string? relativePath = Message.AskForJSONPath();
                     UserRepo.AddUsersFromJson(relativePath);
                     return true;
                 case 2:
@@ -88,6 +89,9 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     SetDeadline.Execute(_techLeader);
                     return true;
                 case 11:
+                    GetTeamStatistics.Execute(_techLeader);
+                    return true;
+                case 12:
                     Message.Returning();
                     return false;
                 default:

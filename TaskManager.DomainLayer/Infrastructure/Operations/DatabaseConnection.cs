@@ -9,7 +9,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
     internal class DatabaseConnection
     {
         internal const string DatabasePath = "task_manager_data.db";
-        static LogWriter _logWriter;
+        static LogWriter? _logWriter;
 
         internal static SQLiteConnection? CreateConnection(string context)
         {
@@ -30,7 +30,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                connection.Close();
+                connection.Dispose();
                 _logWriter = new LogWriter($"Conexão fechada ({operation})");
             }
         }
@@ -154,7 +154,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
                 return null;
             }
         }
-        internal static void ExecuteNonQuery(string query, object parameters = null)
+        internal static void ExecuteNonQuery(string query, object? parameters = null)
         {
             string operation = "executar alterações no banco";
             try
@@ -191,7 +191,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
                 return result != null && result.ToString() == tableName;
             }
         }
-        internal static object? ExecuteScalar(SQLiteConnection connection, string query, Dictionary<string, object> parameters = null)
+        internal static object? ExecuteScalar(SQLiteConnection connection, string query, Dictionary<string, object?>? parameters = null)
         {
             string operation = "executar escalar";
 

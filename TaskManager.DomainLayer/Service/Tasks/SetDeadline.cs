@@ -18,7 +18,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
                 Title.SetDeadline();
 
                 Console.Write("\n\nInforme o ID da tarefa cuja Deadline deseja modificar: ");
-                string taskId = Console.ReadLine();
+                string? taskId = Console.ReadLine();
 
                 if (TrySettingDeadline(taskId, techLeader))
                 {
@@ -68,7 +68,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
         private static DateTime GetDeadline()
         {
             Console.Write("\nInforme para qual data e horário deseja alterar a tarefa (DD/MM/YYYY HH:mm): ");
-            string dateTimeString = Console.ReadLine();
+            string? dateTimeString = Console.ReadLine();
 
             if (DateTime.TryParseExact(dateTimeString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime deadline))
             {

@@ -13,7 +13,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
 
             Title.CancelTask();
             Message.LogAndConsoleWrite("\n\nInforme o ID da tarefa que deseja cancelar: ");
-            string taskId = Console.ReadLine();
+            string? taskId = Console.ReadLine();
 
             if (TryCancelTask(taskId, techLeader))
             {

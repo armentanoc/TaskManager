@@ -20,7 +20,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
             try
             {
                 Console.WriteLine("\nQual é o tipo de relação? (ParentChild ou Dependency)");
-                string relation = Console.ReadLine();
+                string? relation = Console.ReadLine();
 
                 try
                 {
@@ -49,7 +49,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
                     }
 
                     Console.WriteLine($"\nInforme o Id da task {firstItem}: ");
-                    string firstId = Console.ReadLine();
+                    string? firstId = Console.ReadLine();
 
                     if (!DevTaskRepo.DoesTaskExist(firstId, _developer))
                     {
@@ -57,7 +57,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
                     }
 
                     Console.WriteLine($"\nInforme o Id da task {secondItem}: ");
-                    string secondId = Console.ReadLine();
+                    string? secondId = Console.ReadLine();
 
                     if (!DevTaskRepo.DoesTaskExist(secondId, _developer))
                     {
