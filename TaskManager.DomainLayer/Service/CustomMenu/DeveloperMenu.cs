@@ -19,7 +19,8 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                 { 
                 "Alterar senha", 
                 "Criar tarefa", 
-                "Minhas tarefas", 
+                "Minhas tarefas",
+                "Tarefas relacionadas",
                 "Modificar status de tarefa", 
                 "Sair" 
             };
@@ -54,9 +55,12 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     DevTaskRepo.DisplayTasksByDeveloper(_developer.Login);
                     return true;
                 case 3:
-                    UpdateStatus.Execute(_developer);
+                    DevTaskRepo.DisplayRelatedTasksByDeveloper(_developer.Login);
                     return true;
                 case 4:
+                    UpdateStatus.Execute(_developer);
+                    return true;
+                case 5:
                     Message.Returning();
                     return false;
                 default:

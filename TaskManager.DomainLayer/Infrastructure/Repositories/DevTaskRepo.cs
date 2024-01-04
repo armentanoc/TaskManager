@@ -159,38 +159,38 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         // validation methods
         internal static bool DoesTaskExist(SQLiteConnection connection, DevTask task)
         {
-                string query = $"SELECT COUNT(*) FROM {TableName} WHERE Title = @Title AND Description = @Description;";
+            string query = $"SELECT COUNT(*) FROM {TableName} WHERE Title = @Title AND Description = @Description;";
 
-                var parameters = new Dictionary<string, object>
+            var parameters = new Dictionary<string, object>
                 {
                     { "@Title", task.Title },
                     { "@Description", task.Description }
                 };
 
-                int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
+            int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
 
-                return count > 0;
-            
+            return count > 0;
+
         }
         internal static bool DoesTaskExist(string taskId, User user)
+        {
+            string operation = "checar se tarefa existe para relacionamento";
+
+            using (var connection = DatabaseConnection.CreateConnection(operation))
             {
-                string operation = "checar se tarefa existe para relacionamento";
+                string query = $"SELECT COUNT(*) FROM DevTasks WHERE Id = @Id AND TechLeaderLogin = @TechLeaderLogin;";
 
-                using (var connection = DatabaseConnection.CreateConnection(operation))
-                {
-                    string query = $"SELECT COUNT(*) FROM DevTasks WHERE Id = @Id AND TechLeaderLogin = @TechLeaderLogin;";
-
-                    var parameters = new Dictionary<string, object>
+                var parameters = new Dictionary<string, object>
                     {
                         { "@Id", taskId },
                         { "@TechLeaderLogin", user.Login }
                     };
 
-                    int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
-                    DatabaseConnection.CloseConnection(connection, operation);
-                    return count > 0;
-                }
+                int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
+                DatabaseConnection.CloseConnection(connection, operation);
+                return count > 0;
             }
+        }
 
         // read and display methods
         internal static List<DevTask> GetTaskList()
@@ -282,61 +282,118 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
             PrintTasks(thisDevTaskList);
             Message.PressAnyKeyToContinue();
         }
+        internal static void DisplayRelatedTasksByDeveloper(string login)
+        {
+            Title.AllTasks();
+            Console.WriteLine($"\nDeveloper: {login}");
+            var thisDevTaskList = GetDevTaskList(login);
+            var relationships = GetRelationships(thisDevTaskList);
+            var allRelatedTasks = GetRelatedTasks(login, relationships);
+            PrintTasks(allRelatedTasks);
+            Message.PressAnyKeyToContinue();
+        }
+        private static List<DevTask> GetRelatedTasks(string login, IEnumerable<DevTaskRelationship> relationships)
+        {
+            var allRelatedTasks = new List<DevTask>();
+
+            foreach (var relation in relationships)
+            {
+                var relatedTasks = GetRelatedIndividualTask(relation, login);
+                allRelatedTasks.AddRange(relatedTasks);
+            }
+
+            return allRelatedTasks;
+        }
+        private static IEnumerable<DevTask> GetRelatedIndividualTask(DevTaskRelationship relation, string login)
+        {
+            return GetTaskList()
+                .Where(
+                    task =>
+                        (task.Id.Equals(relation.ParentOrFirstTaskId) || task.Id.Equals(relation.ChildOrSecondTaskId))
+                        && !task.DeveloperLogin.Equals(login)
+                )
+                .ToList();
+        }
+        private static IEnumerable<DevTaskRelationship> GetRelationships(IEnumerable<DevTask> thisDevTaskList)
+        {
+            List<DevTaskRelationship> relationships = new List<DevTaskRelationship>();
+
+            foreach (var task in thisDevTaskList)
+            {
+                var relationsOfThisTask = GetRelationsOfThisTask(task);
+
+                relationships.AddRange(relationsOfThisTask);
+            }
+
+            return relationships;
+        }
+        private static IEnumerable<DevTaskRelationship> GetRelationsOfThisTask(DevTask task)
+        {
+            return DevTaskRelationshipRepo.GetDevTaskRelationshipsList()
+                .Where(relation => relation.ParentOrFirstTaskId.Equals(task.Id) || relation.ChildOrSecondTaskId.Equals(task.Id))
+                .ToList();
+        }
+        private static IEnumerable<DevTask> GetDevTaskList(string login)
+        {
+            return GetTaskList()
+                .Where(task => task.DeveloperLogin.Equals(login))
+                .ToList();
+        }
 
         // update methods
 
         internal static void CancelTaskById(DevTask task, User techLeader)
-        {
-            try
             {
-                const string updateStatusToCancelledQuery = "UPDATE DevTasks SET Status = @Status WHERE Id = @Id AND TechLeaderLogin = @TechLeaderLogin;";
+                try
+                {
+                    const string updateStatusToCancelledQuery = "UPDATE DevTasks SET Status = @Status WHERE Id = @Id AND TechLeaderLogin = @TechLeaderLogin;";
 
-                var parameters = new Dictionary<string, object>
+                    var parameters = new Dictionary<string, object>
                 {
                     { "@Id", task.Id },
                     { "@TechLeaderLogin", techLeader.Login },
                     { "@Status", task.Status.ToString()}
                 };
 
-                DatabaseConnection.ExecuteNonQuery(updateStatusToCancelledQuery, parameters);
-                Message.LogAndConsoleWrite($"Status alterado para Cancelado na tarefa '{task.Title}' (ID: {task.Id}).");
+                    DatabaseConnection.ExecuteNonQuery(updateStatusToCancelledQuery, parameters);
+                    Message.LogAndConsoleWrite($"Status alterado para Cancelado na tarefa '{task.Title}' (ID: {task.Id}).");
+                }
+                catch (Exception ex)
+                {
+                    Message.LogAndConsoleWrite($"Erro alterando status da tarefa: {ex.Message}");
+                }
             }
-            catch (Exception ex)
+            internal static void ApproveTaskById(DevTask? taskToApprove, User techLeader)
             {
-                Message.LogAndConsoleWrite($"Erro alterando status da tarefa: {ex.Message}");
-            }
-        }
-        internal static void ApproveTaskById(DevTask? taskToApprove, User techLeader)
-        {
-            try
-            {
-                const string updateStatusToCancelledQuery = 
-                    @"UPDATE DevTasks 
+                try
+                {
+                    const string updateStatusToCancelledQuery =
+                        @"UPDATE DevTasks 
                     SET RequiresApprovalToComplete = @RequiresApprovalToComplete 
                     WHERE 
                          Id = @Id 
                          AND TechLeaderLogin = @TechLeaderLogin;";
 
-                var parameters = new Dictionary<string, object>
+                    var parameters = new Dictionary<string, object>
                 {
                     { "@Id", taskToApprove.Id },
                     { "@RequiresApprovalToComplete", taskToApprove.RequiresApprovalToComplete.ToString() },
                     { "@TechLeaderLogin", techLeader.Login }
                 };
 
-                DatabaseConnection.ExecuteNonQuery(updateStatusToCancelledQuery, parameters);
-                Message.LogAndConsoleWrite($"RequiresApprovalToComplete alterado para False na tarefa '{taskToApprove.Title}' (ID: {taskToApprove.Id}).");
+                    DatabaseConnection.ExecuteNonQuery(updateStatusToCancelledQuery, parameters);
+                    Message.LogAndConsoleWrite($"RequiresApprovalToComplete alterado para False na tarefa '{taskToApprove.Title}' (ID: {taskToApprove.Id}).");
+                }
+                catch (Exception ex)
+                {
+                    Message.Error($"Erro alterando RequiresApprovalToComplete da tarefa: {ex.Message}");
+                }
             }
-            catch (Exception ex)
+            internal static void UpdateTaskStatusById(DevTask? taskToUpdate, User developer)
             {
-                Message.Error($"Erro alterando RequiresApprovalToComplete da tarefa: {ex.Message}");
-            }
-        }
-        internal static void UpdateTaskStatusById(DevTask? taskToUpdate, User developer)
-        {
-            try
-            {
-                const string updateStatusQuery = @"
+                try
+                {
+                    const string updateStatusQuery = @"
                        
                         UPDATE DevTasks 
                             SET Status = @Status, 
@@ -344,7 +401,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                         WHERE Id = @Id 
                         AND DeveloperLogin = @DeveloperLogin;";
 
-                var parameters = new Dictionary<string, object>
+                    var parameters = new Dictionary<string, object>
                 {
                     { "@Id", taskToUpdate.Id },
                     { "@Status", taskToUpdate.Status.ToString() },
@@ -352,19 +409,19 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                     { "@CompletionDateTime", taskToUpdate.CompletionDateTime }
                 };
 
-                DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
-                Message.LogAndConsoleWrite($"Status alterado para {taskToUpdate.Status} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+                    DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
+                    Message.LogAndConsoleWrite($"Status alterado para {taskToUpdate.Status} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+                }
+                catch (Exception ex)
+                {
+                    Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false)");
+                }
             }
-            catch (Exception ex)
+            internal static void UpdateTaskStatusByIdFromTechLeader(DevTask? taskToUpdate, User developer)
             {
-                Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false)");
-            }
-        }
-        internal static void UpdateTaskStatusByIdFromTechLeader(DevTask? taskToUpdate, User developer)
-        {
-            try
-            {
-                const string updateStatusQuery = @"
+                try
+                {
+                    const string updateStatusQuery = @"
                        
                         UPDATE DevTasks 
                             SET Status = @Status, 
@@ -373,7 +430,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                         WHERE Id = @Id 
                         AND TechLeaderLogin = @TechLeaderLogin;";
 
-                var parameters = new Dictionary<string, object>
+                    var parameters = new Dictionary<string, object>
                 {
                     { "@Id", taskToUpdate.Id },
                     { "@Status", taskToUpdate.Status.ToString() },
@@ -382,39 +439,40 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                     { "@CompletionDateTime", taskToUpdate.CompletionDateTime }
                 };
 
-                DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
-                Message.LogAndConsoleWrite($"Status alterado para {taskToUpdate.Status} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+                    DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
+                    Message.LogAndConsoleWrite($"Status alterado para {taskToUpdate.Status} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+                }
+                catch (Exception ex)
+                {
+                    Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false) ou se você é o líder técnico responsável.");
+                }
             }
-            catch (Exception ex)
+            internal static void UpdateTaskDeadlineById(DevTask? taskToUpdate, User techLeader)
             {
-                Message.Error($"Erro alterando Status da tarefa: {ex.Message}. Obs.: Verificar se a tarefa já foi aprovada (boolean RequiresApprovalToComplete = false) ou se você é o líder técnico responsável.");
-            }
-        }
-        internal static void UpdateTaskDeadlineById(DevTask? taskToUpdate, User techLeader)
-        {
-            try
-            {
-                const string updateStatusQuery = @"
+                try
+                {
+                    const string updateStatusQuery = @"
                        
                         UPDATE DevTasks 
                             SET Deadline = @Deadline
                         WHERE Id = @Id 
                         AND TechLeaderLogin = @TechLeaderLogin;";
 
-                var parameters = new Dictionary<string, object>
+                    var parameters = new Dictionary<string, object>
                 {
                     { "@Id", taskToUpdate.Id },
                     { "@Deadline", taskToUpdate.Deadline },
                     { "@TechLeaderLogin", techLeader.Login }
                 };
 
-                DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
-                Message.LogAndConsoleWrite($"Deadline alterada para {taskToUpdate.Deadline} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
-            }
-            catch (Exception ex)
-            {
-                Message.Error($"Erro alterando Deadline da tarefa: {ex.Message}. ");
+                    DatabaseConnection.ExecuteNonQuery(updateStatusQuery, parameters);
+                    Message.LogAndConsoleWrite($"Deadline alterada para {taskToUpdate.Deadline} na tarefa '{taskToUpdate.Title}' (ID: {taskToUpdate.Id}).");
+                }
+                catch (Exception ex)
+                {
+                    Message.Error($"Erro alterando Deadline da tarefa: {ex.Message}. ");
+                }
             }
         }
     }
-}
+
