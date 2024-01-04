@@ -1,10 +1,9 @@
-﻿
-using TaskManager.ConsoleInteraction.Components;
+﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.DevTask
 {
     internal class UpdateStatus
     {
@@ -32,7 +31,8 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
             catch (Exception ex)
             {
                 Message.CatchException(ex);
-            } finally
+            }
+            finally
             {
                 Console.ReadKey();
             }

@@ -5,7 +5,7 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
+namespace TaskManager.DomainLayer.Service.DevTaskRelationship
 {
     internal class CreateRelationship
     {
@@ -32,15 +32,18 @@ namespace TaskManager.DomainLayer.Service.DevTaskRelationshipHelper
                         {
                             firstItem.Append("Pai (Mais Genérico)");
                             secondItem.Append("Filho (Mais Específico)");
-                        } else if (relationshipType.Equals(RelationshipTypeEnum.Dependency))
+                        }
+                        else if (relationshipType.Equals(RelationshipTypeEnum.Dependency))
                         {
                             firstItem.Append("Primeira (Deve Ser Executada Antes)");
                             secondItem.Append("Segunda (Deve Ser Executada Depois)");
-                        } else
+                        }
+                        else
                         {
                             throw new Exception("O valor informado não corresponde a relação de ParentChild ou Dependency");
                         }
-                    } else
+                    }
+                    else
                     {
                         throw new Exception("O valor informado não corresponde a um RelationshipTypeEnum");
                     }

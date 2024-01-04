@@ -1,49 +1,48 @@
-﻿
-using TaskManager.ConsoleInteraction.Components;
+﻿using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.DevTask
 {
-    internal class ApproveTask
+    internal class CancelTask
     {
         internal static void Execute(User techLeader)
         {
             DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
 
-            Title.ApproveTask();
-            Console.Write("\n\nInforme o ID da tarefa que deseja aprovar: ");
+            Title.CancelTask();
+            Message.LogAndConsoleWrite("\n\nInforme o ID da tarefa que deseja cancelar: ");
             string taskId = Console.ReadLine();
 
-            if (TryToApproveTask(taskId, techLeader))
+            if (TryCancelTask(taskId, techLeader))
             {
-                Message.LogAndConsoleWrite($"Operação de aprovação efetuada com sucesso.");
+                Message.LogAndConsoleWrite($"Operação de cancelamento efetuada com sucesso.");
                 Message.PressAnyKeyToContinue();
             }
             else
             {
-                Message.LogAndConsoleWrite("\nNão foi possível aprovar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
+                Message.LogAndConsoleWrite("\nNão foi possível cancelar a tarefa. Verifique o ID ou se você é o líder técnico associado.");
                 Message.PressAnyKeyToContinue();
             }
 
         }
-        private static bool TryToApproveTask(string taskId, User techLeader)
+        private static bool TryCancelTask(string taskId, User techLeader)
         {
-            var taskToApprove =
+            var taskToCancel =
                 DevTaskRepository
                 .GetTaskList()
                 .FirstOrDefault(
                     task =>
                         task.Id.Equals(taskId)
                         && task.TechLeaderLogin.Equals(techLeader.Login)
-                        && task.RequiresApprovalToComplete.Equals(true)
+                        && !task.Status.Equals(StatusEnum.Cancelada)
                 );
 
-            if (taskToApprove != null)
+            if (taskToCancel != null)
             {
-                taskToApprove.SetRequiresApprovalToComplete(false);
-                DevTaskRepository.ApproveTaskById(taskToApprove, techLeader);
+                taskToCancel.SetStatus(StatusEnum.Cancelada);
+                DevTaskRepository.CancelTaskById(taskToCancel, techLeader);
                 return true;
             }
             else
@@ -51,5 +50,6 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                 return false;
             }
         }
+
     }
 }

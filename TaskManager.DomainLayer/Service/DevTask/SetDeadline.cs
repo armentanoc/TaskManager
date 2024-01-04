@@ -5,7 +5,7 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.DevTask
 {
     internal class SetDeadline
     {
@@ -35,7 +35,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
                 Console.ReadKey();
             }
         }
-        
+
         private static bool TrySettingDeadline(string taskId, User techLeader)
         {
             var taskToAlter = IsTaskAppropriate(taskId, techLeader);

@@ -5,7 +5,7 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
 
-namespace TaskManager.DomainLayer.Service.DevTaskHelper
+namespace TaskManager.DomainLayer.Service.DevTask
 {
     internal class CreateTask
     {
@@ -25,7 +25,7 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
                 Console.Write("\nInforme o login do líder técnico: ");
                 string techLeaderLogin = Console.ReadLine();
-                
+
                 IsTechLeader(techLeaderLogin);
                 CreateNewTask(title, description, techLeaderLogin, _developer);
 
@@ -60,10 +60,11 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
 
                 User developerInstance = null;
 
-                if(DevTask.IsDeveloper(developerLogin) || developerLogin.Equals("TBD"))
+                if (DevTask.IsDeveloper(developerLogin) || developerLogin.Equals("TBD"))
                 {
                     developerInstance = UserRepository.GetUsersList().FirstOrDefault(x => x.Login.Equals(developerLogin));
-                } else
+                }
+                else
                 {
                     Message.Error($"User {developerLogin} informado não é Developer.");
                 }
@@ -88,10 +89,11 @@ namespace TaskManager.DomainLayer.Service.DevTaskHelper
         {
             string developerLogin;
 
-            if(developer == null)
+            if (developer == null)
             {
                 developerLogin = "TBD";
-            } else
+            }
+            else
             {
                 developerLogin = developer.Login;
             }
