@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.DomainLayer.Service.DevTaskHelper
 {
-    internal class SetDeadLine
+    internal class SetDeadline
     {
     }
 }
