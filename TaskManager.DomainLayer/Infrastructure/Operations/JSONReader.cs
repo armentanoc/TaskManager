@@ -13,7 +13,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
         static LogWriter _logWriter;
         public static List<User> Execute(string fullPath)
         {
-            List<User> userList = UserRepository.GetUsersList();
+            List<User> userList = UserRepo.GetUsersList();
             string jsonData = File.ReadAllText(fullPath);
             var userDTOs = JsonSerializer.Deserialize<List<UserDTOForJson>>(jsonData);
 

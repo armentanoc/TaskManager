@@ -9,7 +9,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
     {
         internal static void Execute(User techLeader)
         {
-            DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
+            DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
 
             Title.CancelTask();
             Message.LogAndConsoleWrite("\n\nInforme o ID da tarefa que deseja cancelar: ");
@@ -30,7 +30,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
         private static bool TryCancelTask(string taskId, User techLeader)
         {
             var taskToCancel =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
                     task =>
@@ -42,7 +42,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
             if (taskToCancel != null)
             {
                 taskToCancel.SetStatus(StatusEnum.Cancelada);
-                DevTaskRepository.CancelTaskById(taskToCancel, techLeader);
+                DevTaskRepo.CancelTaskById(taskToCancel, techLeader);
                 return true;
             }
             else

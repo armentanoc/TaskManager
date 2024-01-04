@@ -12,7 +12,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
         public static void Execute(User _developer)
         {
             Console.Clear();
-            DevTaskRepository.DisplayTasksByTeam(_developer.Login);
+            DevTaskRepo.DisplayTasksByTeam(_developer.Login);
             Title.NewRelationship();
             StringBuilder firstItem = new StringBuilder();
             StringBuilder secondItem = new StringBuilder();
@@ -51,7 +51,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
                     Console.WriteLine($"\nInforme o Id da task {firstItem}: ");
                     string firstId = Console.ReadLine();
 
-                    if (!DevTaskRepository.DoesTaskExist(firstId, _developer))
+                    if (!DevTaskRepo.DoesTaskExist(firstId, _developer))
                     {
                         NotThisTaskOrTechLeader(firstId);
                     }
@@ -59,7 +59,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
                     Console.WriteLine($"\nInforme o Id da task {secondItem}: ");
                     string secondId = Console.ReadLine();
 
-                    if (!DevTaskRepository.DoesTaskExist(secondId, _developer))
+                    if (!DevTaskRepo.DoesTaskExist(secondId, _developer))
                     {
                         NotThisTaskOrTechLeader(secondId);
                     }
@@ -91,7 +91,7 @@ namespace TaskManager.DomainLayer.Service.Relationships
                     childOrSecond: secondId,
                     relationshipType: relationship
                 );
-            DevTaskRelationshipRepository.InitializeNewDevTaskRelationship(newRelation);
+            DevTaskRelationshipRepo.InitializeNewDevTaskRelationship(newRelation);
             Console.ReadKey();
         }
     }

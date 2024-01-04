@@ -56,13 +56,13 @@ namespace TaskManager.DomainLayer.Infrastructure.Operations
                 LogWriter logWriter;
 
                 logWriter = new LogWriter("Inicialização de Users começou");
-                UserRepository.Initialize();
+                UserRepo.Initialize();
 
                 logWriter = new LogWriter("Inicialização de DevTasks começou");
-                DevTaskRepository.Initialize();
+                DevTaskRepo.Initialize();
 
                 logWriter = new LogWriter("Inicialização de DevTasksRelationships começou");
-                DevTaskRelationshipRepository.Initialize();
+                DevTaskRelationshipRepo.Initialize();
 
                 return true;
             }

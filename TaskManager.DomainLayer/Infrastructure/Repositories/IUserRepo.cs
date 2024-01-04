@@ -2,7 +2,7 @@
 
 namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepo
     {
         User GetUserByLogin(string login);
     }

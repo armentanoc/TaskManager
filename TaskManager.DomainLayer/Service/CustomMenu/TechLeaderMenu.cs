@@ -57,13 +57,13 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     return true;
                 case 1:
                     string relativePath = Message.AskForJSONPath();
-                    UserRepository.AddUsersFromJson(relativePath);
+                    UserRepo.AddUsersFromJson(relativePath);
                     return true;
                 case 2:
-                    DevTaskRepository.DisplayTasksByDeveloper(_techLeader.Login);
+                    DevTaskRepo.DisplayTasksByDeveloper(_techLeader.Login);
                     return true;
                 case 3:
-                    DevTaskRepository.DisplayTasksByTeam(_techLeader.Login);
+                    DevTaskRepo.DisplayTasksByTeam(_techLeader.Login);
                     return true;
                 case 4:
                     ApproveTask.Execute(_techLeader);

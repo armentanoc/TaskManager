@@ -77,7 +77,7 @@ namespace TaskManager.DomainLayer.Service.Login
         }
         private static User? ValidateUser(string login, string enteredPassword)
         {
-           var user = UserRepository.GetUserByLogin(login);
+           var user = UserRepo.GetUserByLogin(login);
 
             if (user == null)
             {

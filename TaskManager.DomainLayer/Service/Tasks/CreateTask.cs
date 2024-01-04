@@ -62,7 +62,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
 
                 if (DevTask.IsDeveloper(developerLogin) || developerLogin.Equals("TBD"))
                 {
-                    developerInstance = UserRepository.GetUsersList().FirstOrDefault(x => x.Login.Equals(developerLogin));
+                    developerInstance = UserRepo.GetUsersList().FirstOrDefault(x => x.Login.Equals(developerLogin));
                 }
                 else
                 {
@@ -104,7 +104,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
                     developerLogin: developerLogin,
                     description: description
                 );
-            DevTaskRepository.InitializeNewDevTask(newDevTask);
+            DevTaskRepo.InitializeNewDevTask(newDevTask);
             Console.ReadKey();
         }
         private static void IsTechLeader(string? techLeaderLogin)

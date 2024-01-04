@@ -51,7 +51,7 @@ namespace TaskManager.DomainLayer.Service.CustomMenu
                     CreateTask.Execute(_developer);
                     return true;
                 case 2:
-                    DevTaskRepository.DisplayTasksByDeveloper(_developer.Login);
+                    DevTaskRepo.DisplayTasksByDeveloper(_developer.Login);
                     return true;
                 case 3:
                     UpdateStatus.Execute(_developer);

@@ -9,7 +9,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
     {
         internal static void Execute(User techLeader)
         {
-            DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
+            DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
 
             Title.ApproveTask();
             Console.Write("\n\nInforme o ID da tarefa que deseja aprovar: ");
@@ -30,7 +30,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
         private static bool TryToApproveTask(string taskId, User techLeader)
         {
             var taskToApprove =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
                     task =>
@@ -42,7 +42,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
             if (taskToApprove != null)
             {
                 taskToApprove.SetRequiresApprovalToComplete(false);
-                DevTaskRepository.ApproveTaskById(taskToApprove, techLeader);
+                DevTaskRepo.ApproveTaskById(taskToApprove, techLeader);
                 return true;
             }
             else

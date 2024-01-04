@@ -9,7 +9,7 @@ using TaskManager.DomainLayer.Model.Tasks;
 
 namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
-    internal static class DevTaskRepository
+    internal static class DevTaskRepo
     {
         private const string TableName = "DevTasks";
 

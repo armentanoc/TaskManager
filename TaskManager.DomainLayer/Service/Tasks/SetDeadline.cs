@@ -14,7 +14,7 @@ namespace TaskManager.DomainLayer.Service.Tasks
             try
             {
                 Console.Clear();
-                DevTaskRepository.DisplayTasksByTeam(techLeader.Login);
+                DevTaskRepo.DisplayTasksByTeam(techLeader.Login);
                 Title.SetDeadline();
 
                 Console.Write("\n\nInforme o ID da tarefa cuja Deadline deseja modificar: ");
@@ -41,14 +41,14 @@ namespace TaskManager.DomainLayer.Service.Tasks
             var taskToAlter = IsTaskAppropriate(taskId, techLeader);
             DateTime deadline = GetDeadline();
             taskToAlter.SetDeadline(deadline);
-            DevTaskRepository.UpdateTaskDeadlineById(taskToAlter, techLeader);
+            DevTaskRepo.UpdateTaskDeadlineById(taskToAlter, techLeader);
             return true;
         }
 
         private static DevTask IsTaskAppropriate(string taskId, User techLeader)
         {
             var taskToAlter =
-                DevTaskRepository
+                DevTaskRepo
                 .GetTaskList()
                 .FirstOrDefault(
             task =>
