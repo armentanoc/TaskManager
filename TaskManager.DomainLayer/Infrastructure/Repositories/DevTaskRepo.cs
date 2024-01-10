@@ -131,7 +131,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 DatabaseConnection.ExecuteNonQuery(insertTaskQuery, parameters);
                 Message.LogAndConsoleWrite($"Task '{task.Title}' inserida com sucesso na tabela.");
-                Console.WriteLine("\nPressione qualquer tecla para continuar\n");
+                Message.PressAnyKeyToContinue();
             }
             catch (SQLiteException ex)
             {

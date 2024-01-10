@@ -202,7 +202,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 if (dataTable != null && dataTable.Rows.Count > 0)
                 {
-                    foreach (DataRow row in dataTable.Rows)
+                    foreach (DataRow? row in dataTable.Rows)
                     {
                         var user = new User(
                             id: row["Id"].ToString(),
