@@ -1,12 +1,13 @@
 ﻿
 using System.Data;
 using System.Data.SQLite;
+
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Files;
 using TaskManager.DomainLayer.Infrastructure.Operations;
 using TaskManager.DomainLayer.Infrastructure.Operations.DevTaskRepositoryOperations;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Model.Tasks;
-using TaskManager.DomainLayer.Files;
 
 namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
@@ -38,7 +39,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 if (tasks.Count == 0)
                 {
-                    DefaultTasks.InsertDefaultTasks(defaultConnection);
+                    DefaultDevTasks.InsertDefaultTasks(defaultConnection);
                 }
             }
             finally

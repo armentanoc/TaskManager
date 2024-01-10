@@ -5,7 +5,7 @@ using TaskManager.DomainLayer.Infrastructure.Repositories;
 
 namespace TaskManager.DomainLayer.Files
 {
-    internal class DefaultTasks
+    internal class DefaultDevTasks
     {
         internal static void InsertDefaultTasks(SQLiteConnection connection)
         {
