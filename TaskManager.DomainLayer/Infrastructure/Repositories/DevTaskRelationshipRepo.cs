@@ -25,24 +25,22 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         internal static void InitializeNewDevTaskRelationship(DevTaskRelationship newRelation)
         {
-            SQLiteConnection? defaultConnection = null;
-
-            try
+            using (var defaultConnection = DatabaseConnection.CreateConnection($"inserindo nova tarefa em {TableName}"))
             {
-                Message.InitializeDefaultDevTaskRelationships();
-
-                defaultConnection = DatabaseConnection.CreateConnection($"inserir nova tarefa em {TableName}");
-                var tasks = GetDevTaskRelationshipsList();
-
-                InsertDevTaskRelationshipIfNotExists(defaultConnection, newRelation);
-            }
-            catch (Exception ex)
-            {
-                Message.CatchException(ex);
-            }
-            finally
-            {
-                DatabaseConnection.CloseConnection(defaultConnection, "inserir nova tarefa em DevTasks");
+                try
+                {
+                    Message.InitializeDefaultDevTaskRelationships();
+                    var tasks = GetDevTaskRelationshipsList();
+                    InsertDevTaskRelationshipIfNotExists(defaultConnection, newRelation);
+                }
+                catch (Exception ex)
+                {
+                    Message.CatchException(ex);
+                }
+                finally
+                {
+                    DatabaseConnection.CloseConnection(defaultConnection, $"inserindo nova tarefa em {TableName}");
+                }
             }
         }
 
@@ -122,10 +120,10 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                            $"(ParentOrFirst_DevTask_Id = @ChildOrSecond AND ChildOrSecond_DevTask_Id = @ParentOrFirst);";
 
             var parameters = new Dictionary<string, object?>
-    {
-        { "@ParentOrFirst", relationship.ParentOrFirstTaskId },
-        { "@ChildOrSecond", relationship.ChildOrSecondTaskId }
-    };
+            {
+                { "@ParentOrFirst", relationship.ParentOrFirstTaskId },
+                { "@ChildOrSecond", relationship.ChildOrSecondTaskId }
+            };
 
             int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
 
