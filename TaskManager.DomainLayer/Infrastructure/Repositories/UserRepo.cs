@@ -56,7 +56,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                     INSERT INTO {TableName} (Name, Login, Password, Email, JobType)
                     VALUES (@Name, @Login, @Password, @Email, @JobType);";
 
-                var parameters = new Dictionary<string, object>
+                var parameters = new Dictionary<string, object?>
                 {
                     { "@Name", user.Name },
                     { "@Login", user.Login },
@@ -146,7 +146,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
 
         //get user methods
-        public static User GetUserByLogin(string login)
+        public static User? GetUserByLogin(string login)
         {
             try
             {
@@ -266,7 +266,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 if (dataTable != null && dataTable.Rows.Count > 0)
                 {
-                    foreach (DataRow row in dataTable.Rows)
+                    foreach (DataRow? row in dataTable.Rows)
                     {
                         var user = new User(
                             id: row["Id"].ToString(),
