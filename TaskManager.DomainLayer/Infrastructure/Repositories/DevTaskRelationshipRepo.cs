@@ -10,7 +10,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
     internal static class DevTaskRelationshipRepo
     {
-        private const string TableName = "DevTaskRelationships";
+        internal const string TableName = "DevTaskRelationships";
 
         // initialize methods
         internal static void Initialize()
@@ -21,36 +21,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 DatabaseConnection.CloseConnection(connection, $"inicializar tabela {TableName}");
             }
 
-            InitializeDefaultRelationships();
-        }
-        private static void InitializeDefaultRelationships()
-        {
-            SQLiteConnection? defaultConnection = null;
-
-            try
-            {
-                Message.InitializeDefaultDevTaskRelationships();
-
-                defaultConnection = DatabaseConnection.CreateConnection($"inserir relacionamentos padrão em {TableName}");
-                var relationships = GetDevTaskRelationshipsList();
-
-                if (relationships.Count == 0)
-                {
-                    InsertDefaultTasksRelationships(defaultConnection);
-                }
-            }
-            finally
-            {
-                DatabaseConnection.CloseConnection(defaultConnection, "inserir tarefas padrão em DevTasks");
-            }
-        }
-        private static void InsertDefaultTasksRelationships(SQLiteConnection connection)
-        {
-            InsertDevTaskRelationshipIfNotExists(connection, new DevTaskRelationship(
-                parentOrFirst: "1",
-                childOrSecond: "2",
-                relationshipType: RelationshipTypeEnum.ParentChild
-            ));
+            Files.DefaultDevTaskRelationships.InitializeDefaultRelationships();
         }
         internal static void InitializeNewDevTaskRelationship(DevTaskRelationship newRelation)
         {
