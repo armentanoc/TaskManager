@@ -25,24 +25,22 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         internal static void InitializeNewDevTaskRelationship(DevTaskRelationship newRelation)
         {
-            SQLiteConnection? defaultConnection = null;
-
-            try
+            using (var defaultConnection = DatabaseConnection.CreateConnection($"Inserting new task into {TableName}"))
             {
-                Message.InitializeDefaultDevTaskRelationships();
-
-                defaultConnection = DatabaseConnection.CreateConnection($"inserir nova tarefa em {TableName}");
-                var tasks = GetDevTaskRelationshipsList();
-
-                InsertDevTaskRelationshipIfNotExists(defaultConnection, newRelation);
-            }
-            catch (Exception ex)
-            {
-                Message.CatchException(ex);
-            }
-            finally
-            {
-                DatabaseConnection.CloseConnection(defaultConnection, "inserir nova tarefa em DevTasks");
+                try
+                {
+                    Message.InitializeDefaultDevTaskRelationships();
+                    var tasks = GetDevTaskRelationshipsList();
+                    InsertDevTaskRelationshipIfNotExists(defaultConnection, newRelation);
+                }
+                catch (Exception ex)
+                {
+                    Message.CatchException(ex);
+                }
+                finally
+                {
+                    DatabaseConnection.CloseConnection(defaultConnection, "Inserting new task into DevTasks");
+                }
             }
         }
 
