@@ -5,6 +5,7 @@ using TaskManager.ConsoleInteraction.Components;
 using TaskManager.DomainLayer.Infrastructure.Operations;
 using TaskManager.DomainLayer.Model.People;
 using TaskManager.DomainLayer.Infrastructure.Operations.UserRepositoryOperations;
+using TaskManager.DomainLayer.Files;
 
 namespace TaskManager.DomainLayer.Infrastructure.Repositories
 {
@@ -18,23 +19,13 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
             using (var connection = DatabaseConnection.CreateConnection("inicializar tabela de usuários"))
             {
                 Create.Table(connection, TableName);
-                InsertDefaultUsersIntoTable(connection);
+                DefaultUsers.InsertDefaultUsersIntoTable(connection);
                 DatabaseConnection.CloseConnection(connection, "inicializar tabela de usuários");
             }
         }
 
         //insert methods
-        private static void InsertDefaultUsersIntoTable(SQLiteConnection connection)
-        {
-            userList = new List<User>
-            {
-                new TechLeader("Kaio", "kaio"),
-                new Developer("Ana Carolina", "carolina"),
-            };
-
-            InsertUsersIfNotExist(connection, userList);
-        }
-        private static void InsertUsersIfNotExist(SQLiteConnection connection, List<User> users, bool isFirstRun = true)
+        internal static void InsertUsersIfNotExist(SQLiteConnection connection, List<User> users, bool isFirstRun = true)
         {
             try
             {
