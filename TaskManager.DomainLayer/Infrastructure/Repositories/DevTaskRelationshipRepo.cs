@@ -25,7 +25,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
         }
         internal static void InitializeNewDevTaskRelationship(DevTaskRelationship newRelation)
         {
-            using (var defaultConnection = DatabaseConnection.CreateConnection($"Inserting new task into {TableName}"))
+            using (var defaultConnection = DatabaseConnection.CreateConnection($"inserindo nova tarefa em {TableName}"))
             {
                 try
                 {
@@ -39,7 +39,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 }
                 finally
                 {
-                    DatabaseConnection.CloseConnection(defaultConnection, "Inserting new task into DevTasks");
+                    DatabaseConnection.CloseConnection(defaultConnection, $"inserindo nova tarefa em {TableName}");
                 }
             }
         }
