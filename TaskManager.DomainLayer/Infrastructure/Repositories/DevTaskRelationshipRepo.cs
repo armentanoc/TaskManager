@@ -120,10 +120,10 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                            $"(ParentOrFirst_DevTask_Id = @ChildOrSecond AND ChildOrSecond_DevTask_Id = @ParentOrFirst);";
 
             var parameters = new Dictionary<string, object?>
-    {
-        { "@ParentOrFirst", relationship.ParentOrFirstTaskId },
-        { "@ChildOrSecond", relationship.ChildOrSecondTaskId }
-    };
+            {
+                { "@ParentOrFirst", relationship.ParentOrFirstTaskId },
+                { "@ChildOrSecond", relationship.ChildOrSecondTaskId }
+            };
 
             int count = Convert.ToInt32(DatabaseConnection.ExecuteScalar(connection, query, parameters));
 
