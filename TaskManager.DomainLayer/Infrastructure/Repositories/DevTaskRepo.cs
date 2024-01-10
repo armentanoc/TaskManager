@@ -1,7 +1,9 @@
 ﻿
 using System.Data;
 using System.Data.SQLite;
+
 using TaskManager.ConsoleInteraction.Components;
+using TaskManager.DomainLayer.Files;
 using TaskManager.DomainLayer.Infrastructure.Operations;
 using TaskManager.DomainLayer.Infrastructure.Operations.DevTaskRepositoryOperations;
 using TaskManager.DomainLayer.Model.People;
@@ -37,7 +39,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 if (tasks.Count == 0)
                 {
-                    InsertDefaultTasks(defaultConnection);
+                    DefaultDevTasks.InsertDefaultTasks(defaultConnection);
                 }
             }
             finally
@@ -45,28 +47,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                 DatabaseConnection.CloseConnection(defaultConnection, "inserir tarefas padrão em DevTasks");
             }
         }
-        private static void InsertDefaultTasks(SQLiteConnection connection)
-        {
-            InsertTaskIfNotExists(connection, new DevTask(
-                techLeaderLogin: "kaio",
-                title: "Implementar Funcionalidade X",
-                deadline: DateTime.Now.AddDays(7),
-                developerLogin: "kaio"
-            ));
 
-            InsertTaskIfNotExists(connection, new DevTask(
-                techLeaderLogin: "kaio",
-                title: "Corrigir bug Y",
-                deadline: DateTime.Now.AddDays(3),
-                developerLogin: "carolina"
-            ));
-
-            InsertTaskIfNotExists(connection, new DevTask(
-                techLeaderLogin: "kaio",
-                title: "Implementar Funcionalidade Z",
-                deadline: DateTime.Now.AddDays(10)
-            ));
-        }
         internal static void InitializeNewDevTask(DevTask newTask)
         {
             SQLiteConnection? defaultConnection = null;
