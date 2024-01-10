@@ -131,7 +131,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 DatabaseConnection.ExecuteNonQuery(insertTaskQuery, parameters);
                 Message.LogAndConsoleWrite($"Task '{task.Title}' inserida com sucesso na tabela.");
-                Console.WriteLine("\nPressione qualquer tecla para continuar\n");
+                Message.PressAnyKeyToContinue();
             }
             catch (SQLiteException ex)
             {
@@ -187,20 +187,9 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
 
                 if (dataTable != null && dataTable.Rows.Count > 0)
                 {
-                    foreach (DataRow row in dataTable.Rows)
+                    foreach (DataRow? row in dataTable.Rows)
                     {
-                        var task = new DevTask(
-                            id: row["Id"].ToString(),
-                            title: row["Title"].ToString(),
-                            description: row["Description"].ToString(),
-                            techLeaderLogin: row["TechLeaderLogin"].ToString(),
-                            developerLogin: row["DeveloperLogin"].ToString(),
-                            status: Enum.Parse<StatusEnum>(row["Status"].ToString()),
-                            requiresApprovalToComplete: row["RequiresApprovalToComplete"].ToString().Equals("1"),
-                            deadline: string.IsNullOrEmpty(row["Deadline"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["Deadline"].ToString()),
-                            completionDateTime: string.IsNullOrEmpty(row["CompletionDateTime"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["CompletionDateTime"].ToString())
-                        );
-
+                        var task = CreateDevTaskFromDataRow(row);
                         tasks.Add(task);
                     }
                 }
@@ -209,10 +198,36 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                Message.Error($"Erro obtendo lista de {TableName}: {ex.Message}");
+                Message.Error($"Error obtaining the list of {TableName}: {ex.Message}");
                 return new List<DevTask>();
             }
         }
+
+        private static DevTask CreateDevTaskFromDataRow(DataRow? row)
+        {
+            return new DevTask(
+                id: row["Id"].ToString(),
+                title: row["Title"].ToString(),
+                description: row["Description"].ToString(),
+                techLeaderLogin: row["TechLeaderLogin"].ToString(),
+                developerLogin: row["DeveloperLogin"].ToString(),
+                status: Enum.Parse<StatusEnum>(row["Status"].ToString()),
+                requiresApprovalToComplete: row["RequiresApprovalToComplete"].ToString().Equals("1"),
+                deadline: ParseDateTime(row["Deadline"].ToString()),
+                completionDateTime: ParseDateTime(row["CompletionDateTime"].ToString())
+            );
+        }
+
+        private static DateTime ParseDateTime(string dateTimeString)
+        {
+            if (string.IsNullOrEmpty(dateTimeString))
+            {
+                return DateTime.MinValue;
+            }
+
+            return DateTime.Parse(dateTimeString);
+        }
+
         public static void DisplayAll()
         {
             PrintTasks(GetTaskList());
@@ -430,7 +445,7 @@ namespace TaskManager.DomainLayer.Infrastructure.Repositories
                         WHERE Id = @Id 
                         AND TechLeaderLogin = @TechLeaderLogin;";
 
-                var parameters = new Dictionary<string, object>
+                var parameters = new Dictionary<string, object?>
                 {
                     { "@Id", taskToUpdate.Id },
                     { "@Status", taskToUpdate.Status.ToString() },
