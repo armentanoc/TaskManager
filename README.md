@@ -3,7 +3,7 @@
 ## Descrição 
 Projetado para otimizar a colaboração e o gerenciamento de tarefas dentro de uma equipe de desenvolvimento, esse sistema é estruturado em torno de dois papéis principais: Tech Leaders e Desenvolvedores. Ele facilita a criação e edição eficiente de tarefas em um banco de dados SQLite, atribuição e acompanhamento, fornecendo funcionalidades específicas para cada papel a fim de garantir um fluxo de trabalho tranquilo, como: adição de novos desenvolvedores, controle de acesso, logs, estatísticas, etc.
 
-https://github.com/armentanoc/TaskManager/assets/88147887/7db1123f-f92f-4609-ae28-cf97b67d562f
+<!--https://github.com/armentanoc/TaskManager/assets/88147887/7db1123f-f92f-4609-ae28-cf97b67d562f-->
 
 ## Utilização 
 1. Clone esse repositório na sua máquina local:
