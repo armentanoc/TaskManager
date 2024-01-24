@@ -1,7 +1,7 @@
 # Task Manager ⌨️
 
 ## Descrição 
-O Sistema de Gerenciamento de Tarefas foi projetado para otimizar a colaboração e o gerenciamento de tarefas dentro de uma equipe de desenvolvimento. O sistema é estruturado em torno de dois papéis principais: Tech Leaders (Líderes Técnicos) e Desenvolvedores. Ele facilita a criação eficiente de tarefas, atribuição e acompanhamento, fornecendo funcionalidades específicas para cada papel a fim de garantir um fluxo de trabalho tranquilo.
+O Sistema de Gerenciamento de Tarefas foi projetado para otimizar a colaboração e o gerenciamento de tarefas dentro de uma equipe de desenvolvimento. O sistema é estruturado em torno de dois papéis principais: Tech Leaders e Desenvolvedores. Ele facilita a criação eficiente de tarefas, atribuição e acompanhamento, fornecendo funcionalidades específicas para cada papel a fim de garantir um fluxo de trabalho tranquilo.
 
 ## Utilização 
 1. Clone esse repositório na sua máquina local:
